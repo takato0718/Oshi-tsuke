@@ -12,6 +12,9 @@ Figma：https://www.figma.com/design/l5J6lIsRy9N0SAMxuYkdaC/%E5%8D%92%E5%88%B6%E
 - [✔︎] スキップ機能（興味のない押し付けを即座にスキップ）
 - [✔︎] 基本的なユーザープロフィール機能
 
+### ER図
+[![Image from Gyazo](https://i.gyazo.com/9b80349a539883ac49f28dc9d462ba1c.png)](https://gyazo.com/9b80349a539883ac49f28dc9d462ba1c)
+
 ## サービス概要
 趣味の推しを語り合い、システムがランダムに他のユーザーに「押し付ける」推し活専用SNSアプリです
 日常生活ではタブーな「趣味の押し付け」を、アプリが代わりに行うことで罪悪感なく推しをシェアできます
@@ -90,3 +93,60 @@ Figma：https://www.figma.com/design/l5J6lIsRy9N0SAMxuYkdaC/%E5%8D%92%E5%88%B6%E
 - Render
 - Active Storage 画像アップロード
 - YouTube Data API 動画取得・埋め込み
+
+### テーブル詳細
+#### Usersテーブル（ユーザー情報）
+- email : ログイン認証用のメールアドレス / ユニーク制約 （taro@example.com）
+- crypted_password : ハッシュ化されたパスワード、そのままのパスワードは保存せず、暗号化して保存
+- name : ユーザーの表示名（山田太郎）
+- profile_image : プロフィール画像のファイルパス/URL
+- reset_password_token : パスワードリセット用の一時トークン
+- reset_password_sent_at : パスワードリセットメール送信日時
+- remember_created_at : 「ログイン状態を保持」機能の開始日時
+- created_at : レコード作成日時（ユーザー登録日時）
+- updated_at : レコード最終更新日時
+
+#### Community_Membershipsテーブル(ユーザーとコミュニティの参加関係を管理する中間テーブル)
+- user_id : 参加するユーザーのID
+- community_id : 参加先コミュニティのID
+- role : ユーザーのコミュニティ内での権限レベル(enum)
+- joined_at : コミュニティに参加した日時
+- created_at : レコード作成日時
+- updated_at : レコード最終更新日時
+
+#### Communitiesテーブル(コミュニティの基本情報を管理する)
+- name : コミュニティの名称・タイトル
+- description : コミュニティの詳細説明
+- category : コミュニティのカテゴリー分類
+- creator_id : コミュニティ作成者のユーザーID
+- member_count : 現在の参加メンバー数
+- post_count : コミュニティ内の投稿数
+- created_at : コミュニティ作成日時
+- updated_at : レコード最終更新日時
+
+#### Postsテーブル(ユーザーが行う投稿を管理する/テキスト、画像、動画)
+- user_id : 投稿者のユーザーID
+- title : 投稿のタイトル
+- description : 投稿の本文
+- image : 投稿に添付する画像のファイルパス/URL
+- category : 投稿のカテゴリー分類
+- youtube_url : YouTube動画のURL
+- created_at : 投稿作成日時
+- updated_at : 投稿最終更新日時
+
+#### Reactionsテーブル(ユーザーの投稿に対する様々なリアクションを管理する/いいね・コメント)
+- user_id : リアクションを行ったユーザーのID
+- post_id : リアクション対象の投稿ID
+- reaction_type : いいね、コメントなど(enum)
+- content : コメント投稿時の本文
+- created_at : リアクション投稿日時
+- updated_at : リアクション最終更新日時
+
+#### Recommendationsテーブル(ユーザーに対する投稿のレコメンド（押し付け）機能を管理する)
+- user_id : レコメンド対象のユーザーID
+- post_id : レコメンドする投稿のID
+- recommended_at : レコメンドが生成された日時
+- skipped : ユーザーがレコメンドをスキップしたかの判定
+- viewed_at : ユーザーがレコメンドを閲覧した日時
+- created_at : レコメンドレコード作成日時
+- updated_at : レコメンドレコード最終更新日時
