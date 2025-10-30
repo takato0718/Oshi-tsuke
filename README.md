@@ -4,13 +4,13 @@
 Figma：https://www.figma.com/design/l5J6lIsRy9N0SAMxuYkdaC/%E5%8D%92%E5%88%B6%E3%80%80figma?node-id=0-1&t=L54rAsKjf5n5U8SU-1
 
 ### READMEに記載した機能
-- [✔︎] ユーザー登録機能
-- [✔︎] ログイン機能
-- [✔︎] 推し投稿機能（画像・説明文・基本情報入力）
-- [✔︎] 投稿一覧表示機能（掲示板形式）
-- [✔︎] ランダム推し紹介機能（1日1回の押し付け機能）
-- [✔︎] スキップ機能（興味のない押し付けを即座にスキップ）
-- [✔︎] 基本的なユーザープロフィール機能
+- [x] ユーザー登録機能
+- [x] ログイン機能
+- [x] 推し投稿機能（画像・説明文・基本情報入力）
+- [x] 投稿一覧表示機能（掲示板形式）
+- [x] ランダム推し紹介機能（1日1回の押し付け機能）
+- [x] スキップ機能（興味のない押し付けを即座にスキップ）
+- [x] 基本的なユーザープロフィール機能
 
 ### ER図
 [![Image from Gyazo](https://i.gyazo.com/9b80349a539883ac49f28dc9d462ba1c.png)](https://gyazo.com/9b80349a539883ac49f28dc9d462ba1c)
@@ -96,66 +96,89 @@ Figma：https://www.figma.com/design/l5J6lIsRy9N0SAMxuYkdaC/%E5%8D%92%E5%88%B6%E
 
 ### テーブル詳細
 #### Usersテーブル（ユーザー情報）
-- email : ログイン認証用のメールアドレス / ユニーク制約 （taro@example.com）
-- crypted_password : ハッシュ化されたパスワード、そのままのパスワードは保存せず、暗号化して保存
+- id : プライマリーキー（bigint）
 - name : ユーザーの表示名（山田太郎）
-- profile_image : プロフィール画像のファイルパス/URL
+- email : ログイン認証用のメールアドレス / ユニーク制約（taro@example.com）/ NOT NULL
+- crypted_password : ハッシュ化されたパスワード / NOT NULL
+- salt : パスワードハッシュ化用のソルト値 / NOT NULL
+- name : ユーザーの表示名（山田太郎）/ NOT NULL
+- profile_image : プロフィール画像のファイルパス/URL（NULL許可）
 - reset_password_token : パスワードリセット用の一時トークン
-- reset_password_sent_at : パスワードリセットメール送信日時
-- remember_created_at : 「ログイン状態を保持」機能の開始日時
-- created_at : レコード作成日時（ユーザー登録日時）
-- updated_at : レコード最終更新日時
-
-#### Community_Membershipsテーブル(ユーザーとコミュニティの参加関係を管理する中間テーブル)
-- user_id : 参加するユーザーのID
-- community_id : 参加先コミュニティのID
-- role : ユーザーのコミュニティ内での権限レベル(enum)
-- joined_at : コミュニティに参加した日時
-- created_at : レコード作成日時
-- updated_at : レコード最終更新日時
-
-#### Communitiesテーブル(コミュニティの基本情報を管理する)
-- name : コミュニティの名称・タイトル
-- description : コミュニティの詳細説明
-- category : コミュニティのカテゴリー分類
-- creator_id : コミュニティ作成者のユーザーID
-- member_count : 現在の参加メンバー数
-- post_count : コミュニティ内の投稿数
-- created_at : コミュニティ作成日時
-- updated_at : レコード最終更新日時
-
-#### Postsテーブル(ユーザーが行う投稿を管理する/テキスト、画像、動画)
-- user_id : 投稿者のユーザーID
-- title : 投稿のタイトル
-- description : 投稿の本文
-- image : 投稿に添付する画像のファイルパス/URL
-- category : 投稿のカテゴリー分類
-- youtube_url : YouTube動画のURL
-- created_at : 投稿作成日時
-- updated_at : 投稿最終更新日時
-
-#### Reactionsテーブル(ユーザーの投稿に対する様々なリアクションを管理する/いいね・コメント)
-- user_id : リアクションを行ったユーザーのID
-- post_id : リアクション対象の投稿ID
-- reaction_type : いいね、コメントなど(enum)
-- content : コメント投稿時の本文
-- created_at : リアクション投稿日時
-- updated_at : リアクション最終更新日時
-
-#### Recommendationsテーブル(ユーザーに対する投稿のレコメンド（押し付け）機能を管理する)
-- user_id : レコメンド対象のユーザーID
-- post_id : レコメンドする投稿のID
-- recommended_at : レコメンドが生成された日時
-- skipped : ユーザーがレコメンドをスキップしたかの判定
-- viewed_at : ユーザーがレコメンドを閲覧した日時
-- created_at : レコメンドレコード作成日時
-- updated_at : レコメンドレコード最終更新日時
+- reset_password_token_expires_at : パスワードリセットトークンの有効期限
+- reset_password_email_sent_at : パスワードリセットメール送信日時
+- remember_me_token : 「ログイン状態を保持」機能用のトークン
+- remember_me_token_expires_at : ログイン保持トークンの有効期限
+- created_at : レコード作成日時（ユーザー登録日時）/ NOT NULL
+- updated_at : レコード最終更新日時 / NOT NULL
+#### Community_Membershipsテーブル（ユーザーとコミュニティの参加関係を管理する中間テーブル）
+- id : プライマリーキー（bigint）
+- user_id : 参加するユーザーのID / NOT NULL / 外部キー
+- community_id : 参加先コミュニティのID / NOT NULL / 外部キー
+- role : ユーザーのコミュニティ内での権限レベル（enum integer）/ NOT NULL
+- is_active : 参加状態の有効性フラグ / NOT NULL
+- joined_at : コミュニティに実際に参加した日時（NULL許可 - 招待制の場合）
+- created_at : レコード作成日時（招待送信日時）/ NOT NULL
+- updated_at : レコード最終更新日時 / NOT NULL
+#### Communitiesテーブル（コミュニティの基本情報を管理する）
+- id : プライマリーキー（bigint）
+- name : コミュニティの名称・タイトル / NOT NULL
+- description : コミュニティの詳細説明（text型で長文対応）
+- creator_id : コミュニティ作成者のユーザーID / NOT NULL / 外部キー
+- member_count : 現在の参加メンバー数 / NOT NULL
+- post_count : コミュニティ内の投稿数 / NOT NULL
+- created_at : コミュニティ作成日時 / NOT NULL
+- updated_at : レコード最終更新日時 / NOT NULL
+#### Postsテーブル（ユーザーが行う投稿を管理する）
+- id : プライマリーキー（bigint）
+- user_id : 投稿者のユーザーID / NOT NULL / 外部キー
+- community_id : 投稿先コミュニティのID（NULL許可 - 個人投稿の場合）/ 外部キー
+- title : 投稿のタイトル / NOT NULL
+- description : 投稿の本文 / NOT NULL / text型
+- image : 投稿に添付する画像のファイルパス/URL（NULL許可）
+- youtube_url : YouTube動画のURL（NULL許可）
+- created_at : 投稿作成日時 / NOT NULL
+- updated_at : 投稿最終更新日時 / NOT NULL
+#### Reactionsテーブル（ユーザーの投稿に対するリアクションを管理する）
+- id : プライマリーキー（bigint）
+- user_id : リアクションを行ったユーザーのID / NOT NULL / 外部キー
+- post_id : リアクション対象の投稿ID / NOT NULL / 外部キー
+- reaction_kind : リアクションの種類（enum: comment, like）/ NOT NULL
+- content : コメント投稿時の本文（text型、いいねの場合はNULL）
+- created_at : リアクション投稿日時 / NOT NULL
+- updated_at : リアクション最終更新日時 / NOT NULL
+#### Recommendationsテーブル（ユーザーに対する投稿のレコメンド機能を管理する）
+- id : プライマリーキー（bigint）
+- user_id : レコメンド対象のユーザーID / NOT NULL / 外部キー
+- post_id : レコメンドする投稿のID / NOT NULL / 外部キー
+- is_skipped : ユーザーがレコメンドをスキップしたかの判定 / NOT NULL
+- viewed_at : ユーザーがレコメンドを閲覧した日時（NULL許可）
+- skipped_at : ユーザーがレコメンドをスキップした日時（NULL許可）
+- created_at : レコメンドレコード作成日時 / NOT NULL
+- updated_at : レコメンドレコード最終更新日時 / NOT NULL
+#### Categoriesテーブル（カテゴリーマスターテーブル）
+- id : プライマリーキー（bigint）
+- name : カテゴリー名称 / NOT NULL
+- description : カテゴリーの詳細説明（text型）
+- created_at : カテゴリー作成日時 / NOT NULL
+- updated_at : カテゴリー最終更新日時 / NOT NULL
+#### Post_Categoriesテーブル（投稿とカテゴリーの多対多関係を管理する中間テーブル）
+- id : プライマリーキー（bigint）
+- post_id : 投稿のID / NOT NULL / 外部キー
+- category_id : カテゴリーのID / NOT NULL / 外部キー
+- created_at : 関連付け作成日時 / NOT NULL
+- updated_at : 関連付け最終更新日時 / NOT NULL
+#### Community_Categoriesテーブル（コミュニティとカテゴリーの多対多関係を管理する中間テーブル）
+- id : プライマリーキー（bigint）
+- community_id : コミュニティのID / NOT NULL / 外部キー
+- category_id : カテゴリーのID / NOT NULL / 外部キー
+- created_at : 関連付け作成日時 / NOT NULL
+- updated_at : 関連付け最終更新日時 / NOT NULL
 
 ### ER図の注意点
-- [✔︎] プルリクエストに最新のER図のスクリーンショットを画像が表示される形で掲載できているか？
-- [✔︎] テーブル名は複数形になっているか？
-- [✔︎] カラムの型は記載されているか？
-- [✔︎] 外部キーは適切に設けられているか？
-- [✔︎] リレーションは適切に描かれているか？多対多の関係は存在しないか？
-- [✔︎] STIは使用しないER図になっているか？
-- [✔︎] Postsテーブルにpost_nameのように"テーブル名+カラム名"を付けていないか？
+- [x] プルリクエストに最新のER図のスクリーンショットを画像が表示される形で掲載できているか？
+- [x] テーブル名は複数形になっているか？
+- [x] カラムの型は記載されているか？
+- [x] 外部キーは適切に設けられているか？
+- [x] リレーションは適切に描かれているか？多対多の関係は存在しないか？
+- [x] STIは使用しないER図になっているか？
+- [x] Postsテーブルにpost_nameのように"テーブル名+カラム名"を付けていないか？
