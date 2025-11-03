@@ -1,0 +1,103 @@
+# Include any files or directories that you don't want to be copied to your
+# container here (e.g., local build artifacts, temporary files, etc.).
+#
+# For more help, visit the .dockerignore file reference guide at
+# https://docs.docker.com/go/build-context-dockerignore/
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+.dockerignore
+Dockerfile*
+docker-compose*.yml
+# compose.yaml
+
+# Documentation
+README*.md
+LICENSE
+*.md
+
+# Logs
+log/*
+*.log
+
+# Temporary files
+tmp/*
+!.keep
+tmp/cache/*
+tmp/pids/*
+tmp/sessions/*
+tmp/sockets/*
+!tmp/.keep
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Rails
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-*
+
+# Node modules (will be installed in container)
+node_modules/
+
+# Bundle
+.bundle/
+vendor/bundle/
+
+# Coverage reports
+coverage/
+
+# Application specific
+public/assets
+public/packs
+public/packs-test
+public/system
+
+# Database
+*.db
+*.sqlite
+
+# Secrets
+secrets.dev.yaml
+values.dev.yaml
+
+# Python (if any)
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+
+# Java (if any)
+.classpath
+.project
+.settings/
+*.class
+
+# Other
+charts/
+*.dbmdl
+*.jfm
+obj/
+npm-debug.log
