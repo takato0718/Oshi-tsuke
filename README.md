@@ -1,184 +1,24 @@
-# Oshi-tsuke
-# 推しツケ
+# README
 
-Figma：https://www.figma.com/design/l5J6lIsRy9N0SAMxuYkdaC/%E5%8D%92%E5%88%B6%E3%80%80figma?node-id=0-1&t=L54rAsKjf5n5U8SU-1
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-### READMEに記載した機能
-- [x] ユーザー登録機能
-- [x] ログイン機能
-- [x] 推し投稿機能（画像・説明文・基本情報入力）
-- [x] 投稿一覧表示機能（掲示板形式）
-- [x] ランダム推し紹介機能（1日1回の押し付け機能）
-- [x] スキップ機能（興味のない押し付けを即座にスキップ）
-- [x] 基本的なユーザープロフィール機能
+Things you may want to cover:
 
-### ER図
-[![Image from Gyazo](https://i.gyazo.com/9b80349a539883ac49f28dc9d462ba1c.png)](https://gyazo.com/9b80349a539883ac49f28dc9d462ba1c)
+* Ruby version
 
-## サービス概要
-趣味の推しを語り合い、システムがランダムに他のユーザーに「押し付ける」推し活専用SNSアプリです
-日常生活ではタブーな「趣味の押し付け」を、アプリが代わりに行うことで罪悪感なく推しをシェアできます
-推し語りに特化したコミュニティと、新しい推しとの偶然の出会いを提供します
+* System dependencies
 
-## このサービスへの思い・作りたい理由
-自分の推しについて語りたいという人間の根本的な欲求に着目しました
-既存のSNSは日常のつぶやきがメインテーマですが、このサービスは「趣味を語り合う場」に特化しています
-推しについて思う存分語れる専用の場所を提供し、同時に「趣味の押し付けはタブー」という社会的な風習を、システムが代わりに行うことで解消したいと考えました
-罪悪感なく推しを押し付けられる環境を作ることで、推し活をより楽しく、より広がりのあるものにしたいという思いがあります
+* Configuration
 
-## ユーザー層について
-メインターゲット：自身の推しについて語りたい人（老若男女問わず）
-- 推しへの愛を表現したいが、日常生活では遠慮してしまう人たちをターゲットにしました
-- 推し活は年齢や性別を問わない趣味であり、幅広い層にアプローチできると考えています
+* Database creation
 
-サブターゲット：新しい推しや作品との出会いを求めている人
-- 既存の推しだけでなく、新たな発見を求めている層も取り込めると判断しました
+* Database initialization
 
-コミュニティ志向：同じ推し同士で語り合いたい人
-- 推し活は共感や共有の欲求が強いため、コミュニティ機能で深い満足感を提供できると考えています
+* How to run the test suite
 
-## サービスの利用イメージ
-1. ユーザーが推しの画像・動画・魅力ポイントを投稿します
-2. 投稿は掲示板形式で一覧表示され、他のユーザーが自由に閲覧できます
-3. システムが1日1回、ランダムに他のユーザーの推しを紹介（押し付け）します
-4. 押し付けられたユーザーは新しい推しとの出会いを体験し、興味がない場合は即座にスキップできます
-5. 同じ推し同士でコミュニティを形成し、専用の掲示板で語り合います
-6. 継続利用により推しの輪が広がり、新たな発見と深いコミュニティ体験を得られます
+* Services (job queues, cache servers, search engines, etc.)
 
-ユーザーは「罪悪感なく推しを語れる場所」と「偶然の新しい出会い」という2つの価値を得ることができます
+* Deployment instructions
 
-## ユーザーの獲得について
-推し活に特化したサービスとして、以下の方法でユーザーにアプローチする予定です：
-- 推しについて詳細に語れる専用フォーム設計（推しの名前、名シーン、名場面、名曲等）
-- フォーム記入は必須ではなく、自由に語りたいユーザーにも対応した柔軟な投稿機能
-- 同じ推し同士が語り合える専用コミュニティ機能
-
-## サービスの差別化ポイント・推しポイント
-既存サービスとの明確な差別化：
-- TwitterやInstagram：日常つぶやきがメイン → 当サービスは、推し語りに完全特化
-- 一般SNS：能動的なフォローが必要 → 当サービスは、システムによる自動紹介で偶然の出会いを演出
-- 既存推し活コミュニティ：検索して探す必要がある → 当サービスは、ランダム押し付けで受動的な発見が可能
-
-独自の価値提供：
-- 「趣味の押し付け」の罪悪感を完全に解消する仕組み
-- 推し語り専用の環境で、遠慮なく熱量高く語れる場所
-- システムによるランダム紹介で、自分では見つけられなかった推しとの出会いを作る
-- 同じ推し同士のコミュニティで深いつながりを形成
-
-## 機能候補
-
-### MVPリリース時に作っていたいもの
-- ユーザー登録・ログイン機能
-- 推し投稿機能（画像・説明文・基本情報入力）
-- 投稿一覧表示機能（掲示板形式）
-- ランダム推し紹介機能（1日1回の押し付け機能）
-- スキップ機能（興味のない押し付けを即座にスキップ）
-- 基本的なユーザープロフィール機能
-
-### 本リリースまでに作っていたいもの
-- YouTube動画埋め込み機能
-- 推しへの反応機能（いいね、コメント）
-- 推し発見履歴機能（過去に押し付けられた推しの記録）
-- 同じ推し同士のコミュニティ機能（専用掲示板）
-- コミュニティ活発度可視化機能（盛り上がっているコミュニティの表示）
-- 推しカテゴリ分け機能（アニメ、アイドル、俳優等）
-- 推し検索機能
-- ユーザー間フォロー機能
-
-### 使用する技術スタック
-- Ruby on Rails
-- MySQL
-- HTML/CSS/JavaScript
-- Bootstrap レスポンシブ対応
-- Render
-- Active Storage 画像アップロード
-- YouTube Data API 動画取得・埋め込み
-
-### テーブル詳細
-#### Usersテーブル（ユーザー情報）
-- id : プライマリーキー（bigint）
-- name : ユーザーの表示名（山田太郎）
-- email : ログイン認証用のメールアドレス / ユニーク制約（taro@example.com）/ NOT NULL
-- crypted_password : ハッシュ化されたパスワード / NOT NULL
-- salt : パスワードハッシュ化用のソルト値 / NOT NULL
-- name : ユーザーの表示名（山田太郎）/ NOT NULL
-- profile_image : プロフィール画像のファイルパス/URL（NULL許可）
-- reset_password_token : パスワードリセット用の一時トークン
-- reset_password_token_expires_at : パスワードリセットトークンの有効期限
-- reset_password_email_sent_at : パスワードリセットメール送信日時
-- remember_me_token : 「ログイン状態を保持」機能用のトークン
-- remember_me_token_expires_at : ログイン保持トークンの有効期限
-- created_at : レコード作成日時（ユーザー登録日時）/ NOT NULL
-- updated_at : レコード最終更新日時 / NOT NULL
-#### Community_Membershipsテーブル（ユーザーとコミュニティの参加関係を管理する中間テーブル）
-- id : プライマリーキー（bigint）
-- user_id : 参加するユーザーのID / NOT NULL / 外部キー
-- community_id : 参加先コミュニティのID / NOT NULL / 外部キー
-- role : ユーザーのコミュニティ内での権限レベル（enum integer）/ NOT NULL
-- is_active : 参加状態の有効性フラグ / NOT NULL
-- joined_at : コミュニティに実際に参加した日時（NULL許可 - 招待制の場合）
-- created_at : レコード作成日時（招待送信日時）/ NOT NULL
-- updated_at : レコード最終更新日時 / NOT NULL
-#### Communitiesテーブル（コミュニティの基本情報を管理する）
-- id : プライマリーキー（bigint）
-- name : コミュニティの名称・タイトル / NOT NULL
-- description : コミュニティの詳細説明（text型で長文対応）
-- creator_id : コミュニティ作成者のユーザーID / NOT NULL / 外部キー
-- member_count : 現在の参加メンバー数 / NOT NULL
-- post_count : コミュニティ内の投稿数 / NOT NULL
-- created_at : コミュニティ作成日時 / NOT NULL
-- updated_at : レコード最終更新日時 / NOT NULL
-#### Postsテーブル（ユーザーが行う投稿を管理する）
-- id : プライマリーキー（bigint）
-- user_id : 投稿者のユーザーID / NOT NULL / 外部キー
-- community_id : 投稿先コミュニティのID（NULL許可 - 個人投稿の場合）/ 外部キー
-- title : 投稿のタイトル / NOT NULL
-- description : 投稿の本文 / NOT NULL / text型
-- image : 投稿に添付する画像のファイルパス/URL（NULL許可）
-- youtube_url : YouTube動画のURL（NULL許可）
-- created_at : 投稿作成日時 / NOT NULL
-- updated_at : 投稿最終更新日時 / NOT NULL
-#### Reactionsテーブル（ユーザーの投稿に対するリアクションを管理する）
-- id : プライマリーキー（bigint）
-- user_id : リアクションを行ったユーザーのID / NOT NULL / 外部キー
-- post_id : リアクション対象の投稿ID / NOT NULL / 外部キー
-- reaction_kind : リアクションの種類（enum: comment, like）/ NOT NULL
-- content : コメント投稿時の本文（text型、いいねの場合はNULL）
-- created_at : リアクション投稿日時 / NOT NULL
-- updated_at : リアクション最終更新日時 / NOT NULL
-#### Recommendationsテーブル（ユーザーに対する投稿のレコメンド機能を管理する）
-- id : プライマリーキー（bigint）
-- user_id : レコメンド対象のユーザーID / NOT NULL / 外部キー
-- post_id : レコメンドする投稿のID / NOT NULL / 外部キー
-- is_skipped : ユーザーがレコメンドをスキップしたかの判定 / NOT NULL
-- viewed_at : ユーザーがレコメンドを閲覧した日時（NULL許可）
-- skipped_at : ユーザーがレコメンドをスキップした日時（NULL許可）
-- created_at : レコメンドレコード作成日時 / NOT NULL
-- updated_at : レコメンドレコード最終更新日時 / NOT NULL
-#### Categoriesテーブル（カテゴリーマスターテーブル）
-- id : プライマリーキー（bigint）
-- name : カテゴリー名称 / NOT NULL
-- description : カテゴリーの詳細説明（text型）
-- created_at : カテゴリー作成日時 / NOT NULL
-- updated_at : カテゴリー最終更新日時 / NOT NULL
-#### Post_Categoriesテーブル（投稿とカテゴリーの多対多関係を管理する中間テーブル）
-- id : プライマリーキー（bigint）
-- post_id : 投稿のID / NOT NULL / 外部キー
-- category_id : カテゴリーのID / NOT NULL / 外部キー
-- created_at : 関連付け作成日時 / NOT NULL
-- updated_at : 関連付け最終更新日時 / NOT NULL
-#### Community_Categoriesテーブル（コミュニティとカテゴリーの多対多関係を管理する中間テーブル）
-- id : プライマリーキー（bigint）
-- community_id : コミュニティのID / NOT NULL / 外部キー
-- category_id : カテゴリーのID / NOT NULL / 外部キー
-- created_at : 関連付け作成日時 / NOT NULL
-- updated_at : 関連付け最終更新日時 / NOT NULL
-
-### ER図の注意点
-- [x] プルリクエストに最新のER図のスクリーンショットを画像が表示される形で掲載できているか？
-- [x] テーブル名は複数形になっているか？
-- [x] カラムの型は記載されているか？
-- [x] 外部キーは適切に設けられているか？
-- [x] リレーションは適切に描かれているか？多対多の関係は存在しないか？
-- [x] STIは使用しないER図になっているか？
-- [x] Postsテーブルにpost_nameのように"テーブル名+カラム名"を付けていないか？
+* ...
