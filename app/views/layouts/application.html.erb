@@ -1,16 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
-    <title>App</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <title>推しツケ - あなたの推しを押し付ける</title>
   </head>
 
-  <body>
-    <%= yield %>
-  </body>
+    <!-- メインコンテンツ -->
+    <main class="container my-4">
+
+      <%= yield %>
+    </main>
 </html>
