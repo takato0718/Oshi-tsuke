@@ -1,6 +1,61 @@
-<h1>
-  推しツケ
-</h1>
-<p>
-  あなたの推しを押し付ける。新しい推しに出会う。
-</p>
+<div class="row">
+  <div class="col-lg-8 mx-auto">
+    <div class="text-center mb-5">
+      <h1 class="display-4 fw-bold text-primary mb-3">
+        <i class="bi bi-heart-fill"></i> 推しツケ
+      </h1>
+      <p class="lead text-muted">
+        あなたの推しを押し付ける。新しい推しに出会う。
+      </p>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body p-4">
+        <h2 class="card-title h4 mb-4">
+          <p>今日の推し紹介</p>
+        </h2>
+        <p>
+          毎日1回、ランダムに選ばれた推しが紹介されます。<br>
+          気になる推しが見つかったら、その人の投稿を見てみましょう！
+        </p>
+          <p>今日の推しを見る</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h3 class="card-title h5 mb-3">
+              <p>投稿一覧</p>
+            </h3>
+            <p>
+              みんなが投稿した推しを見てみましょう。新しい推しとの出会いが待っています。
+            </p>
+            <p>投稿を見る</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h3 class="card-title h5 mb-3">
+              <p class="bi bi-plus-circle">新規投稿</p> 
+            </h3>
+            <p class="card-text text-muted">
+              あなたの推しを投稿して、他の人に紹介しましょう。
+            </p>
+            <% if logged_in? %>
+              <%= link_to new_post_path, class: "btn btn-outline-success" do %>
+                投稿する <i class="bi bi-arrow-right"></i>
+              <% end %>
+            <% else %>
+                <p>ログインして投稿</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
