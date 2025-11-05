@@ -1,6 +1,6 @@
 services:
   # Rails アプリケーション
-  app:
+  web:
     build:
       context: .
     ports:
