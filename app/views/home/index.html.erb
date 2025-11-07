@@ -46,9 +46,7 @@
               あなたの推しを投稿して、他の人に紹介しましょう。
             </p>
             <% if logged_in? %>
-              <%= link_to new_post_path, class: "btn btn-outline-success" do %>
-                投稿する <i class="bi bi-arrow-right"></i>
-              <% end %>
+                <p>投稿する</p>
             <% else %>
                 <p>ログインして投稿</p>
             <% end %>
