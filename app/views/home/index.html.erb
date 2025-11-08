@@ -48,7 +48,9 @@
             <% if logged_in? %>
                 <p>投稿する</p>
             <% else %>
-                <p>ログインして投稿</p>
+              <%= link_to new_session_path, class: "btn btn-outline-success" do %>
+                ログインして投稿 <i class="bi bi-arrow-right"></i>
+              <% end %>
             <% end %>
           </div>
         </div>
