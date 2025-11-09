@@ -1,0 +1,64 @@
+<% if @user.nil? %>
+  <div class="alert alert-warning">
+    ユーザーが見つかりませんでした。
+  </div>
+<% else %>
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-4">
+            <% if @user.profile_image.present? %>
+              <img src="<%= @user.profile_image %>" class="rounded-circle me-4" alt="<%= @user.name %>" style="width: 100px; height: 100px; object-fit: cover;">
+            <% else %>
+              <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center me-4" style="width: 100px; height: 100px;">
+                <i class="bi bi-person display-4 text-white"></i>
+              </div>
+            <% end %>
+            <div class="flex-grow-1">
+              <h1 class="h3 mb-2"><%= @user.name %></h1>
+              <p class="text-muted mb-0">
+                <i class="bi bi-envelope"></i> <%= @user.email %>
+              </p>
+            </div>
+            <% if logged_in? && current_user == @user %>
+              <%= link_to edit_user_path(@user), class: "btn btn-outline-primary" do %>
+                <i class="bi bi-pencil"></i> 編集
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h2 class="h5 mb-0">
+            <i class="bi bi-grid-3x3-gap"></i> 投稿一覧
+          </h2>
+        </div>
+        <div class="card-body">
+          <% if defined?(Post) && @user.respond_to?(:posts) && @user.posts.any? %>
+            <div class="row g-3">
+              <% @user.posts.limit(6).each do |post| %>
+                <div class="col-12 col-md-6">
+                  <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                      <h5 class="card-title mb-2"><%= post.title %></h5>
+                      <p class="card-text text-muted mb-3"><%= truncate(post.description, length: 80) %></p>
+                      <%= link_to "詳細", root_path(post), class: "btn btn-sm btn-outline-primary" %> <!--仮にrootとする実際はpost_path-->
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-inbox display-4"></i>
+              <p class="mt-3">投稿はまだありません</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
