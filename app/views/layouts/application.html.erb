@@ -28,7 +28,7 @@
           <ul class="navbar-nav">
             <% if logged_in? %>
               <li class="nav-item">
-                <%= link_to root_path, class: "nav-link" do %> <!--仮にroot_pathとする実際はuser_path-->
+                <%= link_to profile_path, class: "nav-link" do %>
                   <i class="bi bi-person-circle"></i> <%= current_user.name %>
                 <% end %>
               </li>
