@@ -11,4 +11,6 @@ Rails.application.routes.draw do
   # ユーザー
   resources :users, only: [:show, :edit, :update]
   get 'profile', to: 'users#me', as: :profile
+
+  resources :posts
 end
