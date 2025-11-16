@@ -30,6 +30,9 @@ gem "redis", "~> 4.0"
 # Authentication (Sorcery)
 gem "sorcery", "~> 0.17.0"
 
+# ページネーション
+gem "kaminari", "~> 1.2"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 
@@ -41,6 +44,7 @@ gem "bootsnap", require: false
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem "faker", "~> 3.4"
 end
 
 group :development do

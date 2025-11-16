@@ -27,12 +27,14 @@
         <div class="card h-100 shadow-sm">
           <div class="card-body">
             <h3 class="card-title h5 mb-3">
-              <p>投稿一覧</p>
+              <i class="bi bi-grid-3x3-gap"></i> 投稿一覧
             </h3>
-            <p>
+            <p class="card-text text-muted">
               みんなが投稿した推しを見てみましょう。新しい推しとの出会いが待っています。
             </p>
-            <p>投稿を見る</p>
+            <%= link_to posts_path, class: "btn btn-outline-primary" do %>
+              投稿を見る <i class="bi bi-arrow-right"></i>
+            <% end %>
           </div>
         </div>
       </div>
@@ -40,7 +42,7 @@
         <div class="card h-100 shadow-sm">
           <div class="card-body">
             <h3 class="card-title h5 mb-3">
-              <i class="bi bi-plus-circle">新規投稿</i> 
+              <i class="bi bi-plus-circle"></i> 新規投稿
             </h3>
             <p class="card-text text-muted">
               あなたの推しを投稿して、他の人に紹介しましょう。
