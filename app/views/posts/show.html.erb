@@ -1,0 +1,98 @@
+<% if @post.nil? %>
+  <div class="alert alert-warning">
+    投稿が見つかりませんでした。
+  </div>
+  <%= link_to "投稿一覧に戻る", posts_path, class: "btn btn-primary" %>
+<% else %>
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="mb-3">
+        <%= link_to posts_path, class: "text-decoration-none" do %>
+          <i class="bi bi-arrow-left"></i> 投稿一覧に戻る
+        <% end %>
+      </div>
+
+      <div class="card shadow-sm mb-4">
+        <% if @post.image.present? %>
+          <img src="<%= @post.image %>" class="card-img-top" alt="<%= @post.title %>" style="max-height: 500px; object-fit: cover;">
+        <% else %>
+          <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 400px;">
+            <i class="bi bi-image display-1 text-muted"></i>
+          </div>
+        <% end %>
+        <div class="card-body">
+          <h1 class="card-title h2 mb-3"><%= @post.title %></h1>
+          <div class="d-flex align-items-center mb-4 text-muted">
+            <i class="bi bi-person-circle me-2"></i>
+            <span class="me-3"><%= @post.user.name %></span>
+            <i class="bi bi-clock me-2"></i>
+            <span><%= @post.created_at.strftime("%Y年%m月%d日 %H:%M") %></span>
+          </div>
+          <div class="card-text">
+            <p class="lead"><%= simple_format(@post.description) %></p>
+          </div>
+          
+          <% if @post.youtube_url.present? %>
+            <div class="mt-4">
+              <h3 class="h5 mb-3">関連動画</h3>
+              <div class="ratio ratio-16x9">
+                <% youtube_id = @post.youtube_url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/) %>
+                <% if youtube_id %>
+                  <iframe src="https://www.youtube.com/embed/<%= youtube_id[1] %>" allowfullscreen></iframe>
+                <% else %>
+                  <p class="text-muted">無効なYouTube URLです</p>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="card-footer bg-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <button class="btn btn-outline-danger">
+                <i class="bi bi-heart"></i> いいね
+              </button>
+            </div>
+            <% if logged_in? && current_user == @post.user %>
+              <div>
+                <%= link_to edit_post_path(@post), class: "btn btn-outline-secondary btn-sm" do %>
+                  <i class="bi bi-pencil"></i> 編集
+                <% end %>
+                <%= button_to post_path(@post), method: :delete, data: { turbo_confirm: "本当に削除しますか？" }, class: "btn btn-outline-danger btn-sm" do %>
+                  <i class="bi bi-trash"></i> 削除
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- コメントセクション -->
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h3 class="h5 mb-0">
+            <i class="bi bi-chat-dots"></i> コメント
+          </h3>
+        </div>
+        <div class="card-body">
+          <% if logged_in? %>
+            <form class="mb-4">
+              <div class="mb-3">
+                <textarea class="form-control" rows="3" placeholder="コメントを入力..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">コメントを投稿</button>
+            </form>
+          <% else %>
+            <div class="alert alert-info">
+              <%= link_to "ログイン", new_session_path %>してコメントを投稿しましょう
+            </div>
+          <% end %>
+
+          <div class="comments">
+            <p class="text-muted text-center py-4">まだコメントはありません</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
