@@ -37,7 +37,7 @@
           </h2>
         </div>
         <div class="card-body">
-          <% if defined?(Post) && @user.respond_to?(:posts) && @user.posts.any? %>
+          <% if @user.posts.any? %>
             <div class="row g-3">
               <% @user.posts.limit(6).each do |post| %>
                 <div class="col-12 col-md-6">
