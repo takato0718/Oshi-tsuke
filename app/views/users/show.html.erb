@@ -45,7 +45,7 @@
                     <div class="card-body">
                       <h5 class="card-title mb-2"><%= post.title %></h5>
                       <p class="card-text text-muted mb-3"><%= truncate(post.description, length: 80) %></p>
-                      <%= link_to "詳細", root_path(post), class: "btn btn-sm btn-outline-primary" %> <!--仮にrootとする実際はpost_path-->
+                      <%= link_to "詳細", post_path(post), class: "btn btn-sm btn-outline-primary" %>
                     </div>
                   </div>
                 </div>
