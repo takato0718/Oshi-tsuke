@@ -58,8 +58,10 @@
                 <%= link_to edit_post_path(@post), class: "btn btn-outline-secondary btn-sm" do %>
                   <i class="bi bi-pencil"></i> 編集
                 <% end %>
-                <%= button_to post_path(@post), method: :delete, data: { turbo_confirm: "本当に削除しますか？" }, class: "btn btn-outline-danger btn-sm" do %>
-                  <i class="bi bi-trash"></i> 削除
+                <%= button_to post_path(@post), method: :delete, 
+                  onclick: "return confirm('本当に削除しますか？')",
+                  class: "btn btn-outline-danger btn-sm" do %>
+                <i class="bi bi-trash"></i> 削除
                 <% end %>
               </div>
             <% end %>

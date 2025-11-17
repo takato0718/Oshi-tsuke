@@ -30,9 +30,17 @@ class PostsController < ApplicationController
   end
   
   def update
+    if @post.update(post_params)
+      redirect_to @post, notice: '投稿を更新しました！'
+    else
+      flash.now[:alert] = '投稿の更新に失敗しました'
+      render :edit, status: :unprocessable_entity
+    end
   end
   
   def destroy
+    @post.destroy
+    redirect_to posts_url, notice: '投稿を削除しました。'
   end
   
   private
