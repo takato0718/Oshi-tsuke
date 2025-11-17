@@ -23,7 +23,15 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
-    command: ["rails", "server", "-b", "0.0.0.0"]
+    command: >
+      bash -c "
+        bundle install &&
+        bundle exec rails db:prepare &&
+        rm -f tmp/pids/server.pid &&
+        mkdir -p tmp/pids tmp/cache tmp/sockets log storage &&
+        yarn install &&
+        bundle exec rails server -b 0.0.0.0 -p 3000
+      "
     stdin_open: true
     tty: true
 
