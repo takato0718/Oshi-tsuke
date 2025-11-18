@@ -13,12 +13,8 @@
       </div>
 
       <div class="card shadow-sm mb-4">
-        <% if @post.image.present? %>
-          <img src="<%= @post.image %>" class="card-img-top" alt="<%= @post.title %>" style="max-height: 500px; object-fit: cover;">
-        <% else %>
-          <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 400px;">
-            <i class="bi bi-image display-1 text-muted"></i>
-          </div>
+        <% if (image_html = post_image_tag(@post, placeholder_height: "400px", html_options: { style: "max-height: 500px; object-fit: cover;" })) %>
+          <%= image_html %>
         <% end %>
         <div class="card-body">
           <h1 class="card-title h2 mb-3"><%= @post.title %></h1>
