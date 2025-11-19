@@ -2,7 +2,8 @@ require "uri"
 
 class Post < ApplicationRecord
   belongs_to :user
-    
+  has_many :recommendations, dependent: :destroy
+
   validates :title, presence: true, length: { maximum: 255 }
   validates :description, presence: true
   validates :youtube_url, format: { with: /\A(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+\z/i, message: "は有効なYouTube URLである必要があります" }, allow_blank: true
