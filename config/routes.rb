@@ -12,5 +12,17 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :edit, :update]
   get 'profile', to: 'users#me', as: :profile
 
+  # 投稿
   resources :posts
+
+  # 推し紹介
+  resources :recommendations, only: [:show] do
+    member do
+      patch :skip
+      patch :like
+    end
+    collection do
+      get :daily
+    end
+  end
 end
