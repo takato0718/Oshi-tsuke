@@ -12,13 +12,15 @@
     <div class="card shadow-sm mb-4">
       <div class="card-body p-4">
         <h2 class="card-title h4 mb-4">
-          <p>今日の推し紹介</p>
+          <i class="bi bi-stars"></i> 今日の推し紹介
         </h2>
-        <p>
+        <p class="card-text mb-4">
           毎日1回、ランダムに選ばれた推しが紹介されます。<br>
           気になる推しが見つかったら、その人の投稿を見てみましょう！
         </p>
-          <p>今日の推しを見る</p>
+        <%= link_to daily_recommendations_path, class: "btn btn-primary btn-lg w-100" do %>
+          <i class="bi bi-arrow-right-circle"></i> 今日の推しを見る
+        <% end %>
       </div>
     </div>
 
