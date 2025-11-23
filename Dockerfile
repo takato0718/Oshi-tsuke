@@ -2,28 +2,44 @@ FROM ruby:3.1.4
 
 # 必要なパッケージをインストール
 RUN apt-get update -qq && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    postgresql-client \
     nodejs \
     npm \
-    default-mysql-client \
+    imagemagick \
+    libvips42 \
+    git \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Yarnをインストール
+# Yarnをインストール（jsbundling-railsで必要）
 RUN npm install -g yarn
 
 # 作業ディレクトリを設定
 WORKDIR /app
 
-# アプリケーションのソースをコピー
-COPY . .
+# GemfileとGemfile.lockをコピー
+COPY Gemfile Gemfile.lock* ./
 
-# Gemをインストール
+# bundlerをインストール
+RUN gem install bundler -v 2.4.22
+
+# 依存gemをインストール
 RUN bundle install
 
-# Node.jsの依存関係をインストール（package.jsonがある場合）
-RUN if [ -f "package.json" ]; then yarn install; fi
+# エントリーポイントスクリプトをコピー
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# アプリケーションのコードをコピー
+COPY . .
 
 # ポートを公開
 EXPOSE 3000
 
-# サーバー起動
+# エントリーポイントを設定
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+# デフォルトコマンド（開発環境用）
 CMD ["rails", "server", "-b", "0.0.0.0"]

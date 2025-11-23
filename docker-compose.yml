@@ -14,7 +14,7 @@ services:
     environment:
       - RAILS_ENV=development
       - DATABASE_HOST=db
-      - DATABASE_USERNAME=root
+      - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=password
       - DATABASE_NAME=oshi_tsuke_development
       - REDIS_URL=redis://redis:6379/1
@@ -35,21 +35,20 @@ services:
     stdin_open: true
     tty: true
 
-  # MySQL データベース
+  # PostgreSQL データベース
   db:
-    image: mysql:8.0
+    image: postgres:15-alpine
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=oshi_tsuke_development
-      - MYSQL_USER=oshi_tsuke
-      - MYSQL_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=osituke_development
     ports:
-      - "3307:3306"
+      - "5434:5432"
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
