@@ -11,7 +11,10 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2025_11_19_081358) do
-  create_table "posts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "posts", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "投稿者のユーザーID"
     t.bigint "community_id", comment: "投稿先コミュニティのID（MVPの段階ではNULL）"
     t.string "title", null: false, comment: "投稿のタイトル"
@@ -26,7 +29,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_19_081358) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
-  create_table "recommendations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "recommendations", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "レコメンド対象のユーザーID"
     t.bigint "post_id", null: false, comment: "レコメンドする投稿のID"
     t.boolean "is_skipped", default: false, null: false, comment: "ユーザーがレコメンドをスキップしたかの判定"
@@ -41,7 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_19_081358) do
     t.index ["user_id"], name: "index_recommendations_on_user_id"
   end
 
-  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "name", null: false, comment: "ユーザーの表示名"
     t.string "email", null: false, comment: "ログイン認証用のメールアドレス"
     t.string "crypted_password", null: false, comment: "ハッシュ化されたパスワード"

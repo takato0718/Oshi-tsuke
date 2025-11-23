@@ -163,8 +163,6 @@ GEM
     multi_xml (0.7.1)
       bigdecimal (~> 3.1)
     mutex_m (0.3.0)
-    mysql2 (0.5.7)
-      bigdecimal
     net-http (0.7.0)
       uri
     net-imap (0.5.12)
@@ -193,6 +191,7 @@ GEM
       rack (>= 1.2, < 4)
       snaky_hash (~> 2.0, >= 2.0.3)
       version_gem (~> 1.1, >= 1.1.9)
+    pg (1.6.2-aarch64-linux)
     pp (0.6.3)
       prettyprint
     prettyprint (0.2.0)
@@ -304,7 +303,7 @@ DEPENDENCIES
   jbuilder
   jsbundling-rails
   kaminari (~> 1.2)
-  mysql2 (~> 0.5)
+  pg (~> 1.5)
   puma (>= 5.0)
   rails (~> 7.0.10)
   rails-i18n

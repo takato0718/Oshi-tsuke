@@ -5,37 +5,35 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
-require 'faker'
 
-# シンプルなサンプルタイトル
-sample_titles = [
-  "今日の一曲",
-  "おすすめの楽曲",
-  "最近聴いている音楽",
-  "お気に入りの曲",
-  "リピートしている楽曲"
-]
-
-# シンプルなサンプル投稿内容
-sample_descriptions = [
-  "この楽曲がとても気に入っています。",
-  "最近よく聴いている一曲です。",
-  "友人に教えてもらった素敵な楽曲です。",
-  "作業用BGMとして愛用しています。",
-  "心に響く素晴らしい楽曲だと思います。"
-]
+require "faker"
+require "securerandom"
+# Sorcery用 初期ユーザー
+if defined?(User)
+  unless User.exists?(email: "demo@example.com")
+    User.create!(
+      name: "Demo User",
+      email: "demo@example.com",
+      password: "password",
+      password_confirmation: "password"
+    )
+    puts "Seed: Demo user created (demo@example.com / password)"
+  else
+    puts "Seed: Demo user already exists"
+  end
+end
 
 # サンプル投稿データ
 if defined?(Post) && defined?(User)
   users = User.all.to_a
   if users.empty?
     users << User.create!(
-      name: "テストユーザー",
-      email: "test@example.com",
+      name: "Sample Author",
+      email: "author@example.com",
       password: "password",
       password_confirmation: "password"
     )
-    puts "Seed: テストユーザーを作成しました"
+    puts "Seed: Sample author created (author@example.com / password)"
   end
 
   target_count = 50
@@ -45,17 +43,16 @@ if defined?(Post) && defined?(User)
   if posts_to_create.positive?
     posts_to_create.times do |i|
       author = users.sample
-      
       Post.create!(
         user: author,
-        title: "#{sample_titles.sample} ##{current_count + i + 1}",
-        description: sample_descriptions.sample,
-        image: "https://picsum.photos/seed/music#{i}/800/600",
+        title: "#{Faker::Music::RockBand.name}の推し ##{current_count + i + 1}",
+        description: Faker::Lorem.paragraphs(number: 3).join("\n\n"),
+        image: "https://picsum.photos/seed/#{SecureRandom.hex(4)}/800/600.jpg",
         youtube_url: "https://www.youtube.com/watch?v=#{SecureRandom.alphanumeric(11)}"
       )
     end
-    puts "Seed: #{posts_to_create}件のシンプルな投稿を作成しました"
+    puts "Seed: #{posts_to_create}件のサンプル投稿を作成しました"
   else
-    puts "Seed: 投稿データは既に#{current_count}件あります"
+    puts "Seed: 投稿データは既に#{current_count}件あります（追加作成なし）"
   end
 end
