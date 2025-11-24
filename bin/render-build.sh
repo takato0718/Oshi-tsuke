@@ -1,16 +1,22 @@
 #!/usr/bin/env bash
 set -o errexit
 
-echo "==> Installing dependencies..."
+echo "==> Installing Ruby dependencies..."
 bundle install
 
-echo "==> Precompiling assets..."
+echo "==> Installing Node.js dependencies..."
+yarn install
+
+echo "==> Building JavaScript with esbuild..."
+yarn build
+
+echo "==> Precompiling Rails assets..."
 bundle exec rails assets:precompile
 
-echo "==> Cleaning assets..."
+echo "==> Cleaning old assets..."
 bundle exec rails assets:clean
 
-echo "==> Running migrations..."
+echo "==> Running database migrations..."
 bundle exec rails db:migrate
 
 echo "==> Build completed!"
