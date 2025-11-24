@@ -1,4 +1,11 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "@hotwired/turbo-rails"
-import "controllers"
+import "./controllers"
 import "./validation"
+
+// Stimulusアプリケーション開始
+import { Application } from "@hotwired/stimulus"
+const application = Application.start()
+
+// デバッグ用ログ
+console.log("Oshi-tsuke JavaScript loaded! 🚀")
+console.log("Turbo and Stimulus ready!")
