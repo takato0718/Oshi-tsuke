@@ -42,7 +42,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=osituke_development
+      - POSTGRES_DB=oshi_tsuke_development
     ports:
       - "5434:5432"
     volumes:
