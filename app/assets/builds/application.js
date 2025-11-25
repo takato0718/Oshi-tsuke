@@ -6990,4 +6990,3 @@ document.addEventListener("DOMContentLoaded", function() {
 var application2 = Application.start();
 console.log("Oshi-tsuke JavaScript loaded! \u{1F680}");
 console.log("Turbo and Stimulus ready!");
-//# sourceMappingURL=/assets/application.js.map
