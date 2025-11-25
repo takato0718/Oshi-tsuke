@@ -7,7 +7,7 @@ ruby "3.1.4"
 gem "rails", "~> 7.0.10"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
-gem "sprockets-rails"
+gem "propshaft"
 
 # Use PostgreSQL as the database for Active Record
 gem "pg", "~> 1.5"
@@ -57,5 +57,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
 gem "dartsass-rails"
-gem "sassc"

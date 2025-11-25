@@ -22,5 +22,6 @@ module App
     # デフォルトのロケールを日本語に設定
     config.i18n.default_locale = :ja
     config.time_zone = 'Tokyo'
+
   end
 end
