@@ -68,7 +68,6 @@ Figma：https://www.figma.com/design/l5J6lIsRy9N0SAMxuYkdaC/%E5%8D%92%E5%88%B6%E
 - 基本的なユーザープロフィール機能
 
 ### 本リリースまでに作っていたいもの
-- YouTube動画埋め込み機能
 - 推しへの反応機能（いいね、コメント）
 - 推し発見履歴機能（過去に押し付けられた推しの記録）
 - 同じ推し同士のコミュニティ機能（専用掲示板）
@@ -79,9 +78,8 @@ Figma：https://www.figma.com/design/l5J6lIsRy9N0SAMxuYkdaC/%E5%8D%92%E5%88%B6%E
 
 ### 使用する技術スタック
 - Ruby on Rails
-- MySQL
+- PostgreSQL
 - HTML/CSS/JavaScript
 - Bootstrap レスポンシブ対応
 - Render
 - Active Storage 画像アップロード
-- YouTube Data API 動画取得・埋め込み

@@ -4,7 +4,7 @@ class RecommendationsController < ApplicationController
   def daily
     service = RecommendationService.new(current_user)
     @recommendation = service.generate_daily_recommendation
-  
+    
     if @recommendation.nil?
       redirect_to posts_path, notice: '今日の推し紹介はありません。他の投稿を見てみましょう！'
       return
