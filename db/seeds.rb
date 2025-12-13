@@ -8,6 +8,30 @@
 
 require "faker"
 require "securerandom"
+
+# カテゴリのシードデータ
+if defined?(Category)
+  categories_data = [
+    { name: "アニメ・漫画", description: "アニメや漫画のキャラクター" },
+    { name: "ゲーム", description: "ゲームキャラクターやゲーム関連" },
+    { name: "音楽", description: "アーティストやバンド" },
+    { name: "アイドル", description: "アイドルグループや個人" },
+    { name: "VTuber", description: "バーチャルYouTuber" },
+    { name: "声優", description: "声優" },
+    { name: "俳優・女優", description: "俳優や女優" },
+    { name: "スポーツ", description: "スポーツ選手" },
+    { name: "YouTuber", description: "YouTuberや配信者" },
+    { name: "その他", description: "その他の推し" }
+  ]
+
+  categories_data.each do |cat_data|
+    Category.find_or_create_by!(name: cat_data[:name]) do |category|
+      category.description = cat_data[:description]
+    end
+  end
+  puts "Seed: カテゴリデータを作成しました"
+end
+
 # Sorcery用 初期ユーザー
 if defined?(User)
   unless User.exists?(email: "demo@example.com")

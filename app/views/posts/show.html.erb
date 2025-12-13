@@ -18,6 +18,17 @@
         <% end %>
         <div class="card-body">
           <h1 class="card-title h2 mb-3"><%= @post.title %></h1>
+
+          <% if @post.categories.any? %> <!--カテゴリー表示-->
+            <div class="mb-3">
+              <% @post.categories.each do |category| %>
+                <span class="badge bg-primary me-1 mb-1">
+                  <i class="bi bi-tag"></i> <%= category.name %>
+                </span>
+              <% end %>
+            </div>
+          <% end %>
+
           <div class="d-flex align-items-center mb-4 text-muted">
             <i class="bi bi-person-circle me-2"></i>
             <span class="me-3"><%= @post.user.name %></span>

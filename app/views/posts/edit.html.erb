@@ -48,6 +48,23 @@
             </div>
           </div>
 
+          <div class="mb-3">
+            <%= f.label :category_ids, "カテゴリ", class: "form-label" %>
+            <div class="form-text mb-2">
+              該当するカテゴリを選択してください（複数選択可能）
+            </div>
+            <div class="row g-2">
+              <% @categories.each do |category| %>
+                <div class="col-md-6 col-lg-4">
+                  <div class="form-check">
+                    <%= f.check_box :category_ids, { multiple: true, checked: @post.category_ids.include?(category.id) }, category.id, nil %>
+                    <%= f.label "category_ids_#{category.id}", category.name, class: "form-check-label" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <%= link_to "キャンセル", post_path(@post), class: "btn btn-outline-secondary" %>
             <%= f.submit "更新する", class: "btn btn-primary" %>

@@ -13,10 +13,12 @@ class PostsController < ApplicationController
 
   def new
     @post = current_user.posts.build
+    @categories = Category.ordered
   end
 
   def create
     @post = current_user.posts.build(post_params)
+    @categories = Category.ordered
       
     if @post.save
       redirect_to @post, notice: '推しを投稿しました！'
@@ -27,9 +29,11 @@ class PostsController < ApplicationController
   end
 
   def edit
+    @categories = Category.ordered
   end
   
   def update
+    @categories = Category.ordered
     if @post.update(post_params)
       redirect_to @post, notice: '投稿を更新しました！'
     else
@@ -56,7 +60,7 @@ class PostsController < ApplicationController
   end
   
   def post_params
-    params.require(:post).permit(:title, :description, :image, :youtube_url)
+    params.require(:post).permit(:title, :description, :image, :youtube_url, category_ids: [])
   end
 end
   
