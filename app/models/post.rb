@@ -12,6 +12,16 @@ class Post < ApplicationRecord
   validate :image_url_format
 
   scope :recent, -> { order(created_at: :desc) }
+
+  # Ransack で検索可能な属性を定義
+  def self.ransackable_attributes(auth_object = nil)
+    ["community_id", "created_at", "description", "id", "image", "title", "updated_at", "user_id", "youtube_url"]
+  end
+
+  # Ransack で検索可能な関連を定義（必要に応じて）
+  def self.ransackable_associations(auth_object = nil)
+    ["user", "categories", "post_categories"]
+  end
     
   def owned_by?(user)
     self.user == user
