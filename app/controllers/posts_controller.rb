@@ -4,7 +4,9 @@ class PostsController < ApplicationController
   before_action :check_owner, only: [:edit, :update, :destroy]
 
   def index
-    @posts = Post.includes(:user).recent.page(params[:page]).per(20)
+    @q = Post.includes(:user, :categories).ransack(params[:q])
+    @posts = @q.result(distinct: true).recent.page(params[:page]).per(20)
+    @categories = Category.ordered
   end
   
   def show
