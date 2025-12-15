@@ -9,6 +9,39 @@
   <% end %>
 </div>
 
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <%= search_form_for @q, url: posts_path, method: :get, html: { class: "row gy-3 gx-3 align-items-end" } do |f| %>
+      <div class="col-lg-4">
+        <%= f.label :title_or_description_cont, "キーワード", class: "form-label" %>
+        <%= f.search_field :title_or_description_cont, class: "form-control", placeholder: "タイトル・本文で検索" %>
+      </div>
+
+      <div class="col-lg-6">
+        <label class="form-label">カテゴリ</label>
+        <div class="row g-2">
+          <% @categories.each do |category| %>
+            <div class="col-6 col-md-4">
+              <div class="form-check">
+                <%= f.check_box :categories_id_in,
+                                { multiple: true, checked: Array(@q.categories_id_in).map(&:to_i).include?(category.id) },
+                                category.id,
+                                nil %>
+                <%= f.label "q_categories_id_in_#{category.id}", category.name, class: "form-check-label" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-lg-2 d-grid gap-2">
+        <%= f.submit "検索", class: "btn btn-primary" %>
+        <%= link_to "リセット", posts_path, class: "btn btn-outline-secondary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
 <% if @posts.blank? %>
   <div class="card shadow-sm">
     <div class="card-body text-center py-5">
@@ -36,6 +69,15 @@
           <% end %>
           <div class="card-body d-flex flex-column">
             <h5 class="card-title"><%= post.title %></h5>
+            <% if post.categories.any? %>
+              <div class="mb-2">
+                <% post.categories.each do |category| %>
+                  <span class="badge bg-primary me-1 mb-1">
+                    <i class="bi bi-tag"></i> <%= category.name %>
+                  </span>
+                <% end %>
+              </div>
+            <% end %>
             <p class="card-text text-muted<%= ' flex-grow-1' if post.image.present? %>">
               <%= truncate(post.description, length: 100) %>
             </p>
