@@ -4,9 +4,29 @@ class PostsController < ApplicationController
   before_action :check_owner, only: [:edit, :update, :destroy]
 
   def index
-    @q = Post.includes(:user, :categories).ransack(params[:q])
-    @posts = @q.result(distinct: true).recent.page(params[:page]).per(20)
     @categories = Category.ordered
+    
+    # Ransack検索の初期化
+    @q = Post.includes(:user, :categories).ransack(params[:q])
+    @posts = @q.result(distinct: true)
+    
+    # カテゴリー絞り込み（/posts?category[]=1&category[]=2 の形式で複数選択可能）
+    category_ids = []
+    
+    # URLパラメータのcategory（カテゴリーナビゲーションから、配列形式）
+    if params[:category].present?
+      category_ids = Array(params[:category]).map(&:to_i).reject(&:zero?)
+    end
+    
+    # カテゴリーで絞り込み
+    if category_ids.any?
+      @posts = @posts.joins(:categories).where(categories: { id: category_ids }).distinct
+      @selected_category_ids = category_ids
+    else
+      @selected_category_ids = []
+    end
+    
+    @posts = @posts.recent.page(params[:page]).per(20)
   end
   
   def show
