@@ -9,35 +9,46 @@
   <% end %>
 </div>
 
+<!-- カテゴリーナビゲーション（複数選択可能） -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+      <span class="text-muted me-2">
+        <i class="bi bi-funnel"></i> カテゴリー:
+      </span>
+      <%= link_to posts_path(current_search_params),
+                  class: category_all_button_class do %>
+        <i class="bi bi-grid"></i> 全て
+      <% end %>
+      <% @categories.each do |category| %>
+        <%= link_to posts_path(category_params_for(category)),
+                    class: category_button_class(category) do %>
+          <i class="bi bi-tag"></i> <%= category.name %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
 <div class="card shadow-sm mb-4">
   <div class="card-body">
     <%= search_form_for @q, url: posts_path, method: :get, html: { class: "row gy-3 gx-3 align-items-end" } do |f| %>
-      <div class="col-lg-4">
+      <div class="col-lg-10">
         <%= f.label :title_or_description_cont, "キーワード", class: "form-label" %>
         <%= f.search_field :title_or_description_cont, class: "form-control", placeholder: "タイトル・本文で検索" %>
-      </div>
-
-      <div class="col-lg-6">
-        <label class="form-label">カテゴリ</label>
-        <div class="row g-2">
-          <% @categories.each do |category| %>
-            <div class="col-6 col-md-4">
-              <div class="form-check">
-                <%= f.check_box :categories_id_in,
-                                { multiple: true, checked: Array(@q.categories_id_in).map(&:to_i).include?(category.id) },
-                                category.id,
-                                nil %>
-                <%= f.label "q_categories_id_in_#{category.id}", category.name, class: "form-check-label" %>
-              </div>
-            </div>
-          <% end %>
-        </div>
       </div>
 
       <div class="col-lg-2 d-grid gap-2">
         <%= f.submit "検索", class: "btn btn-primary" %>
         <%= link_to "リセット", posts_path, class: "btn btn-outline-secondary" %>
       </div>
+      
+      <%# カテゴリーナビゲーションで選択したカテゴリーを検索フォームに反映（hidden field） %>
+      <% Array(params[:category]).each do |category_id| %>
+        <% if category_id.present? %>
+          <%= hidden_field_tag "category[]", category_id %>
+        <% end %>
+      <% end %>
     <% end %>
   </div>
 </div>

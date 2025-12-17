@@ -18,7 +18,7 @@ class Post < ApplicationRecord
     ["community_id", "created_at", "description", "id", "image", "title", "updated_at", "user_id", "youtube_url"]
   end
 
-  # Ransack で検索可能な関連を定義（必要に応じて）
+  # Ransack で検索可能な関連を定義
   def self.ransackable_associations(auth_object = nil)
     ["user", "categories", "post_categories"]
   end
