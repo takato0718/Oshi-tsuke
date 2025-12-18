@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_12_13_074742) do
+ActiveRecord::Schema[7.0].define(version: 2025_12_17_134607) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -48,6 +48,21 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_13_074742) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "reactions", force: :cascade do |t|
+    t.bigint "user_id", null: false, comment: "リアクションしたユーザーID"
+    t.bigint "post_id", null: false, comment: "リアクション対象の投稿ID"
+    t.integer "reaction_type", null: false, comment: "リアクションの種類（0: いいね, 1: コメント）"
+    t.text "content", comment: "コメント内容（reaction_typeがコメントの場合のみ使用）"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id", "reaction_type"], name: "idx_reactions_post_type"
+    t.index ["post_id"], name: "idx_reactions_post"
+    t.index ["post_id"], name: "index_reactions_on_post_id"
+    t.index ["user_id", "post_id", "reaction_type"], name: "idx_reactions_user_post_type_unique", unique: true
+    t.index ["user_id"], name: "idx_reactions_user"
+    t.index ["user_id"], name: "index_reactions_on_user_id"
+  end
+
   create_table "recommendations", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "レコメンド対象のユーザーID"
     t.bigint "post_id", null: false, comment: "レコメンドする投稿のID"
@@ -83,6 +98,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_13_074742) do
   add_foreign_key "post_categories", "categories"
   add_foreign_key "post_categories", "posts"
   add_foreign_key "posts", "users"
+  add_foreign_key "reactions", "posts"
+  add_foreign_key "reactions", "users"
   add_foreign_key "recommendations", "posts"
   add_foreign_key "recommendations", "users"
 end
