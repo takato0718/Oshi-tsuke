@@ -5,6 +5,9 @@ class Post < ApplicationRecord
   has_many :recommendations, dependent: :destroy
   has_many :post_categories, dependent: :destroy
   has_many :categories, through: :post_categories
+  has_many :reactions, dependent: :destroy
+  has_many :likes, -> { where(reaction_type: :like) }, class_name: "Reaction"
+  has_many :comments, -> { where(reaction_type: :comment) }, class_name: "Reaction"
 
   validates :title, presence: true, length: { maximum: 255 }
   validates :description, presence: true
