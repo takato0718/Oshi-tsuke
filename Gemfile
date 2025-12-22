@@ -61,3 +61,5 @@ group :test do
 end
 
 gem "dartsass-rails"
+
+gem "nokogiri", ">= 1.12.0"

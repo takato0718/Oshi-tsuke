@@ -13,7 +13,13 @@ Rails.application.routes.draw do
   get 'profile', to: 'users#me', as: :profile
 
   # 投稿
-  resources :posts
+  resources :posts do
+    resources :reactions, only: [:create] do
+      collection do
+        delete :destroy
+      end
+    end
+  end
 
   # 推し紹介
   resources :recommendations, only: [:show] do
