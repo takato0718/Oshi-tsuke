@@ -1,0 +1,36 @@
+<% if logged_in? %>
+  <% liked = post.liked_by?(current_user) %>
+  <div class="like-button-container" data-post-id="<%= post.id %>">
+    <% if liked %>
+      <%= button_to post_reactions_path(post), 
+                    method: :delete,
+                    class: "btn btn-danger like-btn",
+                    data: { 
+                      turbo: false,
+                      post_id: post.id,
+                      liked: true
+                    } do %>
+        <i class="bi bi-heart-fill"></i> 
+        <span class="likes-count"><%= post.likes_count %></span>
+      <% end %>
+    <% else %>
+      <%= button_to post_reactions_path(post),
+                    method: :post,
+                    class: "btn btn-outline-danger like-btn",
+                    data: { 
+                      turbo: false,
+                      post_id: post.id,
+                      liked: false
+                    } do %>
+        <i class="bi bi-heart"></i> 
+        <span class="likes-count"><%= post.likes_count %></span>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <%= link_to new_session_path, class: "btn btn-outline-danger" do %>
+    <i class="bi bi-heart"></i> 
+    <span class="likes-count"><%= post.likes_count %></span>
+  <% end %>
+<% end %>
+
