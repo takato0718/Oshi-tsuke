@@ -6986,6 +6986,86 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 
+// app/javascript/like_button.js
+(function() {
+  "use strict";
+  function initializeLikeButtons() {
+    const likeButtons = document.querySelectorAll(".like-btn");
+    likeButtons.forEach((button) => {
+      if (button.dataset.listenerAttached === "true") {
+        return;
+      }
+      button.dataset.listenerAttached = "true";
+      const form = button.closest("form");
+      if (!form)
+        return;
+      form.addEventListener("submit", async function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const formData = new FormData(form);
+        const method = formData.get("_method") || form.method.toUpperCase();
+        const url = form.action;
+        const container = form.closest(".like-button-container");
+        const postId = container.dataset.postId;
+        button.disabled = true;
+        try {
+          const response = await fetch(url, {
+            method,
+            headers: {
+              "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "",
+              "Accept": "application/json",
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams(formData)
+          });
+          const data = await response.json();
+          if (data.status === "success") {
+            updateLikeButton(container, data.liked, data.likes_count, postId);
+          } else {
+            alert("\u30A8\u30E9\u30FC: " + data.message);
+            button.disabled = false;
+          }
+        } catch (error2) {
+          console.error("\u3044\u3044\u306D\u51E6\u7406\u3067\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3057\u307E\u3057\u305F", error2);
+          alert("\u3044\u3044\u306D\u51E6\u7406\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002\u30DA\u30FC\u30B8\u3092\u518D\u8AAD\u307F\u8FBC\u307F\u3057\u3066\u304F\u3060\u3055\u3044\u3002");
+          button.disabled = false;
+        }
+      });
+    });
+  }
+  function updateLikeButton(container, liked, likesCount, postId) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "";
+    let formHTML;
+    if (liked) {
+      formHTML = `
+        <form action="/posts/${postId}/reactions" method="post" data-turbo="false">
+          <input type="hidden" name="_method" value="delete">
+          <input type="hidden" name="authenticity_token" value="${csrfToken}">
+          <button type="submit" class="btn btn-danger like-btn" data-post-id="${postId}" data-liked="true">
+            <i class="bi bi-heart-fill"></i> 
+            <span class="likes-count">${likesCount}</span>
+          </button>
+        </form>
+        `;
+    } else {
+      formHTML = `
+        <form action="/posts/${postId}/reactions" method="post" data-turbo="false">
+          <input type="hidden" name="authenticity_token" value="${csrfToken}">
+          <button type="submit" class="btn btn-outline-danger like-btn" data-post-id="${postId}" data-liked="false">
+            <i class="bi bi-heart"></i> 
+            <span class="likes-count">${likesCount}</span>
+          </button>
+        </form>
+      `;
+    }
+    container.innerHTML = formHTML;
+    initializeLikeButtons();
+  }
+  document.addEventListener("DOMContentLoaded", initializeLikeButtons);
+  document.addEventListener("turbo:load", initializeLikeButtons);
+  document.addEventListener("turbo:frame-load", initializeLikeButtons);
+})();
+
 // app/javascript/application.js
 var application2 = Application.start();
 console.log("Oshi-tsuke JavaScript loaded! \u{1F680}");

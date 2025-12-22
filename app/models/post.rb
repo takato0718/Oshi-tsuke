@@ -30,6 +30,17 @@ class Post < ApplicationRecord
     self.user == user
   end
 
+  # 指定されたユーザーがこの投稿にいいねしているかどうか
+  def liked_by?(user)
+    return false unless user
+    likes.exists?(user: user)
+  end
+
+  # いいね数を取得
+  def likes_count
+    likes.count
+  end
+
   private
 
   def image_url_format
