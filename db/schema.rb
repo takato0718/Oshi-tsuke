@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_12_17_134607) do
+ActiveRecord::Schema[7.0].define(version: 2025_12_22_125816) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -58,7 +58,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_17_134607) do
     t.index ["post_id", "reaction_type"], name: "idx_reactions_post_type"
     t.index ["post_id"], name: "idx_reactions_post"
     t.index ["post_id"], name: "index_reactions_on_post_id"
-    t.index ["user_id", "post_id", "reaction_type"], name: "idx_reactions_user_post_type_unique", unique: true
+    t.index ["user_id", "post_id"], name: "idx_reactions_user_post_like_unique", unique: true, where: "(reaction_type = 0)"
     t.index ["user_id"], name: "idx_reactions_user"
     t.index ["user_id"], name: "index_reactions_on_user_id"
   end

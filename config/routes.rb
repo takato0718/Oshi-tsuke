@@ -19,6 +19,7 @@ Rails.application.routes.draw do
         delete :destroy
       end
     end
+    resources :comments, only: [:create, :destroy], controller: 'comments'
   end
 
   # 推し紹介

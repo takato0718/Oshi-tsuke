@@ -77,35 +77,67 @@
         </div>
       </div>
 
-      <%# コメント機能は後で実装予定 %>
-      <% if false %>
       <!-- コメントセクション -->
       <div class="card shadow-sm">
         <div class="card-header">
           <h3 class="h5 mb-0">
             <i class="bi bi-chat-dots"></i> コメント
+            <span class="badge bg-secondary ms-2"><%= @post.comments.count %></span>
           </h3>
         </div>
         <div class="card-body">
           <% if logged_in? %>
-            <form class="mb-4">
+            <%= form_with url: post_comments_path(@post), local: true, class: "mb-4" do |f| %>
+              <% if flash[:alert] %>
+                <div class="alert alert-danger">
+                  <%= flash[:alert] %>
+                </div>
+              <% end %>
               <div class="mb-3">
-                <textarea class="form-control" rows="3" placeholder="コメントを入力..."></textarea>
+                <%= f.text_area :content, name: "reaction[content]", class: "form-control", rows: 3, placeholder: "コメントを入力...", required: true %>
               </div>
-              <button type="submit" class="btn btn-primary">コメントを投稿</button>
-            </form>
+              <%= f.submit "コメントを投稿", class: "btn btn-primary" %>
+            <% end %>
           <% else %>
-            <div class="alert alert-info">
-              <%= link_to "ログイン", new_session_path %>してコメントを投稿しましょう
+            <div class="alert alert-info mb-4">
+              <%= link_to "ログイン", new_session_path, class: "alert-link" %>してコメントを投稿しましょう
             </div>
           <% end %>
 
           <div class="comments">
-            <p class="text-muted text-center py-4">まだコメントはありません</p>
+            <% if @post.comments.any? %>
+              <% @post.comments.order(created_at: :asc).each do |comment| %>
+                <div class="comment-item border-bottom pb-3 mb-3">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                      <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-person-circle me-2 text-primary"></i>
+                        <strong class="me-2"><%= comment.user.name %></strong>
+                        <small class="text-muted">
+                          <i class="bi bi-clock"></i> <%= comment.created_at.strftime("%Y年%m月%d日 %H:%M") %>
+                        </small>
+                      </div>
+                      <p class="mb-0"><%= simple_format(comment.content) %></p>
+                    </div>
+                    <% if logged_in? && comment.user == current_user %>
+                      <div class="ms-3">
+                        <%= button_to post_comment_path(@post, comment), 
+                                      method: :delete, 
+                                      data: { turbo_confirm: "本当に削除しますか？" }, 
+                                      class: "btn btn-outline-danger btn-sm" do %>
+                          <i class="bi bi-trash"></i>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <p class="text-muted text-center py-4 mb-0">まだコメントはありません</p>
+            <% end %>
           </div>
         </div>
       </div>
-      <% end %>
     </div>
   </div>
 <% end %>
