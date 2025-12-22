@@ -1,6 +1,7 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 import "./validation"
+import "./like_button"
 
 // Stimulusアプリケーション開始
 import { Application } from "@hotwired/stimulus"
