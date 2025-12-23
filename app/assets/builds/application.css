@@ -11862,3 +11862,22 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.user-link {
+  transition: all 0.2s ease-in-out;
+}
+.user-link:hover {
+  color: var(--bs-primary) !important;
+  transform: translateY(-1px);
+}
+.user-link:hover i {
+  transform: scale(1.1);
+}
+.user-link:hover strong {
+  color: var(--bs-primary) !important;
+}
+.user-link i {
+  transition: transform 0.2s ease-in-out;
+}
+.user-link strong {
+  transition: color 0.2s ease-in-out;
+}

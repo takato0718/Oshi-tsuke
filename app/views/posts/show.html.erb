@@ -33,8 +33,10 @@
           </div>
 
           <div class="d-flex align-items-center mb-4 text-muted">
-            <i class="bi bi-person-circle me-2"></i>
-            <span class="me-3"><%= @post.user.name %></span>
+            <%= link_to user_path(@post.user), class: "user-link d-flex align-items-center text-decoration-none text-muted me-3" do %>
+              <%= user_avatar_tag(@post.user, size: 32, class: "me-2") %>
+              <span><%= @post.user.name %></span>
+            <% end %>
             <i class="bi bi-clock me-2"></i>
             <span><%= @post.created_at.strftime("%Y年%m月%d日 %H:%M") %></span>
           </div>
@@ -111,8 +113,10 @@
                   <div class="d-flex justify-content-between align-items-start">
                     <div class="flex-grow-1">
                       <div class="d-flex align-items-center mb-2">
-                        <i class="bi bi-person-circle me-2 text-primary"></i>
-                        <strong class="me-2"><%= comment.user.name %></strong>
+                        <%= link_to user_path(comment.user), class: "user-link d-flex align-items-center text-decoration-none text-muted me-2" do %>
+                          <%= user_avatar_tag(comment.user, size: 24, class: "me-2") %>
+                          <strong class="text-dark"><%= comment.user.name %></strong>
+                        <% end %>
                         <small class="text-muted">
                           <i class="bi bi-clock"></i> <%= comment.created_at.strftime("%Y年%m月%d日 %H:%M") %>
                         </small>
