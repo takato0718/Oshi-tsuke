@@ -3,3 +3,30 @@
  */
 
 @import "../../../node_modules/bootstrap/scss/bootstrap";
+
+// ユーザーリンクのホバー効果
+.user-link {
+    transition: all 0.2s ease-in-out;
+    
+    &:hover {
+      color: var(--bs-primary) !important;
+      transform: translateY(-1px);
+      
+      i {
+        transform: scale(1.1);
+      }
+      
+      strong {
+        color: var(--bs-primary) !important;
+      }
+    }
+    
+    i {
+      transition: transform 0.2s ease-in-out;
+    }
+    
+    strong {
+      transition: color 0.2s ease-in-out;
+    }
+  }
+  
