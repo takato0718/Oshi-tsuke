@@ -1,4 +1,31 @@
 module PostsHelper
+  # ユーザーのアバター画像を表示するヘルパー
+  def user_avatar_tag(user, size: 32, **html_options)
+    default_class = "rounded-circle"
+    default_style = "width: #{size}px; height: #{size}px; object-fit: cover;"
+    
+    custom_class = html_options.delete(:class) || ""
+    custom_style = html_options.delete(:style) || ""
+    
+    merged_class = [default_class, custom_class].reject(&:blank?).join(" ")
+    merged_style = custom_style.present? ? custom_style : default_style
+    
+    if user.profile_image.present?
+      image_tag(user.profile_image, {
+        class: merged_class,
+        style: merged_style,
+        alt: user.name
+      }.merge(html_options))
+    else
+      content_tag(:div, {
+        class: "#{merged_class} bg-secondary d-flex align-items-center justify-content-center",
+        style: merged_style
+      }.merge(html_options)) do
+        content_tag(:i, "", class: "bi bi-person text-white", style: "font-size: #{size * 0.6}px;")
+      end
+    end
+  end
+
     # 投稿画像表示ヘルパー
   def post_image_tag(post, html_options: {}, placeholder_height: "200px")
     # 画像がある場合のみHTMLを返す、ない場合はnilを返す
