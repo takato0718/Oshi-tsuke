@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_12_28_070524) do
+ActiveRecord::Schema[7.0].define(version: 2025_12_28_073506) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -33,6 +33,21 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_28_070524) do
     t.index ["creator_id"], name: "index_communities_on_creator_id"
     t.index ["is_public"], name: "idx_communities_is_public"
     t.index ["name"], name: "idx_communities_name_unique", unique: true
+  end
+
+  create_table "community_memberships", force: :cascade do |t|
+    t.bigint "user_id", null: false, comment: "参加ユーザーID"
+    t.bigint "community_id", null: false, comment: "参加コミュニティID"
+    t.integer "role", default: 0, null: false, comment: "権限レベル (0: member, 1: moderator, 2: admin)"
+    t.datetime "joined_at", comment: "参加日時"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["community_id", "role"], name: "idx_community_memberships_community_role"
+    t.index ["community_id"], name: "idx_community_memberships_community"
+    t.index ["community_id"], name: "index_community_memberships_on_community_id"
+    t.index ["user_id", "community_id"], name: "idx_community_memberships_user_community_unique", unique: true
+    t.index ["user_id"], name: "idx_community_memberships_user"
+    t.index ["user_id"], name: "index_community_memberships_on_user_id"
   end
 
   create_table "post_categories", force: :cascade do |t|
@@ -111,6 +126,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_28_070524) do
   end
 
   add_foreign_key "communities", "users", column: "creator_id"
+  add_foreign_key "community_memberships", "communities"
+  add_foreign_key "community_memberships", "users"
   add_foreign_key "post_categories", "categories"
   add_foreign_key "post_categories", "posts"
   add_foreign_key "posts", "users"
