@@ -9,7 +9,11 @@ Rails.application.routes.draw do
   post "signup", to: "registrations#create", as: :registration
 
   # ユーザー
-  resources :users, only: [:show, :edit, :update]
+  resources :users, only: [:show, :edit, :update] do
+    member do
+      get :recommendations
+    end
+  end
   get 'profile', to: 'users#me', as: :profile
 
   # 投稿
@@ -26,7 +30,7 @@ Rails.application.routes.draw do
   resources :recommendations, only: [:show] do
     member do
       patch :skip
-      patch :like
+      patch :favorite
     end
     collection do
       get :daily

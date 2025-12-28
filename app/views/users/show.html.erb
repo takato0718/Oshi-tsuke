@@ -21,11 +21,16 @@
                 <i class="bi bi-envelope"></i> <%= @user.email %>
               </p>
             </div>
-            <% if logged_in? && current_user == @user %>
-              <%= link_to edit_user_path(@user), class: "btn btn-outline-primary" do %>
-                <i class="bi bi-pencil"></i> 編集
+            <div class="d-flex gap-2">
+              <% if logged_in? && current_user == @user %>
+                <%= link_to recommendations_user_path(@user), class: "btn btn-outline-info" do %>
+                  <i class="bi bi-clock-history"></i> 推し発見履歴
+                <% end %>
+                <%= link_to edit_user_path(@user), class: "btn btn-outline-primary" do %>
+                  <i class="bi bi-pencil"></i> 編集
+                <% end %>
               <% end %>
-            <% end %>
+            </div>
           </div>
         </div>
       </div>

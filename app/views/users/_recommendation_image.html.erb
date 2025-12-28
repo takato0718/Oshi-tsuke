@@ -1,0 +1,5 @@
+<% if (image_html = post_image_tag(recommendation.post, placeholder_height: "120px", html_options: { style: "max-width: 150px; max-height: 120px; object-fit: cover; border-radius: 8px;" })) %>
+  <%= link_to post_path(recommendation.post) do %>
+    <%= image_html %>
+  <% end %>
+<% end %>

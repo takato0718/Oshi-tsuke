@@ -1,9 +1,18 @@
 class UsersController < ApplicationController
   skip_before_action :require_login, only: [:show]
-  before_action :set_user, only: [:show]
+  before_action :set_user, only: [:show, :recommendations]
   before_action :set_current_user, only: [:edit, :update]
-  
+  before_action :check_recommendations_access, only: [:recommendations]
+
   def show
+  end
+
+  def recommendations
+    @recommendations = @user.recommendations
+                             .includes(:post)
+                             .order(created_at: :desc)
+                             .page(params[:page])
+                             .per(20)
   end
   
   def edit
@@ -32,6 +41,13 @@ class UsersController < ApplicationController
   
   def set_current_user
     @user = current_user
+  end
+
+  def check_recommendations_access
+    # 自分の履歴のみ閲覧可能
+    unless logged_in? && current_user == @user
+      redirect_to user_path(@user), alert: '権限がありません'
+    end
   end
   
   def user_params
