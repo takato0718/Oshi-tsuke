@@ -30,7 +30,7 @@ class RecommendationService
   def create_recommendation(post)
     @user.recommendations.create!(
       post: post,
-      is_skipped: false
+      status: :pending
     )
   end
 end
