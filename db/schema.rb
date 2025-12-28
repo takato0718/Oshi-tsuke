@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_12_22_125816) do
+ActiveRecord::Schema[7.0].define(version: 2025_12_23_073221) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -71,8 +71,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_22_125816) do
     t.datetime "skipped_at", comment: "ユーザーがレコメンドをスキップした日時"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", default: 0, null: false, comment: "推し付けの状態 (0: pending, 1: favorited, 2: skipped)"
     t.index ["post_id"], name: "idx_recommendations_post"
     t.index ["post_id"], name: "index_recommendations_on_post_id"
+    t.index ["status"], name: "idx_recommendations_status"
     t.index ["user_id", "created_at"], name: "idx_recommendations_user_date"
     t.index ["user_id", "is_skipped"], name: "idx_recommendations_user_skipped"
     t.index ["user_id"], name: "index_recommendations_on_user_id"
