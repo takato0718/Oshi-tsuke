@@ -1,0 +1,27 @@
+<div class="d-flex justify-content-between align-items-start mb-3">
+  <div class="flex-grow-1">
+    <div class="d-flex align-items-center mb-2">
+      <%= recommendation_status_badge(recommendation) %>
+      <small class="text-muted">
+        <i class="bi bi-clock"></i> <%= recommendation.created_at.strftime("%Y年%m月%d日 %H:%M") %>
+      </small>
+    </div>
+    <h5 class="card-title mb-2">
+      <%= link_to post_path(recommendation.post), class: "text-decoration-none" do %>
+        <%= recommendation.post.title %>
+      <% end %>
+    </h5>
+    <p class="card-text text-muted mb-3">
+      <%= truncate(recommendation.post.description, length: 150) %>
+    </p>
+    <div class="d-flex align-items-center mb-2">
+      <%= link_to user_path(recommendation.post.user), class: "user-link d-flex align-items-center text-decoration-none text-muted" do %>
+        <%= user_avatar_tag(recommendation.post.user, size: 24, class: "me-2") %>
+        <small><%= recommendation.post.user.name %></small>
+      <% end %>
+    </div>
+  </div>
+  <div class="ms-3">
+    <%= render 'users/recommendation_image', recommendation: recommendation %>
+  </div>
+</div>

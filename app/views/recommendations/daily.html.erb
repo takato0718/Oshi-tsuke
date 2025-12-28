@@ -21,7 +21,11 @@
         </div>
       </div>
     <% else %>
-      <div class="card shadow-lg border-0">
+      <div id="recommendation-card" class="card shadow-lg border-0" 
+           data-recommendation-id="<%= @recommendation.id %>" 
+           data-status="<%= @recommendation.status %>"
+           data-post-id="<%= @post.id %>"
+           data-user-id="<%= current_user.id %>">
         <div class="card-body p-4">
           <div class="text-center mb-4">
             <span class="badge bg-warning text-dark mb-3">
@@ -36,22 +40,63 @@
           <h2 class="card-title h3 text-center mb-3"><%= @post.title %></h2>
           
           <div class="text-center text-muted mb-4">
-            <i class="bi bi-person"></i> 投稿者: <%= @post.user.name %>
+            <%= link_to user_path(@post.user), class: "user-link d-flex align-items-center justify-content-center text-decoration-none text-muted" do %>
+              <%= user_avatar_tag(@post.user, size: 24, class: "me-2") %>
+              <span><%= @post.user.name %></span>
+            <% end %>
           </div>
 
           <div class="card-text mb-4">
             <p class="lead text-center"><%= simple_format(@post.description) %></p>
           </div>
 
-          <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
-            <%= button_to skip_recommendation_path(@recommendation), method: :patch,
-                          onclick: "return confirm('本当にスキップしますか？')",
-                          class: "btn btn-outline-secondary btn-sm" do %>
-              <i class="bi bi-skip-forward"></i> スキップ
-            <% end %>
-            <%= button_to like_recommendation_path(@recommendation), method: :patch, class: "btn btn-primary btn-lg" do %>
-              <i class="bi bi-heart-fill"></i> この推しに興味あり
-            <% end %>
+          <!-- 選択前の表示（pending） -->
+          <div id="selection-buttons" class="<%= 'd-none' unless @recommendation.pending? %>">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+              <%= button_to favorite_recommendation_path(@recommendation), 
+                            method: :patch, 
+                            class: "btn btn-primary btn-lg recommendation-action-btn",
+                            data: { 
+                              action: "favorite",
+                              turbo: false
+                            } do %>
+                <i class="bi bi-heart-fill"></i> お気に入り
+              <% end %>
+              <%= button_to skip_recommendation_path(@recommendation), 
+                            method: :patch,
+                            class: "btn btn-outline-secondary btn-sm recommendation-action-btn",
+                            data: { 
+                              action: "skip",
+                              turbo: false
+                            } do %>
+                <i class="bi bi-skip-forward"></i> スキップ
+              <% end %>
+            </div>
+          </div>
+
+          <!-- 選択後の表示（favorited/skipped） -->
+          <div id="result-message" class="<%= 'd-none' if @recommendation.pending? %>">
+            <div class="text-center mt-4">
+              <% if @recommendation.favorited? %>
+                <div class="alert alert-success">
+                  <i class="bi bi-heart-fill"></i> 
+                  <strong>✨ この推しをお気に入りに追加しました!</strong>
+                </div>
+              <% elsif @recommendation.skipped? %>
+                <div class="alert alert-secondary">
+                  <i class="bi bi-skip-forward"></i> 
+                  <strong>スキップしました</strong>
+                </div>
+              <% end %>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
+                <%= link_to post_path(@post), class: "btn btn-primary" do %>
+                  <i class="bi bi-arrow-right"></i> 投稿詳細を見る
+                <% end %>
+                <%= link_to recommendations_user_path(current_user), class: "btn btn-outline-info" do %>
+                  <i class="bi bi-clock-history"></i> 履歴を見る
+                <% end %>
+              </div>
+            </div>
           </div>
         </div>
       </div>
