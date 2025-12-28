@@ -15,4 +15,6 @@ class User < ApplicationRecord
   has_many :likes, -> { where(reaction_type: :like) }, class_name: "Reaction"
   has_many :comments, -> { where(reaction_type: :comment) }, class_name: "Reaction"
   has_many :created_communities, class_name: "Community", foreign_key: "creator_id", dependent: :destroy
+  has_many :community_memberships, dependent: :destroy
+  has_many :communities, through: :community_memberships
 end
