@@ -611,8 +611,7 @@ var init_src = __esm({
   Object.setPrototypeOf(HTMLElement, BuiltInHTMLElement);
 })();
 (function(prototype) {
-  if (typeof prototype.requestSubmit == "function")
-    return;
+  if (typeof prototype.requestSubmit == "function") return;
   prototype.requestSubmit = function(submitter) {
     if (submitter) {
       validateSubmitter(submitter, this);
@@ -670,14 +669,14 @@ var FrameLoadingStyle;
   FrameLoadingStyle2["eager"] = "eager";
   FrameLoadingStyle2["lazy"] = "lazy";
 })(FrameLoadingStyle || (FrameLoadingStyle = {}));
-var FrameElement = class extends HTMLElement {
+var FrameElement = class _FrameElement extends HTMLElement {
   static get observedAttributes() {
     return ["disabled", "complete", "loading", "src"];
   }
   constructor() {
     super();
     this.loaded = Promise.resolve();
-    this.delegate = new FrameElement.delegateConstructor(this);
+    this.delegate = new _FrameElement.delegateConstructor(this);
   }
   connectedCallback() {
     this.delegate.connect();
@@ -1210,7 +1209,7 @@ function formEnctypeFromString(encoding) {
       return FormEnctype.urlEncoded;
   }
 }
-var FormSubmission = class {
+var FormSubmission = class _FormSubmission {
   static confirmMethod(message, _element, _submitter) {
     return Promise.resolve(confirm(message));
   }
@@ -1264,7 +1263,7 @@ var FormSubmission = class {
     const { initialized, requesting } = FormSubmissionState;
     const confirmationMessage = getAttribute("data-turbo-confirm", this.submitter, this.formElement);
     if (typeof confirmationMessage === "string") {
-      const answer = await FormSubmission.confirmMethod(confirmationMessage, this.formElement, this.submitter);
+      const answer = await _FormSubmission.confirmMethod(confirmationMessage, this.formElement, this.submitter);
       if (!answer) {
         return;
       }
@@ -1463,7 +1462,7 @@ var FormSubmitObserver = class {
       this.eventTarget.removeEventListener("submit", this.submitBubbled, false);
       this.eventTarget.addEventListener("submit", this.submitBubbled, false);
     };
-    this.submitBubbled = (event) => {
+    this.submitBubbled = ((event) => {
       if (!event.defaultPrevented) {
         const form = event.target instanceof HTMLFormElement ? event.target : void 0;
         const submitter = event.submitter || void 0;
@@ -1473,7 +1472,7 @@ var FormSubmitObserver = class {
           this.delegate.formSubmitted(form, submitter);
         }
       }
-    };
+    });
     this.delegate = delegate;
     this.eventTarget = eventTarget;
   }
@@ -1613,7 +1612,7 @@ var LinkInterceptor = class {
         delete this.clickEvent;
       }
     };
-    this.linkClicked = (event) => {
+    this.linkClicked = ((event) => {
       if (this.clickEvent && this.respondsToEventTarget(event.target) && event.target instanceof Element) {
         if (this.delegate.shouldInterceptLinkClick(event.target, event.detail.url, event.detail.originalEvent)) {
           this.clickEvent.preventDefault();
@@ -1622,10 +1621,10 @@ var LinkInterceptor = class {
         }
       }
       delete this.clickEvent;
-    };
-    this.willVisit = (_event) => {
+    });
+    this.willVisit = ((_event) => {
       delete this.clickEvent;
-    };
+    });
     this.delegate = delegate;
     this.element = element;
   }
@@ -1930,7 +1929,7 @@ function readScrollBehavior(value, defaultValue) {
     return defaultValue;
   }
 }
-var ProgressBar = class {
+var ProgressBar = class _ProgressBar {
   static get defaultCSS() {
     return unindent`
       .turbo-progress-bar {
@@ -1942,8 +1941,8 @@ var ProgressBar = class {
         background: #0076ff;
         z-index: 2147483647;
         transition:
-          width ${ProgressBar.animationDuration}ms ease-out,
-          opacity ${ProgressBar.animationDuration / 2}ms ${ProgressBar.animationDuration / 2}ms ease-in;
+          width ${_ProgressBar.animationDuration}ms ease-out,
+          opacity ${_ProgressBar.animationDuration / 2}ms ${_ProgressBar.animationDuration / 2}ms ease-in;
         transform: translate3d(0, 0, 0);
       }
     `;
@@ -1993,7 +1992,7 @@ var ProgressBar = class {
   }
   fadeProgressElement(callback) {
     this.progressElement.style.opacity = "0";
-    setTimeout(callback, ProgressBar.animationDuration * 1.5);
+    setTimeout(callback, _ProgressBar.animationDuration * 1.5);
   }
   uninstallProgressElement() {
     if (this.progressElement.parentNode) {
@@ -2002,7 +2001,7 @@ var ProgressBar = class {
   }
   startTrickling() {
     if (!this.trickleInterval) {
-      this.trickleInterval = window.setInterval(this.trickle, ProgressBar.animationDuration);
+      this.trickleInterval = window.setInterval(this.trickle, _ProgressBar.animationDuration);
     }
   }
   stopTrickling() {
@@ -2017,7 +2016,7 @@ var ProgressBar = class {
   createStylesheetElement() {
     const element = document.createElement("style");
     element.type = "text/css";
-    element.textContent = ProgressBar.defaultCSS;
+    element.textContent = _ProgressBar.defaultCSS;
     if (this.cspNonce) {
       element.nonce = this.cspNonce;
     }
@@ -2113,7 +2112,7 @@ function elementWithoutNonce(element) {
   }
   return element;
 }
-var PageSnapshot = class extends Snapshot {
+var PageSnapshot = class _PageSnapshot extends Snapshot {
   static fromHTMLString(html = "") {
     return this.fromDocument(parseHTMLDocument(html));
   }
@@ -2141,7 +2140,7 @@ var PageSnapshot = class extends Snapshot {
     for (const clonedPasswordInput of clonedElement.querySelectorAll('input[type="password"]')) {
       clonedPasswordInput.value = "";
     }
-    return new PageSnapshot(clonedElement, this.headSnapshot);
+    return new _PageSnapshot(clonedElement, this.headSnapshot);
   }
   get headElement() {
     return this.headSnapshot.element;
@@ -2621,11 +2620,11 @@ var CacheObserver = class {
     this.selector = "[data-turbo-temporary]";
     this.deprecatedSelector = "[data-turbo-cache=false]";
     this.started = false;
-    this.removeTemporaryElements = (_event) => {
+    this.removeTemporaryElements = ((_event) => {
       for (const element of this.temporaryElements) {
         element.remove();
       }
-    };
+    });
   }
   start() {
     if (!this.started) {
@@ -3010,13 +3009,13 @@ var StreamObserver = class {
   constructor(delegate) {
     this.sources = /* @__PURE__ */ new Set();
     this.started = false;
-    this.inspectFetchResponse = (event) => {
+    this.inspectFetchResponse = ((event) => {
       const response = fetchResponseFromEvent(event);
       if (response && fetchResponseIsStream(response)) {
         event.preventDefault();
         this.receiveMessageResponse(response);
       }
-    };
+    });
     this.receiveMessageEvent = (event) => {
       if (this.started && typeof event.data == "string") {
         this.receiveMessageHTML(event.data);
@@ -4225,7 +4224,7 @@ function activateElement(element, currentURL) {
     }
   }
 }
-var StreamElement = class extends HTMLElement {
+var StreamElement = class _StreamElement extends HTMLElement {
   static async renderElement(newElement) {
     await newElement.performAction();
   }
@@ -4315,7 +4314,7 @@ var StreamElement = class extends HTMLElement {
     return new CustomEvent("turbo:before-stream-render", {
       bubbles: true,
       cancelable: true,
-      detail: { newStream: this, render: StreamElement.renderElement }
+      detail: { newStream: this, render: _StreamElement.renderElement }
     });
   }
   get targetElementsById() {
@@ -4410,12 +4409,9 @@ async function subscribeTo(channel, mixin) {
 
 // node_modules/@hotwired/turbo-rails/app/javascript/turbo/snakeize.js
 function walk(obj) {
-  if (!obj || typeof obj !== "object")
-    return obj;
-  if (obj instanceof Date || obj instanceof RegExp)
-    return obj;
-  if (Array.isArray(obj))
-    return obj.map(walk);
+  if (!obj || typeof obj !== "object") return obj;
+  if (obj instanceof Date || obj instanceof RegExp) return obj;
+  if (Array.isArray(obj)) return obj.map(walk);
   return Object.keys(obj).reduce(function(acc, key) {
     var camel = key[0].toLowerCase() + key.slice(1).replace(/([A-Z]+)/g, function(m, x) {
       return "_" + x.toLowerCase();
@@ -4437,8 +4433,7 @@ var TurboCableStreamSourceElement = class extends HTMLElement {
   }
   disconnectedCallback() {
     disconnectStreamSource(this);
-    if (this.subscription)
-      this.subscription.unsubscribe();
+    if (this.subscription) this.subscription.unsubscribe();
   }
   dispatchMessageEvent(data) {
     const event = new MessageEvent("message", { data });
@@ -6296,7 +6291,7 @@ var OutletSet = class {
     return element.matches(selector) && controllerAttribute.split(" ").includes(outletName);
   }
 };
-var Scope = class {
+var Scope = class _Scope {
   constructor(schema, element, identifier, logger) {
     this.targets = new TargetSet(this);
     this.classes = new ClassMap(this);
@@ -6329,7 +6324,7 @@ var Scope = class {
     return this.element === document.documentElement;
   }
   get documentScope() {
-    return this.isDocumentScope ? this : new Scope(this.schema, document.documentElement, this.identifier, this.guide.logger);
+    return this.isDocumentScope ? this : new _Scope(this.schema, document.documentElement, this.identifier, this.guide.logger);
   }
 };
 var ScopeObserver = class {
@@ -6997,8 +6992,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
       button.dataset.listenerAttached = "true";
       const form = button.closest("form");
-      if (!form)
-        return;
+      if (!form) return;
       form.addEventListener("submit", async function(event) {
         event.preventDefault();
         event.stopPropagation();
@@ -7064,6 +7058,106 @@ document.addEventListener("DOMContentLoaded", function() {
   document.addEventListener("DOMContentLoaded", initializeLikeButtons);
   document.addEventListener("turbo:load", initializeLikeButtons);
   document.addEventListener("turbo:frame-load", initializeLikeButtons);
+})();
+
+// app/javascript/recommendation_daily.js
+(function() {
+  "use strict";
+  function initializeRecommendationActions() {
+    const actionButtons = document.querySelectorAll(".recommendation-action-btn");
+    actionButtons.forEach((button) => {
+      if (button.dataset.listenerAttached === "true") {
+        return;
+      }
+      button.dataset.listenerAttached = "true";
+      const form = button.closest("form");
+      if (!form) return;
+      form.addEventListener("submit", async function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const action = button.dataset.action;
+        const url = form.action;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "";
+        const card = document.getElementById("recommendation-card");
+        const currentStatus = card?.dataset.status;
+        if (currentStatus !== "pending") {
+          alert("\u65E2\u306B\u9078\u629E\u6E08\u307F\u3067\u3059");
+          return;
+        }
+        button.disabled = true;
+        const originalText = button.innerHTML;
+        button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>\u51E6\u7406\u4E2D...';
+        try {
+          const response = await fetch(url, {
+            method: "PATCH",
+            headers: {
+              "X-CSRF-Token": csrfToken,
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            }
+          });
+          const data = await response.json();
+          if (data.status === "success") {
+            updateRecommendationUI(data.recommendation_status, data.message);
+          } else {
+            alert("\u30A8\u30E9\u30FC: " + data.message);
+            button.disabled = false;
+            button.innerHTML = originalText;
+          }
+        } catch (error2) {
+          console.error("\u63A8\u3057\u4ED8\u3051\u51E6\u7406\u3067\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3057\u307E\u3057\u305F", error2);
+          alert("\u51E6\u7406\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002\u30DA\u30FC\u30B8\u3092\u518D\u8AAD\u307F\u8FBC\u307F\u3057\u3066\u304F\u3060\u3055\u3044\u3002");
+          button.disabled = false;
+          button.innerHTML = originalText;
+        }
+      });
+    });
+  }
+  function updateRecommendationUI(status, message) {
+    const selectionButtons = document.getElementById("selection-buttons");
+    const resultMessage = document.getElementById("result-message");
+    const card = document.getElementById("recommendation-card");
+    if (!selectionButtons || !resultMessage || !card) return;
+    card.dataset.status = status;
+    selectionButtons.classList.add("d-none");
+    let messageHTML = "";
+    if (status === "favorited") {
+      messageHTML = `
+        <div class="alert alert-success">
+          <i class="bi bi-heart-fill"></i> 
+          <strong>${message}</strong>
+        </div>
+      `;
+    } else if (status === "skipped") {
+      messageHTML = `
+        <div class="alert alert-secondary">
+          <i class="bi bi-skip-forward"></i> 
+          <strong>${message}</strong>
+        </div>
+      `;
+    }
+    const recommendationId = card.dataset.recommendationId;
+    const postId = card.dataset.postId;
+    const userId = card.dataset.userId;
+    const postPath = `/posts/${postId || ""}`;
+    const historyPath = `/users/${userId || ""}/recommendations`;
+    messageHTML += `
+      <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
+        <a href="${postPath}" class="btn btn-primary">
+          <i class="bi bi-arrow-right"></i> \u6295\u7A3F\u8A73\u7D30\u3092\u898B\u308B
+        </a>
+        <a href="${historyPath}" class="btn btn-outline-info">
+          <i class="bi bi-clock-history"></i> \u5C65\u6B74\u3092\u898B\u308B
+        </a>
+      </div>
+    `;
+    resultMessage.innerHTML = messageHTML;
+    resultMessage.classList.remove("d-none");
+    resultMessage.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+  document.addEventListener("DOMContentLoaded", initializeRecommendationActions);
+  document.addEventListener("turbo:load", initializeRecommendationActions);
+  document.addEventListener("turbo:frame-load", initializeRecommendationActions);
 })();
 
 // app/javascript/application.js
