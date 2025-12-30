@@ -36,4 +36,18 @@ Rails.application.routes.draw do
       get :daily
     end
   end
+  
+  # コミュニティスレッド
+  resources :community_threads, only: [] do
+    resources :replies, only: [:create], controller: 'replies' # レス投稿用
+  end
+
+  # コミュニティ
+  resources :communities, only: [:index, :show, :new, :create] do
+    member do
+      post :join
+      delete :leave
+    end
+    resources :threads, only: [:create], controller: 'threads' # スレッド作成用
+  end
 end

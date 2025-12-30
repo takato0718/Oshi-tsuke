@@ -1,5 +1,11 @@
 <div class="row">
   <div class="col-lg-8 mx-auto">
+    <div class="mb-3">
+      <%= link_to post_path(@post), class: "text-decoration-none" do %>
+        <i class="bi bi-arrow-left"></i> 投稿詳細に戻る
+      <% end %>
+    </div>
+    
     <h1 class="h2 mb-4">
       <i class="bi bi-pencil"></i> 投稿を編集
     </h1>
