@@ -25,7 +25,7 @@
     </div>
 
     <div class="row g-4">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class="card h-100 shadow-sm">
           <div class="card-body">
             <h3 class="card-title h5 mb-3">
@@ -40,7 +40,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class="card h-100 shadow-sm">
           <div class="card-body">
             <h3 class="card-title h5 mb-3">
@@ -57,6 +57,21 @@
               <%= link_to new_session_path, class: "btn btn-outline-success" do %>
                 ログインして投稿 <i class="bi bi-arrow-right"></i>
               <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h3 class="card-title h5 mb-3">
+              <i class="bi bi-people"></i> コミュニティ
+            </h3>
+            <p class="card-text text-muted">
+              同じ推しが好きな人たちと交流しましょう。コミュニティで深く語り合えます。
+            </p>
+            <%= link_to communities_path, class: "btn btn-outline-info" do %>
+              コミュニティを見る <i class="bi bi-arrow-right"></i>
             <% end %>
           </div>
         </div>
