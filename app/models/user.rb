@@ -10,6 +10,8 @@ class User < ApplicationRecord
   validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
       
   has_many :posts, dependent: :destroy
+  has_many :community_threads, dependent: :destroy
+  has_many :replies, dependent: :destroy
   has_many :recommendations, dependent: :destroy
   has_many :reactions, dependent: :destroy
   has_many :likes, -> { where(reaction_type: :like) }, class_name: "Reaction"
