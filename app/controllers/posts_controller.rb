@@ -41,10 +41,10 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params)
     @categories = Category.ordered
-      
+    
     if @post.save
       redirect_to @post, notice: '推しを投稿しました！'
-     else
+    else
       flash.now[:alert] = '投稿に失敗しました'
       render :new, status: :unprocessable_entity
     end
@@ -56,12 +56,14 @@ class PostsController < ApplicationController
   
   def update
     @categories = Category.ordered
-    if @post.update(post_params)
-      redirect_to @post, notice: '投稿を更新しました！'
-    else
+
+    unless @post.update(post_params)
       flash.now[:alert] = '投稿の更新に失敗しました'
       render :edit, status: :unprocessable_entity
+      return
     end
+
+    redirect_to @post, notice: '投稿を更新しました！'
   end
   
   def destroy

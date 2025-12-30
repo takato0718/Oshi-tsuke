@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_12_28_073506) do
+ActiveRecord::Schema[7.0].define(version: 2025_12_30_045406) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,6 +50,19 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_28_073506) do
     t.index ["user_id"], name: "index_community_memberships_on_user_id"
   end
 
+  create_table "community_threads", force: :cascade do |t|
+    t.bigint "user_id", null: false, comment: "投稿者のユーザーID"
+    t.bigint "community_id", null: false, comment: "投稿先コミュニティのID"
+    t.text "description", null: false, comment: "スレッドの本文"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["community_id"], name: "idx_community_threads_community_id"
+    t.index ["community_id"], name: "index_community_threads_on_community_id"
+    t.index ["created_at"], name: "idx_community_threads_created_at"
+    t.index ["user_id"], name: "idx_community_threads_user_id"
+    t.index ["user_id"], name: "index_community_threads_on_user_id"
+  end
+
   create_table "post_categories", force: :cascade do |t|
     t.bigint "post_id", null: false, comment: "投稿ID"
     t.bigint "category_id", null: false, comment: "カテゴリID"
@@ -63,14 +76,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_28_073506) do
 
   create_table "posts", force: :cascade do |t|
     t.bigint "user_id", null: false, comment: "投稿者のユーザーID"
-    t.bigint "community_id", comment: "投稿先コミュニティのID（MVPの段階ではNULL）"
     t.string "title", null: false, comment: "投稿のタイトル"
     t.text "description", null: false, comment: "投稿の本文"
     t.string "image", comment: "投稿に添付する画像のファイルパス/URL"
     t.string "youtube_url", limit: 500, comment: "YouTube動画のURL"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["community_id"], name: "index_posts_on_community_id"
     t.index ["created_at"], name: "idx_posts_created_at"
     t.index ["user_id"], name: "idx_posts_user_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
@@ -108,6 +119,19 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_28_073506) do
     t.index ["user_id"], name: "index_recommendations_on_user_id"
   end
 
+  create_table "replies", force: :cascade do |t|
+    t.bigint "user_id", null: false, comment: "投稿者のユーザーID"
+    t.bigint "community_thread_id", null: false, comment: "スレッドID"
+    t.text "description", null: false, comment: "レス投稿の本文"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["community_thread_id"], name: "idx_replies_thread_id"
+    t.index ["community_thread_id"], name: "index_replies_on_community_thread_id"
+    t.index ["created_at"], name: "idx_replies_created_at"
+    t.index ["user_id"], name: "idx_replies_user_id"
+    t.index ["user_id"], name: "index_replies_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", null: false, comment: "ユーザーの表示名"
     t.string "email", null: false, comment: "ログイン認証用のメールアドレス"
@@ -128,6 +152,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_28_073506) do
   add_foreign_key "communities", "users", column: "creator_id"
   add_foreign_key "community_memberships", "communities"
   add_foreign_key "community_memberships", "users"
+  add_foreign_key "community_threads", "communities"
+  add_foreign_key "community_threads", "users"
   add_foreign_key "post_categories", "categories"
   add_foreign_key "post_categories", "posts"
   add_foreign_key "posts", "users"
@@ -135,4 +161,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_28_073506) do
   add_foreign_key "reactions", "users"
   add_foreign_key "recommendations", "posts"
   add_foreign_key "recommendations", "users"
+  add_foreign_key "replies", "community_threads"
+  add_foreign_key "replies", "users"
 end
