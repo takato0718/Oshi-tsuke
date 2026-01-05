@@ -1,0 +1,34 @@
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start mb-3">
+      <div class="flex-grow-1">
+        <h1 class="h2 mb-2"><%= community.name %></h1>
+        <% unless community.public? %>
+          <span class="badge bg-secondary mb-2">
+            <i class="bi bi-lock"></i> 非公開コミュニティ
+          </span>
+        <% end %>
+        <p class="text-muted mb-3"><%= simple_format(community.description) %></p>
+        <div class="d-flex align-items-center gap-3 text-muted">
+          <small>
+            <i class="bi bi-person"></i> メンバー: <%= community.active_members.count %>人
+          </small>
+          <small>
+            <i class="bi bi-person-circle"></i> 作成者: <%= community.creator.name %>
+          </small>
+          <% if can_moderate %>
+            <small>
+              <i class="bi bi-shield-check"></i> モデレーター権限あり
+            </small>
+          <% end %>
+        </div>
+      </div>
+      <div>
+        <%= render 'communities/show/membership_button', 
+                   community: community, 
+                   is_member: is_member, 
+                   is_pending: is_pending %>
+      </div>
+    </div>
+  </div>
+</div>

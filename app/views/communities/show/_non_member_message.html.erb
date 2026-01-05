@@ -1,0 +1,22 @@
+<div class="card shadow-sm">
+  <div class="card-body text-center py-5">
+    <i class="bi bi-lock display-1 text-muted"></i>
+    <h3 class="h5 mt-3 text-muted">メンバー限定コンテンツ</h3>
+    <p class="text-muted mb-4">
+      <% if community.public? %>
+        このコミュニティの投稿を閲覧するには参加が必要です
+      <% else %>
+        このコミュニティの投稿を閲覧するには参加申請と承認が必要です
+      <% end %>
+    </p>
+    <% if logged_in? %>
+      <%= button_to join_community_path(community), method: :post, class: "btn btn-primary" do %>
+        <i class="bi bi-person-plus"></i> <%= community.public? ? '参加する' : '参加申請する' %>
+      <% end %>
+    <% else %>
+      <%= link_to new_session_path, class: "btn btn-primary" do %>
+        ログインして<%= community.public? ? '参加' : '参加申請' %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

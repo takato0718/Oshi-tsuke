@@ -1,0 +1,24 @@
+<% if logged_in? %>
+  <% if is_member %>
+    <%= button_to leave_community_path(community), 
+                  method: :delete, 
+                  data: { turbo_confirm: "本当に脱退しますか?" }, 
+                  class: "btn btn-outline-danger" do %>
+      <i class="bi bi-box-arrow-right"></i> 脱退
+    <% end %>
+  <% elsif is_pending %>
+    <span class="badge bg-warning text-dark">
+      <i class="bi bi-hourglass-split"></i> 承認待ち
+    </span>
+  <% else %>
+    <%= button_to join_community_path(community), 
+                  method: :post, 
+                  class: "btn btn-primary" do %>
+      <i class="bi bi-person-plus"></i> <%= community.public? ? '参加' : '参加申請' %>
+    <% end %>
+  <% end %>
+<% elsif !community.public? %>
+  <span class="badge bg-secondary">
+    <i class="bi bi-lock"></i> ログインして参加申請
+  </span>
+<% end %>
