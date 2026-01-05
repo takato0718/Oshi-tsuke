@@ -1,0 +1,36 @@
+<div>
+  <h4 class="h6 mb-3">
+    <i class="bi bi-people"></i> メンバー管理
+  </h4>
+  <% community.community_memberships.active.includes(:user).each do |membership| %>
+    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+      <div>
+        <%= user_avatar_tag(membership.user, size: 32, class: "me-2") %>
+        <strong><%= membership.user.name %></strong>
+        <% if membership.user == community.creator %>
+          <span class="badge bg-primary ms-2">作成者</span>
+        <% elsif membership.admin? %>
+          <span class="badge bg-danger ms-2">管理者</span>
+        <% elsif membership.moderator? %>
+          <span class="badge bg-warning ms-2">モデレーター</span>
+        <% else %>
+          <span class="badge bg-secondary ms-2">メンバー</span>
+        <% end %>
+      </div>
+      <div>
+        <% unless membership.user == community.creator %>
+          <%= form_with url: change_role_community_moderation_path(community, membership), method: :patch, local: true, class: "d-inline" do |f| %>
+            <%= f.select :role, 
+                options_for_select([
+                  ['メンバー', 'member'],
+                  ['モデレーター', 'moderator'],
+                  ['管理者', 'admin']
+                ], membership.role),
+                {},
+                { class: "form-select form-select-sm d-inline-block", style: "width: auto;", onchange: "this.form.submit();" } %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
