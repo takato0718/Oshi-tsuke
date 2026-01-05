@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_12_30_045406) do
+ActiveRecord::Schema[7.0].define(version: 2025_12_31_080040) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,9 +42,11 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_30_045406) do
     t.datetime "joined_at", comment: "参加日時"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_active", default: true, null: false, comment: "参加状態の有効性フラグ（承認制の場合に使用）"
     t.index ["community_id", "role"], name: "idx_community_memberships_community_role"
     t.index ["community_id"], name: "idx_community_memberships_community"
     t.index ["community_id"], name: "index_community_memberships_on_community_id"
+    t.index ["is_active"], name: "idx_community_memberships_is_active"
     t.index ["user_id", "community_id"], name: "idx_community_memberships_user_community_unique", unique: true
     t.index ["user_id"], name: "idx_community_memberships_user"
     t.index ["user_id"], name: "index_community_memberships_on_user_id"
@@ -132,6 +134,25 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_30_045406) do
     t.index ["user_id"], name: "index_replies_on_user_id"
   end
 
+  create_table "reports", force: :cascade do |t|
+    t.bigint "user_id", null: false, comment: "報告者のユーザーID"
+    t.string "reportable_type", null: false
+    t.bigint "reportable_id", null: false, comment: "報告対象（Post, CommunityThread, Reply, Reaction）"
+    t.text "reason", null: false, comment: "報告理由"
+    t.integer "status", default: 0, null: false, comment: "報告の状態 (0: pending, 1: reviewed, 2: resolved, 3: dismissed)"
+    t.bigint "reviewed_by_id", comment: "レビューしたユーザーID（モデレーターまたは管理者）"
+    t.text "review_notes", comment: "レビュー時のメモ"
+    t.datetime "reviewed_at", comment: "レビュー日時"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reportable_type", "reportable_id"], name: "idx_reports_reportable"
+    t.index ["reportable_type", "reportable_id"], name: "index_reports_on_reportable"
+    t.index ["reviewed_by_id"], name: "idx_reports_reviewed_by"
+    t.index ["status"], name: "idx_reports_status"
+    t.index ["user_id"], name: "idx_reports_user_id"
+    t.index ["user_id"], name: "index_reports_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", null: false, comment: "ユーザーの表示名"
     t.string "email", null: false, comment: "ログイン認証用のメールアドレス"
@@ -163,4 +184,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_30_045406) do
   add_foreign_key "recommendations", "users"
   add_foreign_key "replies", "community_threads"
   add_foreign_key "replies", "users"
+  add_foreign_key "reports", "users"
+  add_foreign_key "reports", "users", column: "reviewed_by_id"
 end
