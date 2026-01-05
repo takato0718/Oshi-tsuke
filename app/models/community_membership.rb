@@ -25,8 +25,20 @@ class CommunityMembership < ApplicationRecord
   scope :admins, -> { where(role: :admin) }
   scope :moderators, -> { where(role: :moderator) }
   scope :members, -> { where(role: :member) }
+  scope :active, -> { where(is_active: true) }
+  scope :pending, -> { where(is_active: false) }
   scope :recent, -> { order(joined_at: :desc) }
   
+  # 承認処理
+  def approve!
+    update!(is_active: true, joined_at: Time.current)
+  end
+  
+  # 権限変更
+  def change_role!(new_role)
+    update!(role: new_role)
+  end
+
   private
   
   def set_joined_at

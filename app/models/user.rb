@@ -19,4 +19,17 @@ class User < ApplicationRecord
   has_many :created_communities, class_name: "Community", foreign_key: "creator_id", dependent: :destroy
   has_many :community_memberships, dependent: :destroy
   has_many :communities, through: :community_memberships
+  has_many :reports, dependent: :destroy
+  has_many :reviewed_reports, class_name: "Report", foreign_key: "reviewed_by_id", dependent: :nullify
+
+  # モデレーター権限のあるコミュニティIDを取得
+  def moderatable_community_ids
+    communities.joins(:community_memberships)
+               .where(community_memberships: { 
+                 user_id: id, 
+                 role: [:moderator, :admin],
+                 is_active: true 
+               })
+               .pluck(:id)
+  end
 end
