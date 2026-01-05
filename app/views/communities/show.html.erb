@@ -1,5 +1,6 @@
 <div class="row">
   <div class="col-lg-10 mx-auto">
+    <!-- 戻るリンク -->
     <div class="mb-3">
       <%= link_to communities_path, class: "text-decoration-none" do %>
         <i class="bi bi-arrow-left"></i> コミュニティ一覧に戻る
@@ -7,118 +8,38 @@
     </div>
 
     <!-- コミュニティ情報 -->
-    <div class="card shadow-sm mb-4">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-start mb-3">
-          <div class="flex-grow-1">
-            <h1 class="h2 mb-2"><%= @community.name %></h1>
-            <% unless @community.public? %>
-              <span class="badge bg-secondary mb-2">
-                <i class="bi bi-lock"></i> 非公開コミュニティ
-              </span>
-            <% end %>
-            <p class="text-muted mb-3"><%= simple_format(@community.description) %></p>
-            <div class="d-flex align-items-center gap-3 text-muted">
-              <small>
-                <i class="bi bi-person"></i> メンバー: <%= @community.members.count %>人
-              </small>
-              <small>
-                <i class="bi bi-person-circle"></i> 作成者: <%= @community.creator.name %>
-              </small>
-            </div>
-          </div>
-          <div>
-            <% if logged_in? %>
-              <% if @is_member %>
-                <%= button_to leave_community_path(@community), 
-                              method: :delete, 
-                              data: { turbo_confirm: "本当に脱退しますか？" }, 
-                              class: "btn btn-outline-danger" do %>
-                  <i class="bi bi-box-arrow-right"></i> 脱退
-                <% end %>
-              <% else %>
-                <%= button_to join_community_path(@community), 
-                              method: :post, 
-                              class: "btn btn-primary" do %>
-                  <i class="bi bi-person-plus"></i> 参加
-                <% end %>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
+    <%= render 'communities/show/community_info', 
+               community: @community, 
+               can_moderate: @can_moderate, 
+               is_member: @is_member, 
+               is_pending: @is_pending %>
+
+    <!-- 管理機能（管理者・モデレーターのみ表示） -->
+    <% if @can_moderate %>
+      <%= render 'communities/moderation/moderation_section', 
+                 community: @community, 
+                 pending_memberships: @pending_memberships, 
+                 is_admin: @is_admin %>
+    <% end %>
+
+    <!-- 承認待ちメッセージ -->
+    <% if @is_pending %>
+      <%= render 'communities/show/pending_message' %>
+    <% end %>
 
     <!-- コミュニティ投稿（2ちゃんねる風掲示板） -->
     <% if @is_member %>
       <!-- 新規スレッド投稿フォーム -->
-      <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
-          <h3 class="h5 mb-0">
-            <i class="bi bi-pencil-square"></i> 新規スレッドを立てる
-          </h3>
-        </div>
-        <div class="card-body">
-          <%= form_with url: community_threads_path(@community), local: true do |f| %>
-            <div class="mb-3">
-              <%= f.text_area :description, name: "thread[description]", class: "form-control", rows: 4, placeholder: "スレッドの内容を入力してください...", required: true %>
-            </div>
-            <div class="d-flex justify-content-end">
-              <%= f.submit "スレッドを立てる", class: "btn btn-primary" %>
-            </div>
-          <% end %>
-        </div>
-      </div>
+      <%= render 'communities/show/new_thread_form', community: @community %>
 
-      <!-- スレッド一覧（スクロール可能） -->
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="h4 mb-0">
-          <i class="bi bi-chat-dots"></i> スレッド一覧
-        </h2>
-      </div>
-
-      <div id="threads-container" class="threads-scrollable">
-        <% if @threads.blank? %>
-          <div class="card shadow-sm">
-            <div class="card-body text-center py-5">
-              <i class="bi bi-inbox display-1 text-muted"></i>
-              <h3 class="h5 mt-3 text-muted">まだスレッドがありません</h3>
-              <p class="text-muted mb-4">最初のスレッドを立ててみましょう！</p>
-            </div>
-          </div>
-        <% else %>
-          <div id="threads-list">
-            <% @threads.each do |thread| %>
-              <%= render 'communities/thread_item', thread: thread, community: @community %>
-            <% end %>
-          </div>
-
-          <% if @threads.total_pages > 1 %>
-            <div class="mt-4">
-              <%= paginate @threads, theme: 'bootstrap4' %>
-            </div>
-          <% end %>
-        <% end %>
-        <!-- 固定フォームの下にコンテンツが隠れないようにするためのスペーサー -->
-        <div class="threads-bottom-spacer"></div>
-      </div>
-    <% else %>
-      <div class="card shadow-sm">
-        <div class="card-body text-center py-5">
-          <i class="bi bi-lock display-1 text-muted"></i>
-          <h3 class="h5 mt-3 text-muted">メンバー限定コンテンツ</h3>
-          <p class="text-muted mb-4">このコミュニティの投稿を閲覧するには参加が必要です</p>
-          <% if logged_in? %>
-            <%= button_to join_community_path(@community), method: :post, class: "btn btn-primary" do %>
-              <i class="bi bi-person-plus"></i> 参加する
-            <% end %>
-          <% else %>
-            <%= link_to new_session_path, class: "btn btn-primary" do %>
-              ログインして参加
-            <% end %>
-          <% end %>
-        </div>
-      </div>
+      <!-- スレッド一覧 -->
+      <%= render 'communities/show/threads_section', 
+                 threads: @threads, 
+                 community: @community, 
+                 can_moderate: @can_moderate, 
+                 current_user: current_user %>
+    <% elsif !@is_pending %>
+      <%= render 'communities/show/non_member_message', community: @community %>
     <% end %>
   </div>
 </div>

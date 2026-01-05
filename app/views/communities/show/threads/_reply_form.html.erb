@@ -1,0 +1,8 @@
+<div class="card-body bg-light reply-form-container">
+  <%= form_with url: community_thread_replies_path(thread), method: :post, local: true do |f| %>
+    <div class="input-group">
+      <%= f.text_area :description, name: "reply[description]", class: "form-control", rows: 2, placeholder: "レスを投稿...", required: true %>
+      <%= f.submit "投稿", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

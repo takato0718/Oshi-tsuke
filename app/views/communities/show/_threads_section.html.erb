@@ -1,0 +1,36 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="h4 mb-0">
+    <i class="bi bi-chat-dots"></i> スレッド一覧
+  </h2>
+</div>
+
+<div id="threads-container" class="threads-scrollable">
+  <% if threads.blank? %>
+    <div class="card shadow-sm">
+      <div class="card-body text-center py-5">
+        <i class="bi bi-inbox display-1 text-muted"></i>
+        <h3 class="h5 mt-3 text-muted">まだスレッドがありません</h3>
+        <p class="text-muted mb-4">最初のスレッドを立ててみましょう!</p>
+      </div>
+    </div>
+  <% else %>
+    <div id="threads-list">
+      <% threads.each do |thread| %>
+        <%= render 'communities/thread_item', 
+                   thread: thread, 
+                   community: community, 
+                   can_moderate: can_moderate, 
+                   current_user: current_user %>
+      <% end %>
+    </div>
+
+    <% if threads.total_pages > 1 %>
+      <div class="mt-4">
+        <%= paginate threads, theme: 'bootstrap4' %>
+      </div>
+    <% end %>
+  <% end %>
+  
+  <!-- 固定フォームの下にコンテンツが隠れないようにするためのスペーサー -->
+  <div class="threads-bottom-spacer"></div>
+</div>
