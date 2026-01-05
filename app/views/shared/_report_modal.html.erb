@@ -1,0 +1,30 @@
+<!-- 報告モーダル -->
+<div class="modal fade" id="reportModal<%= reportable.id %>" tabindex="-1" aria-labelledby="reportModalLabel<%= reportable.id %>" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reportModalLabel<%= reportable.id %>">
+          <i class="bi bi-flag"></i> 不適切なコンテンツを報告
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <%= form_with url: reports_path, method: :post, local: true do |f| %>
+        <div class="modal-body">
+          <%= f.hidden_field :reportable_type, value: reportable.class.name %>
+          <%= f.hidden_field :reportable_id, value: reportable.id %>
+          <div class="mb-3">
+            <%= f.label :reason, "報告理由", class: "form-label" %>
+            <%= f.text_area :reason, class: "form-control", rows: 4, placeholder: "不適切な内容の理由を詳しく記入してください...", required: true %>
+            <div class="form-text">
+              スパム、誹謗中傷、不適切な内容などを報告できます
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+          <%= f.submit "報告する", class: "btn btn-danger" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
