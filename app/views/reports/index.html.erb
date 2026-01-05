@@ -1,0 +1,93 @@
+<div class="row">
+  <div class="col-lg-10 mx-auto">
+    <div class="mb-3">
+      <%= link_to root_path, class: "text-decoration-none" do %>
+        <i class="bi bi-arrow-left"></i> トップページに戻る
+      <% end %>
+    </div>
+
+    <h1 class="h2 mb-4">
+      <i class="bi bi-flag"></i> 報告一覧
+    </h1>
+
+    <% if @reports.blank? %>
+      <div class="card shadow-sm">
+        <div class="card-body text-center py-5">
+          <i class="bi bi-inbox display-1 text-muted"></i>
+          <h3 class="h5 mt-3 text-muted">報告はありません</h3>
+          <p class="text-muted mb-4">現在、対応が必要な報告はありません</p>
+        </div>
+      </div>
+    <% else %>
+      <div class="row g-4">
+        <% @reports.each do |report| %>
+          <div class="col-12">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                  <div class="flex-grow-1">
+                    <div class="d-flex align-items-center mb-2">
+                      <span class="badge <%= report.pending? ? 'bg-warning' : report.resolved? ? 'bg-success' : 'bg-secondary' %> me-2">
+                        <%= report.status_i18n %>
+                      </span>
+                      <small class="text-muted">
+                        <i class="bi bi-clock"></i> <%= report.created_at.strftime("%Y年%m月%d日 %H:%M") %>
+                      </small>
+                    </div>
+                    <h5 class="card-title mb-2">
+                      <%= report.reportable_type_i18n %>の報告
+                    </h5>
+                    <p class="card-text mb-3">
+                      <strong>報告理由:</strong><br>
+                      <%= simple_format(report.reason) %>
+                    </p>
+                    <div class="mb-2">
+                      <small class="text-muted">
+                        <i class="bi bi-person"></i> 報告者: <%= report.user.name %>
+                      </small>
+                    </div>
+                    <% if report.reviewed_by.present? %>
+                      <div class="mb-2">
+                        <small class="text-muted">
+                          <i class="bi bi-shield-check"></i> レビュー者: <%= report.reviewed_by.name %>
+                          (<%= report.reviewed_at.strftime("%Y年%m月%d日 %H:%M") %>)
+                        </small>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+                
+                <% if report.pending? %>
+                  <div class="d-flex gap-2">
+                    <%= button_to review_report_path(report), 
+                                  method: :patch, 
+                                  params: { resolved: true },
+                                  data: { turbo_confirm: "本当に解決済みとしてマークし、コンテンツを削除しますか？" },
+                                  class: "btn btn-danger btn-sm" do %>
+                      <i class="bi bi-check-circle"></i> 解決（削除）
+                    <% end %>
+                    <%= button_to dismiss_report_path(report), 
+                                  method: :patch, 
+                                  data: { turbo_confirm: "本当に却下しますか？" },
+                                  class: "btn btn-outline-secondary btn-sm" do %>
+                      <i class="bi bi-x-circle"></i> 却下
+                    <% end %>
+                    <%= link_to report_path(report), class: "btn btn-outline-primary btn-sm" do %>
+                      <i class="bi bi-eye"></i> 詳細
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <% if @reports.total_pages > 1 %>
+        <div class="mt-4">
+          <%= paginate @reports, theme: 'bootstrap4' %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
