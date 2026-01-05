@@ -23,4 +23,16 @@ class Reaction < ApplicationRecord
   scope :likes, -> { where(reaction_type: :like) }
   scope :comments, -> { where(reaction_type: :comment) }
   scope :recent, -> { order(created_at: :desc) }
+
+  # ユーザーがこのコメントを削除できるかどうか
+  def can_be_deleted_by?(user)
+    return false unless user
+    return false unless comment? # いいねは削除できない
+    owned_by?(user) # 通常の推し投稿のコメントは所有者のみ削除可能
+  end
+  
+  # 所有者かどうか
+  def owned_by?(user)
+    self.user == user
+  end
 end

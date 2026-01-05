@@ -5,20 +5,30 @@ class CommunitiesController < ApplicationController
   
   def index
     @communities = Community.includes(:creator, :members)
-                            .public_communities
                             .recent
                             .page(params[:page])
                             .per(20)
   end
   
   def show
-    # スレッドの親投稿のみを取得
-    @threads = @community.community_threads
-                         .includes(:user, :replies, replies: :user)
-                         .order(created_at: :desc)
-                         .page(params[:page])
-                         .per(20)
     @is_member = logged_in? && @community.member?(current_user)
+    @is_pending = logged_in? && @community.pending_member?(current_user)
+    @can_moderate = logged_in? && @community.can_moderate?(current_user)
+    @is_admin = logged_in? && @community.admin?(current_user)
+    
+    # メンバーの場合のみスレッドを取得
+    if @is_member
+      @threads = @community.community_threads
+                           .includes(:user, :replies, replies: :user)
+                           .order(created_at: :desc)
+                           .page(params[:page])
+                           .per(20)
+    end
+    
+    # 管理者・モデレーターの場合、承認待ちメンバーを取得
+    if @is_admin || @can_moderate
+      @pending_memberships = @community.community_memberships.pending.includes(:user)
+    end
   end
   
   def new
@@ -29,10 +39,11 @@ class CommunitiesController < ApplicationController
     @community = current_user.created_communities.build(community_params)
   
     if @community.save
-      # 作成者を自動的に管理者として追加
+      # 作成者を自動的に管理者として追加,常にis_active: trueの状態
       @community.community_memberships.create!(
         user: current_user,
         role: :admin,
+        is_active: true,
         joined_at: Time.current
       )
       redirect_to @community, notice: 'コミュニティを作成しました！'
@@ -48,19 +59,35 @@ class CommunitiesController < ApplicationController
       redirect_to new_session_path, alert: 'ログインが必要です'
       return
     end
+
+    # 既に参加しているか承認待ちかチェック
+    existing_membership = @community.community_memberships.find_by(user: current_user)
   
-    if @community.member?(current_user)
-      redirect_to @community, alert: '既に参加しています'
+    if existing_membership
+      if existing_membership.is_active?
+        redirect_to @community, alert: '既に参加しています'
+      else
+        redirect_to @community, alert: '既に参加申請中です。承認をお待ちください'
+      end
       return
     end
   
-    @community.community_memberships.create!(
+    # 公開コミュニティ: 即参加（is_active: true）
+    # 非公開コミュニティ: 承認待ち（is_active: false）
+    is_active = @community.public?
+
+    membership = @community.community_memberships.create!(
       user: current_user,
       role: :member,
-      joined_at: Time.current
+      is_active: is_active,
+      joined_at: is_active ? Time.current : nil # 承認待ちの場合はjoined_atはnil
     )
   
-    redirect_to @community, notice: 'コミュニティに参加しました！'
+    if is_active
+      redirect_to @community, notice: 'コミュニティに参加しました！'
+    else
+      redirect_to @community, notice: '参加申請を送信しました。承認をお待ちください'
+    end
   end
   
   # コミュニティから脱退
@@ -94,11 +121,9 @@ class CommunitiesController < ApplicationController
   end
 
   def check_membership_for_show
-    # 公開コミュニティまたはメンバーの場合のみ閲覧可能
-    return if @community.public?
-    return if logged_in? && @community.member?(current_user)
-
-    redirect_to communities_path, alert: 'このコミュニティはメンバー限定です'
+    # 公開コミュニティは誰でも閲覧可能
+    # 非公開コミュニティも詳細ページは閲覧可能（ただし投稿はメンバーのみ）
+    # このメソッドは常に通過（詳細ページの閲覧は制限しない）
   end
 
   def community_params
