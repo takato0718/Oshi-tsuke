@@ -49,5 +49,25 @@ Rails.application.routes.draw do
       delete :leave
     end
     resources :threads, only: [:create], controller: 'threads' # スレッド作成用
+
+    # コミュニティ管理機能（モデレーター・管理者用）
+    resources :moderations, only: [], controller: 'community_moderations', param: :id do
+      member do
+        patch :approve_membership
+        patch :change_role
+      end
+      collection do
+        delete :destroy_thread
+        delete :destroy_reply
+      end
+    end
+  end
+
+  # 報告機能
+  resources :reports, only: [:index, :show, :create] do
+    member do
+      patch :review
+      patch :dismiss
+    end
   end
 end

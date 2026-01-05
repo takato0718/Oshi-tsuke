@@ -36,7 +36,7 @@ class CommentsController < ApplicationController
   end
   
   def check_owner
-    unless @comment.user == current_user
+    unless @comment.can_be_deleted_by?(current_user)
     redirect_to @post, alert: '権限がありません'
     end
   end
