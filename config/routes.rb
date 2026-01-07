@@ -44,6 +44,9 @@ Rails.application.routes.draw do
 
   # コミュニティ
   resources :communities, only: [:index, :show, :new, :create] do
+    collection do
+      get :ranking
+    end
     member do
       post :join
       delete :leave

@@ -2,9 +2,40 @@
   <h1 class="h2 mb-0">
     <i class="bi bi-people"></i> コミュニティ一覧
   </h1>
-  <% if logged_in? %>
-    <%= link_to new_community_path, class: "btn btn-primary" do %>
-      <i class="bi bi-plus-circle"></i> コミュニティを作成
+  <div class="d-flex gap-2">
+    <%= link_to ranking_communities_path, class: "btn btn-outline-info" do %>
+      <i class="bi bi-trophy"></i> ランキング
     <% end %>
-  <% end %>
+    <% if logged_in? %>
+      <%= link_to new_community_path, class: "btn btn-primary" do %>
+        <i class="bi bi-plus-circle"></i> コミュニティを作成
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<!-- ソート選択 -->
+<div class="mb-3">
+  <div class="btn-group" role="group">
+    <%= link_to communities_path(sort: 'recent'), 
+                class: "btn btn-sm #{params[:sort] == 'recent' || params[:sort].blank? ? 'btn-primary' : 'btn-outline-primary'}" do %>
+      <i class="bi bi-clock"></i> 新着順
+    <% end %>
+    <%= link_to communities_path(sort: 'activity'), 
+                class: "btn btn-sm #{params[:sort] == 'activity' ? 'btn-primary' : 'btn-outline-primary'}" do %>
+      <i class="bi bi-fire"></i> 活発度順
+    <% end %>
+    <%= link_to communities_path(sort: 'threads'), 
+                class: "btn btn-sm #{params[:sort] == 'threads' ? 'btn-primary' : 'btn-outline-primary'}" do %>
+      <i class="bi bi-chat-dots"></i> スレッド数順
+    <% end %>
+    <%= link_to communities_path(sort: 'replies'), 
+                class: "btn btn-sm #{params[:sort] == 'replies' ? 'btn-primary' : 'btn-outline-primary'}" do %>
+      <i class="bi bi-chat"></i> レス数順
+    <% end %>
+    <%= link_to communities_path(sort: 'members'), 
+                class: "btn btn-sm #{params[:sort] == 'members' ? 'btn-primary' : 'btn-outline-primary'}" do %>
+      <i class="bi bi-people"></i> メンバー数順
+    <% end %>
+  </div>
 </div>

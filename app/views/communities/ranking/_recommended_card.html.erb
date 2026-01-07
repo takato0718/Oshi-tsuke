@@ -1,0 +1,29 @@
+<div class="col-md-6">
+  <div class="card h-100">
+    <div class="card-body">
+      <div class="d-flex align-items-start">
+        <div class="flex-grow-1">
+          <div class="d-flex align-items-center mb-2">
+            <span class="badge bg-warning text-dark me-2">#<%= index + 1 %></span>
+            <h5 class="card-title mb-0">
+              <%= link_to community_path(community), class: "text-decoration-none" do %>
+                <%= community.name %>
+              <% end %>
+            </h5>
+          </div>
+          <p class="card-text text-muted small mb-2">
+            <%= truncate(community.description, length: 80) %>
+          </p>
+          <div class="d-flex gap-3 text-muted small">
+            <span><i class="bi bi-chat-dots"></i> <%= community.threads_count %>スレッド</span>
+            <span><i class="bi bi-chat"></i> <%= community.replies_count %>レス</span>
+            <span><i class="bi bi-people"></i> <%= community.members_count %>人</span>
+            <span class="badge bg-danger">
+              <i class="bi bi-fire"></i> 活発度: <%= community.activity_score %>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
