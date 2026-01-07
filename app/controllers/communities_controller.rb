@@ -1,13 +1,48 @@
 class CommunitiesController < ApplicationController
-  skip_before_action :require_login, only: [:index, :show]
+  skip_before_action :require_login, only: [:index, :show, :ranking]
   before_action :set_community, only: [:show, :join, :leave]
   before_action :check_membership_for_show, only: [:show]
-  
+
   def index
-    @communities = Community.includes(:creator, :members)
-                            .recent
-                            .page(params[:page])
-                            .per(20)
+    # ソートパラメータに応じて並び替え
+    sort = params[:sort] || 'recent'
+    
+    base_query = Community.all
+    
+    case sort
+    when 'activity'
+      @communities = base_query.by_activity
+    when 'threads'
+      @communities = base_query.by_thread_count
+    when 'replies'
+      @communities = base_query.by_reply_count
+    when 'members'
+      @communities = base_query.by_member_count
+    else
+      @communities = base_query.recent
+    end
+    
+    # ページネーション前にincludesを追加（N+1問題対策）
+    @communities = @communities.includes(:creator, :community_memberships)
+                                .page(params[:page])
+                                .per(20)
+  end
+
+  # ランキングページ
+  def ranking
+    @top_by_activity = Community.by_activity.limit(10)
+    @top_by_threads = Community.by_thread_count.limit(10)
+    @top_by_replies = Community.by_reply_count.limit(10)
+    @top_by_members = Community.by_member_count.limit(10)
+    
+    if logged_in?
+      user_community_ids = current_user.communities.pluck(:id)
+      @recommended = Community.by_activity
+                              .where.not(id: user_community_ids)
+                              .limit(5)
+    else
+      @recommended = Community.by_activity.limit(5)
+    end
   end
   
   def show
