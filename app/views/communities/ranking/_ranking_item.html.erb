@@ -1,0 +1,58 @@
+<div class="list-group-item">
+  <div class="d-flex align-items-center">
+    <div class="me-3">
+      <% if index < 3 %>
+        <span class="badge bg-<%= index == 0 ? 'warning' : index == 1 ? 'secondary' : 'danger' %> text-dark" style="font-size: 1.2rem; padding: 0.5rem 0.8rem;">
+          #<%= index + 1 %>
+        </span>
+      <% else %>
+        <span class="badge bg-light text-dark" style="font-size: 1rem; padding: 0.4rem 0.6rem;">
+          #<%= index + 1 %>
+        </span>
+      <% end %>
+    </div>
+    <div class="flex-grow-1">
+      <h5 class="mb-1">
+        <%= link_to community_path(community), class: "text-decoration-none" do %>
+          <%= community.name %>
+        <% end %>
+        <% if highlight_key == 'activity' && !community.public? %>
+          <span class="badge bg-secondary ms-2">
+            <i class="bi bi-lock"></i> 非公開
+          </span>
+        <% end %>
+      </h5>
+      <% if highlight_key == 'activity' %>
+        <p class="mb-1 text-muted small"><%= truncate(community.description, length: 100) %></p>
+      <% end %>
+      <div class="d-flex gap-3 text-muted small">
+        <% case highlight_key %>
+        <% when 'activity' %>
+          <span><i class="bi bi-chat-dots"></i> <%= community.threads_count %>スレッド</span>
+          <span><i class="bi bi-chat"></i> <%= community.replies_count %>レス</span>
+          <span><i class="bi bi-people"></i> <%= community.members_count %>人</span>
+          <span class="badge bg-danger">
+            <i class="bi bi-fire"></i> 活発度: <%= community.activity_score %>
+          </span>
+        <% when 'threads' %>
+          <span class="badge bg-primary"><i class="bi bi-chat-dots"></i> <%= community.threads_count %>スレッド</span>
+          <span><i class="bi bi-chat"></i> <%= community.replies_count %>レス</span>
+          <span><i class="bi bi-people"></i> <%= community.members_count %>人</span>
+        <% when 'replies' %>
+          <span><i class="bi bi-chat-dots"></i> <%= community.threads_count %>スレッド</span>
+          <span class="badge bg-success"><i class="bi bi-chat"></i> <%= community.replies_count %>レス</span>
+          <span><i class="bi bi-people"></i> <%= community.members_count %>人</span>
+        <% when 'members' %>
+          <span><i class="bi bi-chat-dots"></i> <%= community.threads_count %>スレッド</span>
+          <span><i class="bi bi-chat"></i> <%= community.replies_count %>レス</span>
+          <span class="badge bg-info"><i class="bi bi-people"></i> <%= community.members_count %>人</span>
+        <% end %>
+      </div>
+    </div>
+    <div>
+      <%= link_to community_path(community), class: "btn btn-sm btn-outline-primary" do %>
+        詳細 <i class="bi bi-arrow-right"></i>
+      <% end %>
+    </div>
+  </div>
+</div>

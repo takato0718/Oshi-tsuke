@@ -1,0 +1,8 @@
+<div class="list-group">
+  <% communities.each_with_index do |community, index| %>
+    <%= render 'communities/ranking/ranking_item', 
+               community: community, 
+               index: index, 
+               highlight_key: highlight_key %>
+  <% end %>
+</div>

@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-lg-10 mx-auto">
+    <%= render 'communities/ranking/header' %>
+    
+    <%= render 'communities/ranking/recommended_section', recommended: @recommended %>
+    
+    <%= render 'communities/ranking/tabs' %>
+
+    <div class="tab-content">
+      <!-- 活発度ランキング -->
+      <div class="tab-pane fade show active" id="activity" role="tabpanel">
+        <%= render 'communities/ranking/ranking_list', 
+                   communities: @top_by_activity, 
+                   highlight_key: 'activity' %>
+      </div>
+
+      <!-- スレッド数ランキング -->
+      <div class="tab-pane fade" id="threads" role="tabpanel">
+        <%= render 'communities/ranking/ranking_list', 
+                   communities: @top_by_threads, 
+                   highlight_key: 'threads' %>
+      </div>
+
+      <!-- レス数ランキング -->
+      <div class="tab-pane fade" id="replies" role="tabpanel">
+        <%= render 'communities/ranking/ranking_list', 
+                   communities: @top_by_replies, 
+                   highlight_key: 'replies' %>
+      </div>
+
+      <!-- メンバー数ランキング -->
+      <div class="tab-pane fade" id="members" role="tabpanel">
+        <%= render 'communities/ranking/ranking_list', 
+                   communities: @top_by_members, 
+                   highlight_key: 'members' %>
+      </div>
+    </div>
+  </div>
+</div>
