@@ -73,4 +73,9 @@ Rails.application.routes.draw do
       patch :dismiss
     end
   end
+
+  # 静的ページ（利用規約)
+  get 'terms', to: 'static_pages#terms', as: :terms
+  # プライバシーポリシー
+  get 'privacy', to: 'static_pages#privacy'
 end

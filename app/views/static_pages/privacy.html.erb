@@ -1,0 +1,83 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <!-- ヘッダー -->
+      <div class="mb-5">
+        <h1 class="display-5 fw-bold text-primary mb-3">プライバシーポリシー</h1>
+        <p class="text-muted">最終更新日: 2026年01月08日</p>
+      </div>
+
+      <!-- お客様から取得する情報 -->
+      <section class="mb-5">
+        <h2 class="h4 fw-bold mb-3">お客様から取得する情報</h2>
+        <p class="mb-3">
+          当社は、お客様から以下の情報を取得します。
+        </p>
+        <ul class="list-unstyled ps-3">
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>氏名(ニックネームやペンネームも含む)</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>メールアドレス</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>写真や動画</li>
+        </ul>
+      </section>
+
+      <!-- お客様の情報を利用する目的 -->
+      <section class="mb-5">
+        <h2 class="h4 fw-bold mb-3">お客様の情報を利用する目的</h2>
+        <p class="mb-3">
+          当社は、お客様から取得した情報を、以下の目的のために利用します。
+        </p>
+        <ul class="list-unstyled ps-3">
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>当社サービスに関する登録の受付、お客様の本人確認、認証のため</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>お客様の当社サービスの利用履歴を管理するため</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>当社サービスにおけるお客様の行動履歴を分析し、当社サービスの維持改善に役立てるため</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>お客様からのお問い合わせに対応するため</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>当社の規約や法令に違反する行為に対応するため</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>当社サービスの変更、提供中止、終了、契約解除をご連絡するため</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>当社規約の変更等を通知するため</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>以上の他、当社サービスの提供、維持、保護及び改善のため</li>
+        </ul>
+      </section>
+
+      <!-- 安全管理のために講じた措置 -->
+      <section class="mb-5">
+        <h2 class="h4 fw-bold mb-3">安全管理のために講じた措置</h2>
+        <p>
+          当社が、お客様から取得した情報に関して安全管理のために講じた措置につきましては、末尾記載のお問い合わせ先にご連絡をいただきましたら、法令の定めに従い個別にご回答させていただきます。
+        </p>
+      </section>
+
+      <!-- 第三者提供 -->
+      <section class="mb-5">
+        <h2 class="h4 fw-bold mb-3">第三者提供</h2>
+        <p class="mb-3">
+          お客様の情報の開示、情報の訂正、利用停止、削除をご希望の場合は、以下のお問い合わせフォームよりご連絡ください。
+        </p>
+        <%= link_to 'https://docs.google.com/forms/d/e/1FAIpQLSejhjOOUSNoqZRfBnnvofv0s4feajatt5TfGTHDD25To7snig/viewform?usp=header', 
+                    target: '_blank', 
+                    rel: 'noopener noreferrer', 
+                    class: 'btn btn-primary d-inline-flex align-items-center' do %>
+          お問い合わせフォーム
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope ms-2" viewBox="0 0 16 16">
+            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+          </svg>
+        <% end %>
+      </section>
+
+      <!-- 事業者の氏名 -->
+      <section class="mb-5">
+        <h2 class="h4 fw-bold mb-3">事業者の氏名</h2>
+        <p>takato</p>
+      </section>
+
+      <!-- 制定日 -->
+      <div class="text-muted">
+        <p>2026年01月08日制定</p>
+      </div>
+
+      <!-- 戻るボタン -->
+      <div class="text-center mt-5">
+        <%= link_to 'トップページへ戻る', root_path, class: 'btn btn-outline-primary' %>
+      </div>
+    </div>
+  </div>
+</div>
