@@ -82,7 +82,12 @@
       <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
         <p class="text-muted mb-2 mb-md-0">&copy; 2024 推しツケ. All rights reserved.</p>
         <!-- お問い合わせリンク -->
-        <div class="footer-links">
+        <div class="footer-links d-flex flex-wrap align-items-center gap-3">
+
+        <%= link_to '利用規約', terms_path, class: 'footer-link text-muted text-decoration-none' %>
+        
+        <%= link_to 'プライバシーポリシー', privacy_path, class: 'footer-link text-muted text-decoration-none' %>
+
         <%= link_to 'https://docs.google.com/forms/d/e/1FAIpQLSejhjOOUSNoqZRfBnnvofv0s4feajatt5TfGTHDD25To7snig/viewform?usp=header', target: '_blank', rel: 'noopener noreferrer', class: 'footer-link text-muted' do %>
         お問い合わせ
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope ms-1" viewBox="0 0 16 16" style="display: inline-block; vertical-align: text-bottom;">
