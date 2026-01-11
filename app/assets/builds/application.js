@@ -7164,3 +7164,43 @@ document.addEventListener("DOMContentLoaded", function() {
 var application2 = Application.start();
 console.log("Oshi-tsuke JavaScript loaded! \u{1F680}");
 console.log("Turbo and Stimulus ready!");
+document.addEventListener("turbo:load", () => {
+  console.log("Loading animation initialized");
+  document.addEventListener("turbo:before-fetch-request", () => {
+    showLoading();
+  });
+  document.addEventListener("turbo:render", () => {
+    hideLoading();
+  });
+  document.addEventListener("turbo:submit-start", () => {
+    showLoading();
+  });
+  document.addEventListener("turbo:submit-end", () => {
+    hideLoading();
+  });
+  document.addEventListener("turbo:fetch-request-error", () => {
+    hideLoading();
+  });
+});
+function showLoading() {
+  const overlay = document.getElementById("loading-overlay");
+  if (overlay) {
+    overlay.style.display = "flex";
+    overlay.classList.add("fade-in");
+    overlay.classList.remove("fade-out");
+    document.body.style.overflow = "hidden";
+  }
+}
+function hideLoading() {
+  const overlay = document.getElementById("loading-overlay");
+  if (overlay) {
+    overlay.classList.add("fade-out");
+    overlay.classList.remove("fade-in");
+    setTimeout(() => {
+      overlay.style.display = "none";
+      document.body.style.overflow = "";
+    }, 200);
+  }
+}
+window.showLoading = showLoading;
+window.hideLoading = hideLoading;
