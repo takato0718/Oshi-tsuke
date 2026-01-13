@@ -101,14 +101,24 @@ GEM
     dartsass-rails (0.5.1)
       railties (>= 6.0.0)
       sass-embedded (~> 1.63)
+    database_cleaner-active_record (2.2.2)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0)
+    database_cleaner-core (2.0.1)
     date (3.5.0)
     debug (1.11.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    diff-lcs (1.6.2)
     drb (2.2.3)
     erb (4.0.4)
       cgi (>= 0.3.3)
     erubi (1.13.1)
+    factory_bot (6.5.6)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.5.1)
+      factory_bot (~> 6.5)
+      railties (>= 6.1.0)
     faker (3.5.2)
       i18n (>= 1.8.11, < 2)
     faraday (2.14.0)
@@ -272,6 +282,23 @@ GEM
     reline (0.6.2)
       io-console (~> 0.5)
     rexml (3.4.4)
+    rspec-core (3.13.6)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.5)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.7)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-rails (6.1.5)
+      actionpack (>= 6.1)
+      activesupport (>= 6.1)
+      railties (>= 6.1)
+      rspec-core (~> 3.13)
+      rspec-expectations (~> 3.13)
+      rspec-mocks (~> 3.13)
+      rspec-support (~> 3.13)
+    rspec-support (3.13.6)
     rubyzip (2.4.1)
     sass-embedded (1.94.2)
       google-protobuf (~> 4.31)
@@ -283,6 +310,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    shoulda-matchers (5.3.0)
+      activesupport (>= 5.2.0)
     snaky_hash (2.0.3)
       hashie (>= 0.1.0, < 6)
       version_gem (>= 1.1.8, < 3)
@@ -322,7 +351,9 @@ DEPENDENCIES
   capybara
   cssbundling-rails
   dartsass-rails
+  database_cleaner-active_record (~> 2.1)
   debug
+  factory_bot_rails (~> 6.2)
   faker (~> 3.4)
   jbuilder
   jsbundling-rails
@@ -335,7 +366,9 @@ DEPENDENCIES
   rails-i18n
   ransack (~> 4.0)
   redis (~> 4.0)
+  rspec-rails (~> 6.0)
   selenium-webdriver
+  shoulda-matchers (~> 5.3)
   sorcery (~> 0.17.0)
   tzinfo-data
   web-console

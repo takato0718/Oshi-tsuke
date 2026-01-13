@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  protect_from_forgery with: :exception, unless: -> { Rails.env.test? }
   before_action :require_login
 
   private
