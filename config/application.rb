@@ -11,6 +11,14 @@ module App
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
+    # テスト環境ではHost Authorizationミドルウェアを削除（load_defaultsの直後に実行）
+    if Rails.env.test?
+      # ミドルウェアスタックから削除
+      config.middleware.delete ActionDispatch::HostAuthorization
+      # すべてのホストを許可
+      config.hosts.clear
+      config.hosts << proc { |host| true }
+    end
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
