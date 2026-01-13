@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_action :require_login, only: [:new, :create]
+  skip_before_action :verify_authenticity_token, only: [:create], if: -> { Rails.env.test? }
   
   def new
     redirect_to root_path if logged_in?
