@@ -3,6 +3,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.1.4'
 
+gem 'psych', '~> 5.0'
+gem 'json', '~> 2.7'
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.10'
 
@@ -67,6 +70,7 @@ group :test do
   gem 'selenium-webdriver'
 end
 
-gem 'dartsass-rails'
+# gem 'dartsass-rails', '~> 0.5.0'
+# gem 'sass-embedded', '~> 1.80.0'
 
 gem 'nokogiri', '>= 1.12.0'
