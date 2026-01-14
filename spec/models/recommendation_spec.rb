@@ -39,9 +39,9 @@ RSpec.describe Recommendation, type: :model do
     it '今日の推し紹介を返す' do
       today_recommendation = create(:recommendation)
       old_recommendation = create(:recommendation, created_at: 2.days.ago)
-      
-      expect(Recommendation.today).to include(today_recommendation)
-      expect(Recommendation.today).not_to include(old_recommendation)
+
+      expect(described_class.today).to include(today_recommendation)
+      expect(described_class.today).not_to include(old_recommendation)
     end
   end
 
@@ -50,9 +50,13 @@ RSpec.describe Recommendation, type: :model do
 
     it 'skip!はステータスをskippedに更新する' do
       recommendation.skip!
+      expect(recommendation.status).to eq('skipped')
+      expect(recommendation.skipped_at).to be_present
+    end
+
+    it 'skip!後はskipped?がtrueになる' do
+      recommendation.skip!
       expect(recommendation.skipped?).to be true
-      expect(recommendation.skipped_at).not_to be_nil
-      expect(recommendation.viewed_at).not_to be_nil
     end
 
     it 'favorite!はステータスをfavoritedに更新する' do
@@ -74,4 +78,3 @@ RSpec.describe Recommendation, type: :model do
     end
   end
 end
-

@@ -75,4 +75,3 @@ RSpec.describe Reply, type: :model do
     end
   end
 end
-

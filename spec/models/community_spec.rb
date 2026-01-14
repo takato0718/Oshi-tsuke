@@ -126,4 +126,3 @@ RSpec.describe Community, type: :model do
     end
   end
 end
-

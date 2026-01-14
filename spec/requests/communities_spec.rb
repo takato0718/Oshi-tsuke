@@ -6,25 +6,25 @@ RSpec.describe 'Communities', type: :request do
 
   describe 'GET /communities' do
     before do
-      login_as(user)  # ← ログインを追加
+      login_as(user) # ← ログインを追加
 
       # デバッグ用のログを追加
-      puts "\n=== ログイン後のステータス ==="
-      puts "Response status: #{response.status}"
-      puts "Response location: #{response.location}"
-      puts "Response body (最初の300文字):"
-      puts response.body[0..300]
-      puts "===========================\n"
+      Rails.logger.debug "\n=== ログイン後のステータス ==="
+      Rails.logger.debug { "Response status: #{response.status}" }
+      Rails.logger.debug { "Response location: #{response.location}" }
+      Rails.logger.debug 'Response body (最初の300文字):'
+      Rails.logger.debug response.body[0..300]
+      Rails.logger.debug "===========================\n"
     end
-    
+
     it '一覧ページが表示される' do
       get communities_path
 
-      puts "\n=== communities_path アクセス後 ==="
-      puts "Response status: #{response.status}"
-      puts "Response body (最初の300文字):"
-      puts response.body[0..300]
-      puts "===========================\n"
+      Rails.logger.debug "\n=== communities_path アクセス後 ==="
+      Rails.logger.debug { "Response status: #{response.status}" }
+      Rails.logger.debug 'Response body (最初の300文字):'
+      Rails.logger.debug response.body[0..300]
+      Rails.logger.debug "===========================\n"
 
       expect(response).to have_http_status(:success)
     end
@@ -71,17 +71,17 @@ RSpec.describe 'Communities', type: :request do
       before { login_as(user) }
 
       it 'コミュニティが作成される' do
-        expect {
+        expect do
           post communities_path, params: { community: { name: 'テストコミュニティ', description: '説明', is_public: true } }
-        }.to change(Community, :count).by(1)
+        end.to change(Community, :count).by(1)
       end
     end
 
     context 'ログインしていない場合' do
       it 'コミュニティが作成されない' do
-        expect {
+        expect do
           post communities_path, params: { community: { name: 'テストコミュニティ', description: '説明', is_public: true } }
-        }.not_to change(Community, :count)
+        end.not_to change(Community, :count)
       end
     end
   end
@@ -91,17 +91,17 @@ RSpec.describe 'Communities', type: :request do
       before { login_as(user) }
 
       it '公開コミュニティに参加できる' do
-        expect {
+        expect do
           post join_community_path(community)
-        }.to change(CommunityMembership, :count).by(1)
+        end.to change(CommunityMembership, :count).by(1)
       end
     end
 
     context 'ログインしていない場合' do
       it '参加できない' do
-        expect {
+        expect do
           post join_community_path(community)
-        }.not_to change(CommunityMembership, :count)
+        end.not_to change(CommunityMembership, :count)
       end
     end
   end
@@ -113,9 +113,9 @@ RSpec.describe 'Communities', type: :request do
       before { login_as(user) }
 
       it 'コミュニティから脱退できる' do
-        expect {
+        expect do
           delete leave_community_path(community)
-        }.to change(CommunityMembership, :count).by(-1)
+        end.to change(CommunityMembership, :count).by(-1)
       end
     end
   end

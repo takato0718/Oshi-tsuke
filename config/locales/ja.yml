@@ -6,6 +6,20 @@ ja:
         restrict_dependent_destroy:
           has_one: "%{record}が存在しているため削除できません"
           has_many: "%{record}が存在しているため削除できません"
+        blank: "を入力してください"  # ← 追加
+    models:
+      community: コミュニティ
+      reaction: リアクション
+      recommendation: おすすめ
+    attributes:
+      community:
+        creator_id: 作成者ID
+      reaction:
+        user_id: ユーザーID
+        post_id: 投稿ID
+      recommendation:
+        user_id: ユーザーID
+        post_id: 投稿ID
   views:
     pagination:
       first: "«"

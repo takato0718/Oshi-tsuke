@@ -9,7 +9,7 @@ class CommunityModerationsController < ApplicationController
     if membership.approve!
       redirect_to @community, notice: "#{membership.user.name}さんの参加を承認しました"
     else
-      redirect_to @community, alert: "承認に失敗しました"
+      redirect_to @community, alert: '承認に失敗しました'
     end
   end
 
@@ -33,7 +33,7 @@ class CommunityModerationsController < ApplicationController
     if membership.change_role!(new_role)
       redirect_to @community, notice: "#{membership.user.name}さんの権限を変更しました"
     else
-      redirect_to @community, alert: "権限変更に失敗しました"
+      redirect_to @community, alert: '権限変更に失敗しました'
     end
   end
 
@@ -53,17 +53,17 @@ class CommunityModerationsController < ApplicationController
   # レス削除
   def destroy_reply
     reply = Reply.find(params[:reply_id])
-    
+
     unless reply.community_thread.community == @community
       redirect_to @community, alert: 'このコミュニティのレスではありません'
       return
     end
-    
+
     unless reply.can_be_deleted_by?(current_user)
       redirect_to @community, alert: '権限がありません'
       return
     end
-    
+
     reply.destroy
     redirect_to @community, notice: 'レスを削除しました'
   end
@@ -75,8 +75,8 @@ class CommunityModerationsController < ApplicationController
   end
 
   def check_moderator_access
-    unless @community.can_moderate?(current_user)
+    return if @community.can_moderate?(current_user)
+
     redirect_to @community, alert: '権限がありません'
-    end
   end
 end

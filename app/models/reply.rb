@@ -10,8 +10,9 @@ class Reply < ApplicationRecord
   # ユーザーがこのレスを削除できるかどうか
   def can_be_deleted_by?(user)
     return false unless user
-      owned_by?(user) || community_thread.community.can_moderate?(user)
-    end
+
+    owned_by?(user) || community_thread.community.can_moderate?(user)
+  end
 
   # 所有者かどうか
   def owned_by?(user)
@@ -19,7 +20,5 @@ class Reply < ApplicationRecord
   end
 
   # コミュニティを取得
-  def community
-    community_thread.community
-  end
+  delegate :community, to: :community_thread
 end

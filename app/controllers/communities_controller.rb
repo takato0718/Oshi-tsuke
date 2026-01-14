@@ -1,31 +1,31 @@
 class CommunitiesController < ApplicationController
-  skip_before_action :require_login, only: [:index, :show, :ranking]
-  before_action :set_community, only: [:show, :join, :leave]
+  skip_before_action :require_login, only: %i[index show ranking]
+  before_action :set_community, only: %i[show join leave]
   before_action :check_membership_for_show, only: [:show]
 
   def index
     # ソートパラメータに応じて並び替え
     sort = params[:sort] || 'recent'
-    
+
     base_query = Community.all
-    
-    case sort
-    when 'activity'
-      @communities = base_query.by_activity
-    when 'threads'
-      @communities = base_query.by_thread_count
-    when 'replies'
-      @communities = base_query.by_reply_count
-    when 'members'
-      @communities = base_query.by_member_count
-    else
-      @communities = base_query.recent
-    end
-    
+
+    @communities = case sort
+                   when 'activity'
+                     base_query.by_activity
+                   when 'threads'
+                     base_query.by_thread_count
+                   when 'replies'
+                     base_query.by_reply_count
+                   when 'members'
+                     base_query.by_member_count
+                   else
+                     base_query.recent
+                   end
+
     # ページネーション前にincludesを追加（N+1問題対策）
     @communities = @communities.includes(:creator, :community_memberships)
-                                .page(params[:page])
-                                .per(20)
+                               .page(params[:page])
+                               .per(20)
   end
 
   # ランキングページ
@@ -34,7 +34,7 @@ class CommunitiesController < ApplicationController
     @top_by_threads = Community.by_thread_count.limit(10)
     @top_by_replies = Community.by_reply_count.limit(10)
     @top_by_members = Community.by_member_count.limit(10)
-    
+
     if logged_in?
       user_community_ids = current_user.communities.pluck(:id)
       @recommended = Community.by_activity
@@ -44,13 +44,13 @@ class CommunitiesController < ApplicationController
       @recommended = Community.by_activity.limit(5)
     end
   end
-  
+
   def show
     @is_member = logged_in? && @community.member?(current_user)
     @is_pending = logged_in? && @community.pending_member?(current_user)
     @can_moderate = logged_in? && @community.can_moderate?(current_user)
     @is_admin = logged_in? && @community.admin?(current_user)
-    
+
     # メンバーの場合のみスレッドを取得
     if @is_member
       @threads = @community.community_threads
@@ -59,20 +59,20 @@ class CommunitiesController < ApplicationController
                            .page(params[:page])
                            .per(20)
     end
-    
+
     # 管理者・モデレーターの場合、承認待ちメンバーを取得
-    if @is_admin || @can_moderate
-      @pending_memberships = @community.community_memberships.pending.includes(:user)
-    end
+    return unless @is_admin || @can_moderate
+
+    @pending_memberships = @community.community_memberships.pending.includes(:user)
   end
-  
+
   def new
     @community = current_user.created_communities.build
   end
-  
+
   def create
     @community = current_user.created_communities.build(community_params)
-  
+
     if @community.save
       # 作成者を自動的に管理者として追加,常にis_active: trueの状態
       @community.community_memberships.create!(
@@ -87,7 +87,7 @@ class CommunitiesController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
-  
+
   # コミュニティに参加
   def join
     unless logged_in?
@@ -97,7 +97,7 @@ class CommunitiesController < ApplicationController
 
     # 既に参加しているか承認待ちかチェック
     existing_membership = @community.community_memberships.find_by(user: current_user)
-  
+
     if existing_membership
       if existing_membership.is_active?
         redirect_to @community, alert: '既に参加しています'
@@ -106,45 +106,45 @@ class CommunitiesController < ApplicationController
       end
       return
     end
-  
+
     # 公開コミュニティ: 即参加（is_active: true）
     # 非公開コミュニティ: 承認待ち（is_active: false）
     is_active = @community.public?
 
-    membership = @community.community_memberships.create!(
+    @community.community_memberships.create!(
       user: current_user,
       role: :member,
       is_active: is_active,
       joined_at: is_active ? Time.current : nil # 承認待ちの場合はjoined_atはnil
     )
-  
+
     if is_active
       redirect_to @community, notice: 'コミュニティに参加しました！'
     else
       redirect_to @community, notice: '参加申請を送信しました。承認をお待ちください'
     end
   end
-  
+
   # コミュニティから脱退
   def leave
     unless logged_in?
       redirect_to new_session_path, alert: 'ログインが必要です'
       return
     end
-  
+
     membership = @community.community_memberships.find_by(user: current_user)
-      
+
     if membership.nil?
       redirect_to @community, alert: '参加していません'
       return
     end
-  
+
     # 作成者は脱退できない
     if @community.creator == current_user
       redirect_to @community, alert: 'コミュニティ作成者は脱退できません'
       return
     end
-  
+
     membership.destroy
     redirect_to communities_path, notice: 'コミュニティから脱退しました'
   end

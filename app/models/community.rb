@@ -1,5 +1,5 @@
 class Community < ApplicationRecord
-  belongs_to :creator, class_name: "User", foreign_key: "creator_id"
+  belongs_to :creator, class_name: 'User'
   has_many :community_memberships, dependent: :destroy
   has_many :members, through: :community_memberships, source: :user
   has_many :community_threads, dependent: :destroy
@@ -8,7 +8,9 @@ class Community < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true, length: { maximum: 100 }
   validates :description, length: { maximum: 1000 }, allow_blank: true
+  # rubocop:disable Rails/RedundantPresenceValidationOnBelongsTo
   validates :creator_id, presence: true
+  # rubocop:enable Rails/RedundantPresenceValidationOnBelongsTo
   validates :is_public, inclusion: { in: [true, false] }
 
   scope :public_communities, -> { where(is_public: true) }
@@ -16,7 +18,7 @@ class Community < ApplicationRecord
   scope :recent, -> { order(created_at: :desc) }
 
   # 活発度ランキング用スコープ
-  scope :by_activity, -> {
+  scope :by_activity, lambda {
     left_joins(community_threads: :replies)
       .group('communities.id')
       .select(
@@ -27,13 +29,13 @@ class Community < ApplicationRecord
         'communities.creator_id',
         'communities.created_at',
         'communities.updated_at',
-        'COALESCE(COUNT(DISTINCT community_threads.id), 0) * 2 + 
+        'COALESCE(COUNT(DISTINCT community_threads.id), 0) * 2 +
          COALESCE(COUNT(DISTINCT replies.id), 0) AS activity_score'
       )
-      .order('activity_score DESC')
+      .order(activity_score: :desc)
   }
 
-  scope :by_thread_count, -> { 
+  scope :by_thread_count, lambda {
     left_joins(:community_threads)
       .group('communities.id')
       .select(
@@ -46,10 +48,10 @@ class Community < ApplicationRecord
         'communities.updated_at',
         'COUNT(DISTINCT community_threads.id) AS threads_count'
       )
-      .order('threads_count DESC')
+      .order(threads_count: :desc)
   }
 
-  scope :by_reply_count, -> { 
+  scope :by_reply_count, lambda {
     left_joins(community_threads: :replies)
       .group('communities.id')
       .select(
@@ -62,10 +64,10 @@ class Community < ApplicationRecord
         'communities.updated_at',
         'COUNT(DISTINCT replies.id) AS replies_count'
       )
-      .order('replies_count DESC')
+      .order(replies_count: :desc)
   }
 
-  scope :by_member_count, -> { 
+  scope :by_member_count, lambda {
     left_joins(:community_memberships)
       .where(community_memberships: { is_active: true })
       .group('communities.id')
@@ -79,7 +81,7 @@ class Community < ApplicationRecord
         'communities.updated_at',
         'COUNT(DISTINCT community_memberships.user_id) AS members_count'
       )
-      .order('members_count DESC')
+      .order(members_count: :desc)
   }
 
   def public?
@@ -93,42 +95,49 @@ class Community < ApplicationRecord
   # ユーザーがメンバーかどうか（承認済み）
   def member?(user)
     return false unless user
+
     community_memberships.exists?(user: user, is_active: true)
   end
 
   # ユーザーが承認待ちかどうか
   def pending_member?(user)
     return false unless user
+
     community_memberships.exists?(user: user, is_active: false)
   end
 
   # ユーザーが管理者かどうか
   def admin?(user)
     return false unless user
+
     community_memberships.exists?(user: user, role: :admin, is_active: true)
   end
 
   # ユーザーがモデレーターかどうか
   def moderator?(user)
     return false unless user
+
     community_memberships.exists?(user: user, role: :moderator, is_active: true)
   end
 
   # ユーザーが管理者またはモデレーターかどうか
   def moderator_or_admin?(user)
     return false unless user
+
     admin?(user) || moderator?(user)
   end
 
   # ユーザーが投稿・コメントを削除できるかどうか
   def can_moderate?(user)
     return false unless user
+
     admin?(user) || moderator?(user) || creator == user
   end
 
   # ユーザーのメンバーシップを取得
   def membership_for(user)
     return nil unless user
+
     community_memberships.find_by(user: user)
   end
 
@@ -145,41 +154,39 @@ class Community < ApplicationRecord
   end
 
   # ===== 統計・活発度関連メソッド =====
-  
+
   # スレッド数を取得
   def threads_count
     community_threads.count
   end
-  
+
   # レス数を取得
-  def replies_count
-    replies.count
-  end
-  
+  delegate :count, to: :replies, prefix: true
+
   # 総投稿数（スレッド + レス）を取得
   def total_posts_count
     threads_count + replies_count
   end
-  
+
   # メンバー数を取得（承認済みのみ）
   def members_count
     active_members.count
   end
-  
+
   # 活発度スコアを計算（投稿数 + レス数）
   def activity_score
     # スレッド数 * 2 + レス数
-    threads_count * 2 + replies_count
+    (threads_count * 2) + replies_count
   end
-  
+
   # 最近の活動度（過去7日間の投稿数）
   def recent_activity_count(days: 7)
     since = days.days.ago
-    threads = community_threads.where('created_at >= ?', since).count
-    replies_count = replies.where('created_at >= ?', since).count
+    threads = community_threads.where(created_at: since..).count
+    replies_count = replies.where(created_at: since..).count
     threads + replies_count
   end
-  
+
   # 活発度バッジ用のレベル判定
   def activity_level
     score = activity_score
@@ -195,4 +202,3 @@ class Community < ApplicationRecord
     end
   end
 end
-  

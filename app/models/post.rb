@@ -1,4 +1,4 @@
-require "uri"
+require 'uri'
 
 class Post < ApplicationRecord
   belongs_to :user
@@ -6,26 +6,31 @@ class Post < ApplicationRecord
   has_many :post_categories, dependent: :destroy
   has_many :categories, through: :post_categories
   has_many :reactions, dependent: :destroy
-  has_many :likes, -> { where(reaction_type: :like) }, class_name: "Reaction"
-  has_many :comments, -> { where(reaction_type: :comment) }, class_name: "Reaction"
+  has_many :likes, -> { where(reaction_type: :like) }, class_name: 'Reaction'
+  has_many :comments, -> { where(reaction_type: :comment) }, class_name: 'Reaction'
 
   validates :title, presence: true, length: { maximum: 255 }
   validates :description, presence: true
-  validates :youtube_url, format: { with: /\A(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+\z/i, message: "は有効なYouTube URLである必要があります" }, allow_blank: true
+  validates :youtube_url,
+            format: {
+              with: %r{\A(https?://)?(www\.)?(youtube\.com|youtu\.be)/.+\z}i,
+              message: 'は有効なYouTube URLである必要があります'
+            },
+            allow_blank: true
   validate :image_url_format
 
   scope :recent, -> { order(created_at: :desc) }
 
   # Ransack で検索可能な属性を定義
-  def self.ransackable_attributes(auth_object = nil)
-    ["created_at", "description", "id", "image", "title", "updated_at", "user_id", "youtube_url"]
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[created_at description id image title updated_at user_id youtube_url]
   end
 
   # Ransack で検索可能な関連を定義
-  def self.ransackable_associations(auth_object = nil)
-    ["user", "categories", "post_categories"]
+  def self.ransackable_associations(_auth_object = nil)
+    %w[user categories post_categories]
   end
-    
+
   def owned_by?(user)
     self.user == user
   end
@@ -33,13 +38,12 @@ class Post < ApplicationRecord
   # 指定されたユーザーがこの投稿にいいねしているかどうか
   def liked_by?(user)
     return false unless user
+
     likes.exists?(user: user)
   end
 
   # いいね数を取得
-  def likes_count
-    likes.count
-  end
+  delegate :count, to: :likes, prefix: true
 
   private
 
@@ -52,15 +56,15 @@ class Post < ApplicationRecord
       nil
     end
 
-    unless uri&.is_a?(URI::HTTP) && uri.host.present?
-      errors.add(:image, "は有効なURLを指定してください（例: https://example.com/image.jpg）")
+    unless uri.is_a?(URI::HTTP) && uri.host.present?
+      errors.add(:image, 'は有効なURLを指定してください（例: https://example.com/image.jpg）')
       return
     end
 
     allowed_extensions = %w[jpg jpeg png gif webp]
-    ext = File.extname(uri.path).delete(".").downcase
-    unless allowed_extensions.include?(ext)
-      errors.add(:image, "はjpg/jpeg/png/gif/webpのいずれかの拡張子を持つURLを指定してください")
-    end
+    ext = File.extname(uri.path).delete('.').downcase
+    return if allowed_extensions.include?(ext)
+
+    errors.add(:image, 'はjpg/jpeg/png/gif/webpのいずれかの拡張子を持つURLを指定してください')
   end
 end

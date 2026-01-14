@@ -43,7 +43,7 @@ RSpec.describe Reaction, type: :model do
       user = create(:user)
       post = create(:post)
       create(:reaction, :like, user: user, post: post)
-      
+
       duplicate = build(:reaction, :like, user: user, post: post)
       expect(duplicate).not_to be_valid
       expect(duplicate.errors[:user_id]).to include('は既にこの投稿にいいねをしています')
@@ -53,7 +53,7 @@ RSpec.describe Reaction, type: :model do
       user = create(:user)
       post = create(:post)
       create(:reaction, :comment, user: user, post: post, content: 'First comment')
-      
+
       second_comment = build(:reaction, :comment, user: user, post: post, content: 'Second comment')
       expect(second_comment).to be_valid
     end
@@ -92,4 +92,3 @@ RSpec.describe Reaction, type: :model do
     end
   end
 end
-

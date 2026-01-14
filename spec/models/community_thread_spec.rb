@@ -44,11 +44,11 @@ RSpec.describe CommunityThread, type: :model do
 
     it 'スレッドを削除すると関連するレスも削除される' do
       thread = create(:community_thread)
-      reply = create(:reply, community_thread: thread)
-      
-      expect {
+      create(:reply, community_thread: thread)
+
+      expect do
         thread.destroy
-      }.to change { Reply.count }.by(-1)
+      end.to change(Reply, :count).by(-1)
     end
   end
 
@@ -89,4 +89,3 @@ RSpec.describe CommunityThread, type: :model do
     end
   end
 end
-

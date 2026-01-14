@@ -12,7 +12,7 @@ RSpec.describe 'Recommendations', type: :request do
       it '今日の推し紹介ページが表示される' do
         # ★ ここで recommendation を作成
         create(:recommendation, user: user, post: post_record, status: :pending)
-        
+
         get daily_recommendations_path
         expect(response).to have_http_status(:success)
       end
