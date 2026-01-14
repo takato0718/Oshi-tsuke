@@ -10,13 +10,12 @@ class CommunityThread < ApplicationRecord
   scope :oldest_first, -> { order(created_at: :asc) } # 古いものが上（コミュニティスレッド用）
 
   # レス数を取得
-  def replies_count
-    replies.count
-  end
+  delegate :count, to: :replies, prefix: true
 
   # ユーザーがこのスレッドを削除できるかどうか
   def can_be_deleted_by?(user)
     return false unless user
+
     owned_by?(user) || community.can_moderate?(user)
   end
 

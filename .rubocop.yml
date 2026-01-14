@@ -1,0 +1,109 @@
+plugins:
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+    - 'spec/spec_helper.rb'
+    - 'spec/rails_helper.rb'
+
+# ドキュメントコメントは不要
+Style/Documentation:
+  Enabled: false
+
+# frozen_string_literal: trueのコメントは不要
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# ブロックの長さ
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'config/environments/*'
+    - 'config/routes.rb'
+
+# 行の長さ
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'config/**/*'
+    - 'db/**/*'
+
+# i18n化は後回し
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+# アソシエーション設定
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+Rails/InverseOf:
+  Enabled: false
+
+# ヘルパーでのインスタンス変数使用を許可（設計次第で調整）
+Rails/HelperInstanceVariable:
+  Enabled: true
+
+# ===== Metrics関連（重複を統合） =====
+
+# クラスの長さ
+Metrics/ClassLength:
+  Max: 150
+  Exclude:
+    - 'test/**/*'
+    - 'spec/**/*'
+
+# メソッドの長さ（重複を統合：より緩い25を採用）
+Metrics/MethodLength:
+  Max: 25
+  Exclude:
+    - 'test/**/*'
+    - 'spec/**/*'
+    - 'app/helpers/**/*'
+
+# ABCサイズ（重複を統合：より緩い26を採用）
+Metrics/AbcSize:
+  Max: 26
+  Exclude:
+    - 'test/**/*'
+    - 'spec/**/*'
+    - 'app/controllers/**/*'
+
+# 循環的複雑度
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+# ===== RSpec関連 =====
+
+# テストの長さ
+RSpec/ExampleLength:
+  Max: 10
+
+# let!の使用を許可
+RSpec/LetSetup:
+  Enabled: false
+
+# 日本語のcontext記述を許可
+RSpec/ContextWording:
+  Enabled: false
+
+# 複数のexpectationを許可
+RSpec/MultipleExpectations:
+  Max: 2
+
+# 複数のdescribeは修正すべき
+RSpec/MultipleDescribes:
+  Enabled: true
+
+# 重複したテストグループは修正すべき
+RSpec/RepeatedExampleGroupBody:
+  Enabled: true
+
+RSpec/RepeatedExampleGroupDescription:
+  Enabled: true

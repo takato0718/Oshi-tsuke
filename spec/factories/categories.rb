@@ -4,5 +4,3 @@ FactoryBot.define do
     description { Faker::Lorem.sentence }
   end
 end
-  
-  

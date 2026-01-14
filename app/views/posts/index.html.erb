@@ -17,12 +17,12 @@
         <i class="bi bi-funnel"></i> カテゴリー:
       </span>
       <%= link_to posts_path(current_search_params),
-                  class: category_all_button_class do %>
+                  class: category_all_button_class(@selected_category_ids) do %>
         <i class="bi bi-grid"></i> 全て
       <% end %>
       <% @categories.each do |category| %>
-        <%= link_to posts_path(category_params_for(category)),
-                    class: category_button_class(category) do %>
+        <%= link_to posts_path(category_params_for(category, @selected_category_ids)),
+                    class: category_button_class(category, @selected_category_ids) do %>
           <i class="bi bi-tag"></i> <%= category.name %>
         <% end %>
       <% end %>

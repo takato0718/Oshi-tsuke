@@ -1,25 +1,25 @@
 class RegistrationsController < ApplicationController
-  skip_before_action :require_login, only: [:new, :create]
-  
+  skip_before_action :require_login, only: %i[new create]
+
   def new
     redirect_to root_path if logged_in?
     @user = User.new
   end
-  
+
   def create
     @user = User.new(user_params)
-      
+
     if @user.save
       auto_login(@user)
-      redirect_to root_path, notice: "新規登録が完了しました"
+      redirect_to root_path, notice: '新規登録が完了しました'
     else
-      flash.now[:alert] = "登録に失敗しました"
+      flash.now[:alert] = '登録に失敗しました'
       render :new, status: :unprocessable_entity
     end
   end
-  
+
   private
-  
+
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end

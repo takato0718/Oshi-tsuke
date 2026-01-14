@@ -1,21 +1,17 @@
 module CommunitiesHelper
   def render_report_modals_for_thread(thread)
     return unless logged_in?
-        
+
     modals = []
-        
+
     # スレッドの報告モーダル
-    if thread.user != current_user
-      modals << render('shared/report_modal', reportable: thread)
-    end
-        
+    modals << render('shared/report_modal', reportable: thread) if thread.user != current_user
+
     # レスの報告モーダル
     thread.replies.each do |reply|
-      if reply.user != current_user
-        modals << render('shared/report_modal', reportable: reply)
-      end
+      modals << render('shared/report_modal', reportable: reply) if reply.user != current_user
     end
-        
+
     safe_join(modals)
   end
 
@@ -32,7 +28,7 @@ module CommunitiesHelper
       'bg-secondary'
     end
   end
-  
+
   # 活発度レベルの日本語表示
   def activity_level_text(level)
     case level

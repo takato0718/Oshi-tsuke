@@ -62,21 +62,20 @@ RSpec.describe User, type: :model do
 
     it 'ユーザーを削除すると関連する投稿も削除される' do
       user = create(:user)
-      post = create(:post, user: user)
-      
-      expect {
+      create(:post, user: user)
+
+      expect do
         user.destroy
-      }.to change { Post.count }.by(-1)
+      end.to change(Post, :count).by(-1)
     end
 
     it 'ユーザーを削除すると関連するコミュニティも削除される' do
       user = create(:user)
-      community = create(:community, creator: user)
-      
-      expect {
+      create(:community, creator: user)
+
+      expect do
         user.destroy
-      }.to change { Community.count }.by(-1)
+      end.to change(Community, :count).by(-1)
     end
   end
 end
-
