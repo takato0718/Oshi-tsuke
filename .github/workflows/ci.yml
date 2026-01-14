@@ -32,7 +32,7 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '3.2.3'
+        ruby-version: '3.1.4'
         bundler-cache: true
 
     # Node.jsを使用している場合は以下を追加
