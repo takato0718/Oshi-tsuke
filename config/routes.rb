@@ -8,6 +8,16 @@ Rails.application.routes.draw do
   get "signup", to: "registrations#new", as: :new_registration
   post "signup", to: "registrations#create", as: :registration
 
+
+  # パスワードリセット
+  get "password_resets/new", to: "password_resets#new", as: :new_password_reset
+  post "password_resets", to: "password_resets#create", as: :password_resets
+  get "password_resets/:id/edit", to: "password_resets#edit", as: :edit_password_reset
+  patch "password_resets/:id", to: "password_resets#update", as: :password_reset
+  
+  # 開発環境専用: letter_opener
+    mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
+  
   # ユーザー
   resources :users, only: [:show, :edit, :update] do
     member do

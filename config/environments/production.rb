@@ -7,6 +7,27 @@ Rails.application.configure do
   # Code is not reloaded between requests.
   config.cache_classes = true
 
+  # メール送信の設定
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+    
+  config.action_mailer.smtp_settings = {
+    address: 'smtp.resend.com',
+    port: 587,
+    domain: ENV['APP_HOST'],
+    user_name: 'resend',
+    password: ENV['RESEND_API_KEY'],
+    authentication: 'plain',
+    enable_starttls_auto: true
+  }
+  
+  # 本番環境のホスト設定
+  config.action_mailer.default_url_options = { 
+    host: ENV['APP_HOST'],
+    protocol: 'https'  # 本番環境はHTTPSを使用
+  }
+
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.
