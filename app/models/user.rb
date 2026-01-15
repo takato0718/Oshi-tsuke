@@ -1,7 +1,5 @@
 class User < ApplicationRecord
-  authenticates_with_sorcery! do |config|
-    config.submodules = %i[remember_me reset_password]
-  end
+  authenticates_with_sorcery!
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
