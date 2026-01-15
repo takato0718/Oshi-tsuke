@@ -19,7 +19,7 @@ Rails.application.configure do
     user_name: 'resend',
     password: ENV['RESEND_API_KEY'],
     authentication: 'plain',
-    enable_starttls_auto: true
+    enable_starttls_auto: true,
     open_timeout: 10,
     read_timeout: 10
   }
