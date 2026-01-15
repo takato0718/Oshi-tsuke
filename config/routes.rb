@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   patch "password_resets/:id", to: "password_resets#update", as: :password_reset
   
   # 開発環境専用: letter_opener
-    mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
+  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
   
   # ユーザー
   resources :users, only: [:show, :edit, :update] do
