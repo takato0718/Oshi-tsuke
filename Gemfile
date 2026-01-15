@@ -5,7 +5,7 @@ ruby '3.1.4'
 
 gem 'json', '~> 2.7'
 gem 'psych', '~> 5.0'
-
+gem 'resend'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.10'
 
@@ -61,6 +61,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'letter_opener_web'
   gem 'web-console'
 end
 

@@ -1,0 +1,2 @@
+app_host: <%= ENV['APP_HOST'] %>
+mail_from: 'onboarding@resend.dev'

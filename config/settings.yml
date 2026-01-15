@@ -1,0 +1,14 @@
+default: &default
+  mail_from: 'onboarding@resend.dev'
+
+development:
+  <<: *default
+  app_host: 'localhost:3000'
+
+test:
+  <<: *default
+  app_host: 'localhost:3000'
+
+production:
+  <<: *default
+  app_host: <%= ENV['APP_HOST'] %>

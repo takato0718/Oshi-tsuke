@@ -11,6 +11,8 @@ services:
       - node_modules_data:/app/node_modules
       - tmp_data:/app/tmp
       - storage_data:/app/storage
+    env_file:
+      - .env
     environment:
       # - RAILS_ENV=development
       - DATABASE_HOST=db
