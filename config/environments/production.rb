@@ -20,8 +20,8 @@ Rails.application.configure do
     password: ENV['RESEND_API_KEY'],
     authentication: 'plain',
     enable_starttls_auto: true,
-    open_timeout: 10,
-    read_timeout: 10
+    open_timeout: 60,
+    read_timeout: 60
   }
   
   # 本番環境のホスト設定
