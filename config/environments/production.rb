@@ -8,22 +8,11 @@ Rails.application.configure do
   config.cache_classes = true
 
   # メール送信の設定
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :resend
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
-    
-  config.action_mailer.smtp_settings = {
-    address: 'smtp.resend.com',
-    port: 587,
-    domain: ENV['APP_HOST'],
-    user_name: 'resend',
-    password: ENV['RESEND_API_KEY'],
-    authentication: 'plain',
-    enable_starttls_auto: true,
-    open_timeout: 60,
-    read_timeout: 60
-  }
-  
+
+
   # 本番環境のホスト設定
   config.action_mailer.default_url_options = { 
     host: ENV['APP_HOST'],
