@@ -3,11 +3,11 @@ default: &default
 
 development:
   <<: *default
-  app_host: 'localhost:3000'
+  app_host: 'localhost:3002'
 
 test:
   <<: *default
-  app_host: 'localhost:3000'
+  app_host: 'localhost:3002'
 
 production:
   <<: *default
