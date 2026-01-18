@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # トップページ
   root "home#index"
+  
   # 認証
   get "login", to: "sessions#new", as: :new_session
   post "login", to: "sessions#create", as: :session
@@ -8,6 +9,9 @@ Rails.application.routes.draw do
   get "signup", to: "registrations#new", as: :new_registration
   post "signup", to: "registrations#create", as: :registration
 
+  # Google OAuth認証用のルーティング
+  match 'auth/:provider/callback', to: 'oauth_sessions#create', via: [:get, :post]
+  get 'auth/failure', to: redirect('/')
 
   # パスワードリセット
   get "password_resets/new", to: "password_resets#new", as: :new_password_reset
@@ -63,7 +67,7 @@ Rails.application.routes.draw do
     end
     resources :threads, only: [:create], controller: 'threads' # スレッド作成用
 
-    # コミュニティ管理機能（モデレーター・管理者用）
+    # コミュニティ管理機能(モデレーター・管理者用)
     resources :moderations, only: [], controller: 'community_moderations', param: :id do
       member do
         patch :approve_membership
@@ -84,7 +88,7 @@ Rails.application.routes.draw do
     end
   end
 
-  # 静的ページ（利用規約)
+  # 静的ページ(利用規約)
   get 'terms', to: 'static_pages#terms', as: :terms
   # プライバシーポリシー
   get 'privacy', to: 'static_pages#privacy'
