@@ -9,6 +9,13 @@ gem 'resend'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.10'
 
+# Google OAuth認証用
+gem 'omniauth-google-oauth2'
+gem 'omniauth-rails_csrf_protection'
+
+# 環境変数管理用
+gem 'dotenv-rails'
+
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'propshaft'
 
