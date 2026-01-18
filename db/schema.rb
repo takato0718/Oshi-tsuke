@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_01_08_133145) do
+ActiveRecord::Schema[7.0].define(version: 2026_01_17_083034) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -156,8 +156,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_01_08_133145) do
   create_table "users", force: :cascade do |t|
     t.string "name", null: false, comment: "ユーザーの表示名"
     t.string "email", null: false, comment: "ログイン認証用のメールアドレス"
-    t.string "crypted_password", null: false, comment: "ハッシュ化されたパスワード"
-    t.string "salt", null: false, comment: "パスワードハッシュ化用のソルト値"
+    t.string "crypted_password", comment: "ハッシュ化されたパスワード"
+    t.string "salt", comment: "パスワードハッシュ化用のソルト値"
     t.string "profile_image", comment: "プロフィール画像のファイルパス/URL"
     t.string "reset_password_token", comment: "パスワードリセット用の一時トークン"
     t.datetime "reset_password_token_expires_at", comment: "パスワードリセットトークンの有効期限"
@@ -166,7 +166,11 @@ ActiveRecord::Schema[7.0].define(version: 2026_01_08_133145) do
     t.datetime "remember_me_token_expires_at", comment: "ログイン保持トークンの有効期限"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "provider"
+    t.string "uid"
+    t.string "avatar_url"
     t.index ["email"], name: "idx_users_email", unique: true
+    t.index ["provider", "uid"], name: "idx_users_provider_uid", unique: true
     t.index ["reset_password_token"], name: "idx_users_reset_password_token"
   end
 
