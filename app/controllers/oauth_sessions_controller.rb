@@ -12,10 +12,10 @@ class OauthSessionsController < ApplicationController
       auto_login(user)
       redirect_to root_path, notice: 'Googleアカウントでログインしました'
     else
-      redirect_to login_path, alert: 'ログインに失敗しました'
+      redirect_to new_session_path, alert: 'ログインに失敗しました'
     end
   rescue StandardError => e
     Rails.logger.error "OAuth認証エラー: #{e.message}"
-    redirect_to login_path, alert: 'ログインに失敗しました'
+    redirect_to new_session_path, alert: 'ログインに失敗しました'
   end
 end
