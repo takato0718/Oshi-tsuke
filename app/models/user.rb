@@ -24,13 +24,13 @@ class User < ApplicationRecord
 
   # Google認証情報からユーザーを検索または作成
   def self.find_or_create_from_auth(auth)
-    Rails.logger.info "=== find_or_create_from_auth 開始 ==="
+    Rails.logger.info '=== find_or_create_from_auth 開始 ==='
     Rails.logger.info "auth情報: provider=#{auth['provider']}, uid=#{auth['uid']}, email=#{auth['info']['email']}"
-    
+
     # providerとuidで既存ユーザーを検索
     user = find_by(provider: auth['provider'], uid: auth['uid'])
     Rails.logger.info "providerとuidでの検索結果: #{user.inspect}"
-    
+
     if user
       # 既存ユーザーが見つかった場合
       Rails.logger.info "既存ユーザーが見つかりました: user_id=#{user.id}"
@@ -45,19 +45,19 @@ class User < ApplicationRecord
       # emailが一致するユーザーが見つかった場合、OAuth情報を追加
       Rails.logger.info "emailが一致するユーザーが見つかりました: user_id=#{user.id}"
       Rails.logger.info "OAuth情報を追加します: provider=#{auth['provider']}, uid=#{auth['uid']}"
-      
+
       user.update_columns(
         provider: auth['provider'],
         uid: auth['uid'],
         avatar_url: auth['info']['image']
       )
-      
-      Rails.logger.info "OAuth情報を追加しました"
+
+      Rails.logger.info 'OAuth情報を追加しました'
       return user
     end
 
     # 新規ユーザーを作成
-    Rails.logger.info "新規ユーザーを作成します"
+    Rails.logger.info '新規ユーザーを作成します'
     user = new(
       name: auth['info']['name'],
       email: auth['info']['email'],
@@ -69,22 +69,21 @@ class User < ApplicationRecord
     # OAuth認証の場合はバリデーションをスキップして保存
     user.save(validate: false)
     Rails.logger.info "新規ユーザー作成結果: user_id=#{user.id}, persisted?=#{user.persisted?}"
-    
+
     if user.persisted?
-      Rails.logger.info "新規ユーザー作成成功"
+      Rails.logger.info '新規ユーザー作成成功'
     else
       Rails.logger.error "新規ユーザー作成失敗: #{user.errors.full_messages.join(', ')}"
     end
 
     user
   rescue StandardError => e
-    Rails.logger.error "=== find_or_create_from_auth エラー ==="
+    Rails.logger.error '=== find_or_create_from_auth エラー ==='
     Rails.logger.error "エラークラス: #{e.class}"
     Rails.logger.error "エラーメッセージ: #{e.message}"
     Rails.logger.error "バックトレース:\n#{e.backtrace.join("\n")}"
     nil
   end
-
 
   # プロフィール画像のURLを返す(優先順位: avatar_url > profile_image > デフォルト)
   def display_avatar
