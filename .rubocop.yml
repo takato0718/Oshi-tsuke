@@ -95,7 +95,7 @@ RSpec/ContextWording:
 
 # 複数のexpectationを許可
 RSpec/MultipleExpectations:
-  Max: 2
+  Max: 5
 
 # 複数のdescribeは修正すべき
 RSpec/MultipleDescribes:
@@ -107,3 +107,10 @@ RSpec/RepeatedExampleGroupBody:
 
 RSpec/RepeatedExampleGroupDescription:
   Enabled: true
+
+# RSpec関連のルール設定
+RSpec/NestedGroups:
+  Max: 5  # ネストの最大階層を5に変更(デフォルト: 3)
+
+RSpec/MessageSpies:
+  Enabled: false  # このルールを無効化
