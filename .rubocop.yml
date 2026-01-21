@@ -23,10 +23,12 @@ Style/FrozenStringLiteralComment:
 
 # ブロックの長さ
 Metrics/BlockLength:
+  Max: 70
   Exclude:
     - 'spec/**/*'
     - 'config/environments/*'
     - 'config/routes.rb'
+    - 'app/models/concerns/**/*'
 
 # 行の長さ
 Layout/LineLength:

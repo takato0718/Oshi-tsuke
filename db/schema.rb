@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_01_17_083034) do
+ActiveRecord::Schema[7.0].define(version: 2026_01_21_062729) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,10 +29,12 @@ ActiveRecord::Schema[7.0].define(version: 2026_01_17_083034) do
     t.boolean "is_public", default: true, null: false, comment: "公開設定（true: 公開, false: 非公開）"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.index ["creator_id"], name: "idx_communities_creator"
     t.index ["creator_id"], name: "index_communities_on_creator_id"
     t.index ["is_public"], name: "idx_communities_is_public"
     t.index ["name"], name: "idx_communities_name_unique", unique: true
+    t.index ["uuid"], name: "index_communities_on_uuid", unique: true
   end
 
   create_table "community_memberships", force: :cascade do |t|
@@ -84,9 +86,11 @@ ActiveRecord::Schema[7.0].define(version: 2026_01_17_083034) do
     t.string "youtube_url", limit: 500, comment: "YouTube動画のURL"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.index ["created_at"], name: "idx_posts_created_at"
     t.index ["user_id"], name: "idx_posts_user_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
+    t.index ["uuid"], name: "index_posts_on_uuid", unique: true
   end
 
   create_table "reactions", force: :cascade do |t|

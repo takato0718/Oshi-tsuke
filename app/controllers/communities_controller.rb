@@ -152,7 +152,7 @@ class CommunitiesController < ApplicationController
   private
 
   def set_community
-    @community = Community.find(params[:id])
+    @community = Community.find_by!(uuid: params[:id])
   end
 
   def check_membership_for_show
