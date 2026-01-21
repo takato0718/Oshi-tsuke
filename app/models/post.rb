@@ -9,6 +9,9 @@ class Post < ApplicationRecord
   has_many :likes, -> { where(reaction_type: :like) }, class_name: 'Reaction'
   has_many :comments, -> { where(reaction_type: :comment) }, class_name: 'Reaction'
 
+  # UUID自動生成（既存レコードにはマイグレーションで付与）
+  before_validation :generate_uuid, on: :create
+
   validates :title, presence: true, length: { maximum: 255 }
   validates :description, presence: true
   validates :youtube_url,
@@ -45,7 +48,16 @@ class Post < ApplicationRecord
   # いいね数を取得
   delegate :count, to: :likes, prefix: true
 
+  # URLでUUIDを使用
+  def to_param
+    uuid
+  end
+
   private
+
+  def generate_uuid
+    self.uuid ||= SecureRandom.uuid
+  end
 
   def image_url_format
     return if image.blank?
