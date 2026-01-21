@@ -28,7 +28,7 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.includes(:user, comments: :user).find(params[:id])
+    @post = Post.includes(:user, comments: :user).find_by!(uuid: params[:id])
   end
 
   def new
@@ -72,7 +72,7 @@ class PostsController < ApplicationController
   private
 
   def set_post
-    @post = Post.find(params[:id])
+    @post = Post.find_by!(uuid: params[:id])
   end
 
   def check_owner

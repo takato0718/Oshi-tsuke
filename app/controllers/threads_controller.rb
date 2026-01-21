@@ -20,7 +20,7 @@ class ThreadsController < ApplicationController
   private
 
   def set_community
-    @community = Community.find(params[:community_id])
+    @community = Community.find_by!(uuid: params[:community_id])
   end
 
   def check_community_member
