@@ -31,7 +31,11 @@ module PostsHelper
     # 画像がある場合のみHTMLを返す、ない場合はnilを返す
     return nil unless post&.image&.attached?
 
-    variant = post.image.variant(resize_to_limit: [1200, 800]).processed
+    variant = post.image.variant(
+      resize_to_limit: [1200, 800],
+      format: :webp,
+      quality: 85
+    ).processed
 
     # デフォルトのクラスとスタイル
     default_class = 'card-img-top img-fluid'
