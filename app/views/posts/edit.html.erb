@@ -39,10 +39,10 @@
           </div>
 
           <div class="mb-3">
-            <%= f.label :image, "推し画像URL", class: "form-label" %>
-            <%= f.url_field :image, class: "form-control", placeholder: "https://..." %>
+            <%= f.label :image, "推し画像", class: "form-label" %>
+            <%= f.file_field :image, class: "form-control", accept: "image/jpeg,image/png,image/gif,image/webp" %>
             <div class="form-text">
-              画像URLを指定してください（アップロードは後で実装予定）
+              対応形式: jpeg/png/gif/webp、サイズ上限: 5MB（再アップロードする場合のみ選択）
             </div>
           </div>
 
