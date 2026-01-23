@@ -41,19 +41,16 @@ RSpec.describe Post, type: :model do
       expect(post.errors[:youtube_url]).to include('は有効なYouTube URLである必要があります')
     end
 
-    it '有効な画像URLを受け入れる' do
-      post = build(:post, image: 'https://example.com/image.jpg')
+    it '画像が添付されている場合は有効' do
+      post = build(:post)
       expect(post).to be_valid
+      expect(post.image).to be_attached
     end
 
-    it '無効な画像URLを拒否する' do
-      post = build(:post, image: 'not-a-url')
-      expect(post).not_to be_valid
-    end
-
-    it '無効な拡張子の画像URLを拒否する' do
-      post = build(:post, image: 'https://example.com/image.txt')
-      expect(post).not_to be_valid
+    it '画像が添付されていない場合も有効' do
+      post = build(:post, :without_image)
+      expect(post).to be_valid
+      expect(post.image).not_to be_attached
     end
   end
 

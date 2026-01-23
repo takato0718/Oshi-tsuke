@@ -67,8 +67,8 @@ class Post < ApplicationRecord
       errors.add(:image, 'はjpeg/png/gif/webpのいずれかの形式を指定してください')
     end
 
-    if image.byte_size > 5.megabytes
-      errors.add(:image, 'は5MB以下のファイルを指定してください')
-    end
+    return unless image.byte_size > 5.megabytes
+
+    errors.add(:image, 'は5MB以下のファイルを指定してください')
   end
 end
