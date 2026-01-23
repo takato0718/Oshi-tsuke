@@ -1,6 +1,7 @@
 require 'uri'
 
 class Post < ApplicationRecord
+  has_one_attached :image
   belongs_to :user
   has_many :recommendations, dependent: :destroy
   has_many :post_categories, dependent: :destroy
@@ -20,7 +21,7 @@ class Post < ApplicationRecord
               message: 'は有効なYouTube URLである必要があります'
             },
             allow_blank: true
-  validate :image_url_format
+  validate :acceptable_image
 
   scope :recent, -> { order(created_at: :desc) }
 
@@ -59,24 +60,15 @@ class Post < ApplicationRecord
     self.uuid ||= SecureRandom.uuid
   end
 
-  def image_url_format
-    return if image.blank?
+  def acceptable_image
+    return unless image.attached?
 
-    uri = begin
-      URI.parse(image)
-    rescue URI::InvalidURIError
-      nil
+    unless image.content_type.in?(%w[image/jpeg image/png image/gif image/webp])
+      errors.add(:image, 'はjpeg/png/gif/webpのいずれかの形式を指定してください')
     end
 
-    unless uri.is_a?(URI::HTTP) && uri.host.present?
-      errors.add(:image, 'は有効なURLを指定してください（例: https://example.com/image.jpg）')
-      return
+    if image.byte_size > 5.megabytes
+      errors.add(:image, 'は5MB以下のファイルを指定してください')
     end
-
-    allowed_extensions = %w[jpg jpeg png gif webp]
-    ext = File.extname(uri.path).delete('.').downcase
-    return if allowed_extensions.include?(ext)
-
-    errors.add(:image, 'はjpg/jpeg/png/gif/webpのいずれかの拡張子を持つURLを指定してください')
   end
 end
