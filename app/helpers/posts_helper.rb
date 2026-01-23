@@ -26,10 +26,12 @@ module PostsHelper
     end
   end
 
-  # 投稿画像表示ヘルパー
+  # 投稿画像表示ヘルパー（Active Storage）
   def post_image_tag(post, html_options: {}, placeholder_height: '200px')
     # 画像がある場合のみHTMLを返す、ない場合はnilを返す
-    return nil if post&.image.blank?
+    return nil unless post&.image&.attached?
+
+    variant = post.image.variant(resize_to_limit: [1200, 800]).processed
 
     # デフォルトのクラスとスタイル
     default_class = 'card-img-top img-fluid'
@@ -50,7 +52,7 @@ module PostsHelper
       style: merged_style,
       alt: post.title
     }
-    image_tag(post.image, default_options.merge(html_options))
+    image_tag(variant, default_options.merge(html_options))
   rescue StandardError => e
     Rails.logger.error "Error in post_image_tag: #{e.message}"
     nil # エラー時もnilを返して画像部分を非表示にする
