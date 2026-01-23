@@ -39,7 +39,7 @@ Rails.application.configure do
 
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
-
+  config.active_storage.service = :amazon
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
 
