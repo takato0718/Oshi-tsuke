@@ -34,7 +34,6 @@ module PostsHelper
     variant = post.image.variant(
       resize_to_limit: [1200, 800],
       format: :webp,
-      quality: 85
     ).processed
 
     # デフォルトのクラスとスタイル
