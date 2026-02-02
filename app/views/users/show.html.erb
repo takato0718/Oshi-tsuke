@@ -8,13 +8,7 @@
       <div class="card shadow-sm mb-4">
         <div class="card-body">
           <div class="d-flex align-items-center mb-4">
-            <% if @user.profile_image.present? %>
-              <img src="<%= @user.profile_image %>" class="rounded-circle me-4" alt="<%= @user.name %>" style="width: 100px; height: 100px; object-fit: cover;">
-            <% else %>
-              <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center me-4" style="width: 100px; height: 100px;">
-                <i class="bi bi-person display-4 text-white"></i>
-              </div>
-            <% end %>
+            <%= user_avatar_tag(@user, size: 100, class: "me-4") %>
             <div class="flex-grow-1">
               <h1 class="h3 mb-2"><%= @user.name %></h1>
               <p class="text-muted mb-0">
