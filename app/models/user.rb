@@ -1,9 +1,13 @@
 class User < ApplicationRecord
   authenticates_with_sorcery!
 
+  # Active Storage
+  has_one_attached :profile_image
+
   # バリデーション
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
+  validate :acceptable_profile_image
 
   # パスワードは、OAuth認証の場合は不要
   validates :password, length: { minimum: 6 }, if: :password_required?
@@ -95,4 +99,19 @@ class User < ApplicationRecord
     nil
   end
   private_class_method :create_oauth_user
+
+  # プロフィール画像のバリデーション
+  def acceptable_profile_image
+    return unless profile_image.attached?
+
+    # ファイル形式のチェック
+    unless profile_image.content_type.in?(%w[image/jpeg image/png image/gif image/webp])
+      errors.add(:profile_image, 'はjpeg/png/gif/webpのいずれかの形式を指定してください')
+    end
+
+    # ファイルサイズのチェック
+    return unless profile_image.byte_size > 5.megabytes
+
+    errors.add(:profile_image, 'は5MB以下のファイルを指定してください')
+  end
 end

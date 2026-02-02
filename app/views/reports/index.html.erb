@@ -1,8 +1,14 @@
 <div class="row">
   <div class="col-lg-10 mx-auto">
     <div class="mb-3">
-      <%= link_to root_path, class: "text-decoration-none" do %>
-        <i class="bi bi-arrow-left"></i> トップページに戻る
+      <% if @community.present? %>
+        <%= link_to community_path(@community), class: "text-decoration-none" do %>
+          <i class="bi bi-arrow-left"></i> <%= @community.name %>に戻る
+        <% end %>
+      <% else %>
+        <%= link_to root_path, class: "text-decoration-none" do %>
+          <i class="bi bi-arrow-left"></i> トップページに戻る
+        <% end %>
       <% end %>
     </div>
 
@@ -71,9 +77,6 @@
                                   data: { turbo_confirm: "本当に却下しますか？" },
                                   class: "btn btn-outline-secondary btn-sm" do %>
                       <i class="bi bi-x-circle"></i> 却下
-                    <% end %>
-                    <%= link_to report_path(report), class: "btn btn-outline-primary btn-sm" do %>
-                      <i class="bi bi-eye"></i> 詳細
                     <% end %>
                   </div>
                 <% end %>

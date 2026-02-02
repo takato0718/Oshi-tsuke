@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  before_action :set_report, only: %i[show review dismiss]
+  before_action :set_report, only: %i[review dismiss]
   before_action :check_moderator_for_review, only: %i[review dismiss]
 
   def index
@@ -17,14 +17,16 @@ class ReportsController < ApplicationController
       return
     end
 
+    # コミュニティIDを取得（戻るボタン用）
+    @community_id = params[:community_id]
+    @community = Community.find_by(uuid: @community_id) if @community_id.present?
+
     # スレッドとレスの報告を取得
     @reports = Report.for_communities(moderatable_community_ids)
                      .recent
                      .page(params[:page])
                      .per(20)
   end
-
-  def show; end
 
   def create
     reportable_type = params[:reportable_type]
@@ -45,10 +47,13 @@ class ReportsController < ApplicationController
       reason: reason
     )
 
+    community = find_community_from_reportable(reportable)
     if @report.save
-      redirect_back_or_to(root_path, notice: '報告しました。ありがとうございます。')
+      # コミュニティを取得してリダイレクト
+      redirect_to community_path(community), notice: '報告しました。ありがとうございます。'
     else
-      redirect_back_or_to(root_path, alert: "報告に失敗しました: #{@report.errors.full_messages.join(', ')}")
+      # エラー時もコミュニティに戻る
+      redirect_to community_path(community), alert: "報告に失敗しました: #{@report.errors.full_messages.join(', ')}"
     end
   end
 
@@ -61,7 +66,7 @@ class ReportsController < ApplicationController
     # 解決済みの場合、報告対象を削除
     @report.reportable.destroy if resolved && @report.reportable.present?
 
-    redirect_to reports_path, notice: '報告をレビューしました'
+    redirect_to_reports_index(notice: '報告をレビューしました')
   end
 
   def dismiss
@@ -69,10 +74,36 @@ class ReportsController < ApplicationController
 
     @report.dismiss!(reviewer: current_user, notes: notes)
 
-    redirect_to reports_path, notice: '報告を却下しました'
+    redirect_to_reports_index(notice: '報告を却下しました')
   end
 
   private
+
+  # コミュニティの報告一覧ページにリダイレクト
+  def redirect_to_reports_index(notice:)
+    community = find_community_from_report
+    redirect_to reports_path(community_id: community&.uuid), notice: notice
+  end
+
+  # 報告対象からコミュニティを取得
+  def find_community_from_report
+    case @report.reportable_type
+    when 'CommunityThread'
+      @report.reportable.community
+    when 'Reply'
+      @report.reportable.community_thread.community
+    end
+  end
+
+  # reportableオブジェクトからコミュニティを取得
+  def find_community_from_reportable(reportable)
+    case reportable.class.name
+    when 'CommunityThread'
+      reportable.community
+    when 'Reply'
+      reportable.community_thread.community
+    end
+  end
 
   def set_report
     @report = Report.find(params[:id])

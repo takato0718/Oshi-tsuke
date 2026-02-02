@@ -53,7 +53,7 @@ Rails.application.routes.draw do
   
   # コミュニティスレッド
   resources :community_threads, only: [] do
-    resources :replies, only: [:create], controller: 'replies' # レス投稿用
+    resources :replies, only: [:create, :destroy], controller: 'replies' # レス投稿・削除用
   end
 
   # コミュニティ
@@ -81,7 +81,7 @@ Rails.application.routes.draw do
   end
 
   # 報告機能
-  resources :reports, only: [:index, :show, :create] do
+  resources :reports, only: [:index, :create] do
     member do
       patch :review
       patch :dismiss
