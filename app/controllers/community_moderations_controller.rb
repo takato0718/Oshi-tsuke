@@ -39,7 +39,7 @@ class CommunityModerationsController < ApplicationController
 
   # スレッド削除
   def destroy_thread
-    thread = @community.community_threads.find(params[:id])
+    thread = @community.community_threads.find(params[:thread_id])
 
     unless thread.can_be_deleted_by?(current_user)
       redirect_to @community, alert: '権限がありません'
