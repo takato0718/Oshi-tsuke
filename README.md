@@ -74,7 +74,6 @@ Figma：https://www.figma.com/design/l5J6lIsRy9N0SAMxuYkdaC/%E5%8D%92%E5%88%B6%E
 - コミュニティ活発度可視化機能（盛り上がっているコミュニティの表示）
 - 推しカテゴリ分け機能（アニメ、アイドル、俳優等）
 - 推し検索機能
-- ユーザー間フォロー機能
 
 ### 使用する技術スタック
 - Ruby on Rails
