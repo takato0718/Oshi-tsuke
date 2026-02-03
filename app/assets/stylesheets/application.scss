@@ -7,6 +7,7 @@
 // ユーザーリンクのホバー効果
 .user-link {
     transition: all 0.2s ease-in-out;
+    flex-shrink: 0; // ユーザー名リンクが縮小されないように
     
     &:hover {
       color: var(--bs-primary) !important;
@@ -27,6 +28,15 @@
     
     strong {
       transition: color 0.2s ease-in-out;
+      // 日本語・英語の長い名前でも横に表示されるように
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 150px; // 長い名前の場合は省略表示
+    
+      @media (min-width: 768px) {
+      max-width: 200px; // PC画面では少し広めに
+      }
     }
   }
 

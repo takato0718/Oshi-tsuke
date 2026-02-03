@@ -33,21 +33,4 @@ module PostsHelper
     Rails.logger.error "Error in post_image_tag: #{e.message}"
     nil # エラー時もnilを返して画像部分を非表示にする
   end
-
-  # 推奨のステータスバッジを返す
-  def recommendation_status_badge(recommendation)
-    if recommendation.skipped?
-      content_tag(:span, class: 'badge bg-secondary me-2') do
-        "#{tag.i('', class: 'bi bi-skip-forward')} スキップ"
-      end
-    elsif recommendation.favorited?
-      content_tag(:span, class: 'badge bg-success me-2') do
-        "#{tag.i('', class: 'bi bi-heart-fill')} 発見"
-      end
-    else
-      content_tag(:span, class: 'badge bg-warning me-2') do
-        "#{tag.i('', class: 'bi bi-clock')} 未選択"
-      end
-    end
-  end
 end

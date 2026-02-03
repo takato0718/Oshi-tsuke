@@ -1,12 +1,12 @@
 <div class="card-body border-bottom reply-item" data-reply-id="<%= reply.id %>">
   <div class="d-flex align-items-start">
     <div class="flex-grow-1">
-      <div class="d-flex align-items-center mb-2">
-        <%= link_to user_path(reply.user), class: "user-link d-flex align-items-center text-decoration-none text-muted me-3" do %>
-          <%= user_avatar_tag(reply.user, size: 20, class: "me-2") %>
-          <strong class="text-dark"><%= reply.user.name %></strong>
+      <div class="d-flex flex-wrap align-items-center mb-2 gap-2">
+        <%= link_to user_path(reply.user), class: "user-link d-flex align-items-center text-decoration-none text-muted" do %>
+          <%= user_avatar_tag(reply.user, size: 20, class: "me-2 flex-shrink-0") %>
+          <strong class="text-dark text-nowrap"><%= reply.user.name %></strong>
         <% end %>
-        <small class="text-muted">
+        <small class="text-muted text-nowrap">
           <i class="bi bi-clock"></i> <%= reply.created_at.strftime("%Y年%m月%d日 %H:%M") %>
         </small>
         <div class="ms-auto d-flex gap-2">

@@ -3,16 +3,16 @@
   <div class="card-body border-bottom thread-root">
     <div class="d-flex align-items-start">
       <div class="flex-grow-1">
-        <div class="d-flex align-items-center mb-2">
-          <span class="badge bg-primary me-2">スレッド</span>
-          <%= link_to user_path(thread.user), class: "user-link d-flex align-items-center text-decoration-none text-muted me-3" do %>
-            <%= user_avatar_tag(thread.user, size: 24, class: "me-2") %>
-            <strong class="text-dark"><%= thread.user.name %></strong>
+        <div class="d-flex flex-wrap align-items-center mb-2 gap-2">
+          <span class="badge bg-primary">スレッド</span>
+          <%= link_to user_path(thread.user), class: "user-link d-flex align-items-center text-decoration-none text-muted" do %>
+            <%= user_avatar_tag(thread.user, size: 24, class: "me-2 flex-shrink-0") %>
+            <strong class="text-dark text-nowrap"><%= thread.user.name %></strong>
           <% end %>
-          <small class="text-muted">
+          <small class="text-muted text-nowrap">
             <i class="bi bi-clock"></i> <%= thread.created_at.strftime("%Y年%m月%d日 %H:%M") %>
           </small>
-          <span class="badge bg-secondary ms-2">
+          <span class="badge bg-secondary">
             <i class="bi bi-chat"></i> <%= thread.replies.count %>レス
           </span>
           <div class="ms-auto d-flex gap-2">

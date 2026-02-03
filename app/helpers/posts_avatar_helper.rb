@@ -19,7 +19,7 @@ module PostsAvatarHelper
   # アバターのクラスとスタイルをマージ
   def build_avatar_options(size, html_options)
     default_class = 'rounded-circle'
-    default_style = "width: #{size}px; height: #{size}px; object-fit: cover;"
+    default_style = "width: #{size}px; height: #{size}px; object-fit: cover; aspect-ratio: 1 / 1; flex-shrink: 0;"
 
     custom_class = html_options.delete(:class) || ''
     custom_style = html_options.delete(:style) || ''
@@ -32,7 +32,8 @@ module PostsAvatarHelper
 
   # Active Storageのアバターを表示
   def render_active_storage_avatar(user, size, merged_class, merged_style, html_options)
-    variant = user.profile_image.variant(resize_to_limit: [size * 2, size * 2])
+    # 正方形にリサイズ（resize_to_fillで中央からクロップ）
+    variant = user.profile_image.variant(resize_to_fill: [size * 2, size * 2])
     image_tag(variant, {
       class: merged_class,
       style: merged_style,
