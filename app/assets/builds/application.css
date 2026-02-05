@@ -11864,6 +11864,7 @@ textarea.form-control-lg {
 }
 .user-link {
   transition: all 0.2s ease-in-out;
+  flex-shrink: 0;
 }
 .user-link:hover {
   color: var(--bs-primary) !important;
@@ -11880,6 +11881,15 @@ textarea.form-control-lg {
 }
 .user-link strong {
   transition: color 0.2s ease-in-out;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+@media (min-width: 768px) {
+  .user-link strong {
+    max-width: 200px;
+  }
 }
 
 /* ローディングオーバーレイ */
