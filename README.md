@@ -5,7 +5,7 @@
 Figma：https://www.figma.com/design/l5J6lIsRy9N0SAMxuYkdaC/%E5%8D%92%E5%88%B6%E3%80%80figma?node-id=0-1&t=L54rAsKjf5n5U8SU-1
 
 ## ER図
-[![Image from Gyazo](https://i.gyazo.com/9b80349a539883ac49f28dc9d462ba1c.png)](https://gyazo.com/9b80349a539883ac49f28dc9d462ba1c)
+https://drive.google.com/file/d/1jzot2Owz0-ZVm6LYjg-_m05fpk9g0-Cu/view?usp=sharing
 
 ## サービス概要
 趣味の推しを語り合い、システムがランダムに他のユーザーに「押し付ける」推し活専用SNSアプリです
