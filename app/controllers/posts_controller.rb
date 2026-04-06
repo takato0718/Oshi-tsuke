@@ -72,7 +72,18 @@ class PostsController < ApplicationController
   private
 
   def set_post
-    @post = Post.find_by!(uuid: params[:id])
+    # UUIDで検索（params[:id]がUUID形式の場合）
+    @post = if params[:id].to_s.match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i)
+              Post.find_by(uuid: params[:id])
+            else
+              # IDで検索（後方互換性のため）
+              Post.find_by(id: params[:id])
+            end
+
+    return if @post
+
+    redirect_to posts_path, alert: '投稿が見つかりませんでした。'
+    nil
   end
 
   def check_owner
