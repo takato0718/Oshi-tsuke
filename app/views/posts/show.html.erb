@@ -7,8 +7,14 @@
   <div class="row">
     <div class="col-lg-8 mx-auto">
       <div class="mb-3">
-        <%= link_to posts_path, class: "text-decoration-none" do %>
-          <i class="bi bi-arrow-left"></i> 投稿一覧に戻る
+        <% if params[:from] == 'recommendations' %>
+          <%= link_to recommendations_user_path(current_user), class: "text-decoration-none" do %>
+            <i class="bi bi-arrow-left"></i> 推し発見履歴に戻る
+          <% end %>
+        <% else %>
+          <%= link_to posts_path, class: "text-decoration-none" do %>
+            <i class="bi bi-arrow-left"></i> 投稿一覧に戻る
+          <% end %>
         <% end %>
       </div>
 
@@ -68,10 +74,8 @@
                 <%= link_to edit_post_path(@post), class: "btn btn-outline-secondary btn-sm" do %>
                   <i class="bi bi-pencil"></i> 編集
                 <% end %>
-                <%= button_to post_path(@post), method: :delete, 
-                  onclick: "return confirm('本当に削除しますか？')",
-                  class: "btn btn-outline-danger btn-sm" do %>
-                <i class="bi bi-trash"></i> 削除
+                <%= button_to post_path(@post), method: :delete, data: { turbo_confirm: "本当に削除しますか？" }, class: "btn btn-outline-danger btn-sm" do %>
+                  <i class="bi bi-trash"></i> 削除
                 <% end %>
               </div>
             <% end %>

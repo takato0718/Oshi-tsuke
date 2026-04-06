@@ -14,18 +14,19 @@
         <div class="card-body text-center py-5">
           <i class="bi bi-check-circle-fill display-1 text-success"></i>
           <h3 class="h5 mt-3">今日の推し紹介は終了しました</h3>
-          <p class="text-muted mb-4">明日また来てね！</p>
-          <%= link_to posts_path, class: "btn btn-primary" do %>
-            <i class="bi bi-grid-3x3-gap"></i> 投稿一覧を見る
-          <% end %>
+          <p class="text-muted mb-4">明日また来てね!</p>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+            <%= link_to posts_path, class: "btn btn-primary" do %>
+              <i class="bi bi-grid-3x3-gap"></i> 投稿一覧を見る
+            <% end %>
+            <%= link_to user_recommendations_path(current_user), class: "btn btn-outline-info" do %>
+              <i class="bi bi-clock-history"></i> 推し発見履歴を見る
+            <% end %>
+          </div>
         </div>
       </div>
     <% else %>
-      <div id="recommendation-card" class="card shadow-lg border-0" 
-           data-recommendation-id="<%= @recommendation.id %>" 
-           data-status="<%= @recommendation.status %>"
-           data-post-id="<%= @post.id %>"
-           data-user-id="<%= current_user.id %>">
+      <div class="card shadow-lg border-0">
         <div class="card-body p-4">
           <div class="text-center mb-4">
             <span class="badge bg-warning text-dark mb-3">
@@ -50,53 +51,9 @@
             <p class="lead text-center"><%= simple_format(@post.description) %></p>
           </div>
 
-          <!-- 選択前の表示（pending） -->
-          <div id="selection-buttons" class="<%= 'd-none' unless @recommendation.pending? %>">
-            <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
-              <%= button_to favorite_recommendation_path(@recommendation), 
-                            method: :patch, 
-                            class: "btn btn-primary btn-lg recommendation-action-btn",
-                            data: { 
-                              action: "favorite",
-                              turbo: false
-                            } do %>
-                <i class="bi bi-heart-fill"></i> お気に入り
-              <% end %>
-              <%= button_to skip_recommendation_path(@recommendation), 
-                            method: :patch,
-                            class: "btn btn-outline-secondary btn-sm recommendation-action-btn",
-                            data: { 
-                              action: "skip",
-                              turbo: false
-                            } do %>
-                <i class="bi bi-skip-forward"></i> スキップ
-              <% end %>
-            </div>
-          </div>
-
-          <!-- 選択後の表示（favorited/skipped） -->
-          <div id="result-message" class="<%= 'd-none' if @recommendation.pending? %>">
-            <div class="text-center mt-4">
-              <% if @recommendation.favorited? %>
-                <div class="alert alert-success">
-                  <i class="bi bi-heart-fill"></i> 
-                  <strong>✨ この推しをお気に入りに追加しました!</strong>
-                </div>
-              <% elsif @recommendation.skipped? %>
-                <div class="alert alert-secondary">
-                  <i class="bi bi-skip-forward"></i> 
-                  <strong>スキップしました</strong>
-                </div>
-              <% end %>
-              <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
-                <%= link_to post_path(@post), class: "btn btn-primary" do %>
-                  <i class="bi bi-arrow-right"></i> 投稿詳細を見る
-                <% end %>
-                <%= link_to recommendations_user_path(current_user), class: "btn btn-outline-info" do %>
-                  <i class="bi bi-clock-history"></i> 履歴を見る
-                <% end %>
-              </div>
-            </div>
+          <!-- Turbo Streamsで置き換え可能な選択エリア -->
+          <div id="selection-area">
+            <%= render 'recommendations/selection_buttons', recommendation: @recommendation, post: @post %>
           </div>
         </div>
       </div>

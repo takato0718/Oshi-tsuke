@@ -51,7 +51,7 @@ class Post < ApplicationRecord
 
   # URLでUUIDを使用
   def to_param
-    uuid
+    uuid || id.to_s
   end
 
   private
