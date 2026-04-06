@@ -16,7 +16,7 @@ class RecommendationService
   private
 
   def find_today_recommendation
-    @user.recommendations.today.first
+    @user.recommendations.includes(:post).today.first
   end
 
   def find_recommendation_candidate
@@ -28,9 +28,21 @@ class RecommendationService
   end
 
   def create_recommendation(post)
-    @user.recommendations.create!(
+    # UUIDがnilの場合は生成
+    ensure_post_has_uuid(post)
+
+    recommendation = @user.recommendations.create!(
       post: post,
       status: :pending
     )
+
+    Recommendation.includes(:post).find(recommendation.id)
+  end
+
+  def ensure_post_has_uuid(post)
+    return if post.uuid.present?
+
+    new_uuid = SecureRandom.uuid
+    post.update!(:uuid, new_uuid)
   end
 end
