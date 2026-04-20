@@ -75,8 +75,8 @@
     <% @posts.each do |post| %>
       <div class="col-md-6 col-lg-4">
         <div class="card h-100 shadow-sm">
-          <% if (image_html = post_image_tag(post, placeholder_height: "200px")) %>
-            <%= image_html %>
+          <% if (thumbnail_html = post_thumbnail_tag(post, placeholder_height: "200px")) %>
+            <%= thumbnail_html %>
           <% end %>
           <div class="card-body d-flex flex-column">
             <h5 class="card-title"><%= post.title %></h5>
