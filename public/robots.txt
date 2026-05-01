@@ -1,18 +1,26 @@
 # See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
-# すべてのクローラーに対して
 User-agent: *
 Disallow: /posts?category
 
-# 特定のクローラーを拒否
+# 特定のクローラーを完全に拒否
 User-agent: SERankingBacklinksBot
 Disallow: /
 
+# Amazonbot はアクセス間隔を制限
 User-agent: Amazonbot
-Disallow: /posts
+Crawl-delay: 10
+Disallow: /posts?category
 
-# 一般的なクローラーは許可
+# 一般的なクローラーは許可（アクセス間隔を制限）
 User-agent: Googlebot
+Crawl-delay: 1
 Allow: /
 
 User-agent: bingbot
+Crawl-delay: 1
 Allow: /
+
+# その他のクローラーはアクセス間隔を制限
+User-agent: *
+Crawl-delay: 5
+Disallow: /posts?category
