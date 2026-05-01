@@ -1,119 +1,125 @@
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h1 class="h2 mb-0">
-    <i class="bi bi-grid-3x3-gap"></i> 投稿一覧
-  </h1>
-  <% if logged_in? %>
-    <%= link_to new_post_path, class: "btn btn-primary" do %>
-      <i class="bi bi-plus-circle"></i> 新規投稿
-    <% end %>
-  <% end %>
-</div>
-
-<!-- カテゴリーナビゲーション（複数選択可能） -->
-<div class="card shadow-sm mb-4">
-  <div class="card-body">
-    <div class="d-flex flex-wrap gap-2 align-items-center">
-      <span class="text-muted me-2">
-        <i class="bi bi-funnel"></i> カテゴリー:
-      </span>
-      <%= link_to posts_path(current_search_params),
-                  class: category_all_button_class(@selected_category_ids) do %>
-        <i class="bi bi-grid"></i> 全て
-      <% end %>
-      <% @categories.each do |category| %>
-        <%= link_to posts_path(category_params_for(category, @selected_category_ids)),
-                    class: category_button_class(category, @selected_category_ids) do %>
-          <i class="bi bi-tag"></i> <%= category.name %>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
-</div>
-
-<div class="card shadow-sm mb-4">
-  <div class="card-body">
-    <%= search_form_for @q, url: posts_path, method: :get, html: { class: "row gy-3 gx-3 align-items-end" } do |f| %>
-      <div class="col-lg-10">
-        <%= f.label :title_or_description_cont, "キーワード", class: "form-label" %>
-        <%= f.search_field :title_or_description_cont, class: "form-control", placeholder: "タイトル・本文で検索" %>
-      </div>
-
-      <div class="col-lg-2 d-grid gap-2">
-        <%= f.submit "検索", class: "btn btn-primary" %>
-        <%= link_to "リセット", posts_path, class: "btn btn-outline-secondary" %>
-      </div>
-      
-      <%# カテゴリーナビゲーションで選択したカテゴリーを検索フォームに反映（hidden field） %>
-      <% Array(params[:category]).each do |category_id| %>
-        <% if category_id.present? %>
-          <%= hidden_field_tag "category[]", category_id %>
-        <% end %>
-      <% end %>
-    <% end %>
-  </div>
-</div>
-
-<% if @posts.blank? %>
-  <div class="card shadow-sm">
-    <div class="card-body text-center py-5">
-      <i class="bi bi-inbox display-1 text-muted"></i>
-      <h3 class="h5 mt-3 text-muted">まだ投稿がありません</h3>
-      <p class="text-muted mb-4">最初の投稿を作成してみましょう！</p>
-      <% if logged_in? %>
-        <%= link_to new_post_path, class: "btn btn-primary" do %>
-          <i class="bi bi-plus-circle"></i> 新規投稿を作成
-        <% end %>
-      <% else %>
-        <%= link_to new_session_path, class: "btn btn-primary" do %>
-          ログインして投稿する
-        <% end %>
-      <% end %>
-    </div>
-  </div>
+<% if @is_crawler %>
+  <%# クローラー向け: シンプルなHTMLを表示(SEO対策) %>
+  <%= render "index_for_crawler" %>
+  
 <% else %>
-  <div class="row g-4">
-    <% @posts.each do |post| %>
-      <div class="col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm">
-          <% if (thumbnail_html = post_thumbnail_tag(post, placeholder_height: "200px")) %>
-            <%= thumbnail_html %>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2 mb-0">
+      <i class="bi bi-grid-3x3-gap"></i> 投稿一覧
+    </h1>
+    <% if logged_in? %>
+      <%= link_to new_post_path, class: "btn btn-primary" do %>
+        <i class="bi bi-plus-circle"></i> 新規投稿
+      <% end %>
+    <% end %>
+  </div>
+
+  <!-- カテゴリーナビゲーション（複数選択可能） -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="d-flex flex-wrap gap-2 align-items-center">
+        <span class="text-muted me-2">
+          <i class="bi bi-funnel"></i> カテゴリー:
+        </span>
+        <%= link_to posts_path(current_search_params),
+                    class: category_all_button_class(@selected_category_ids) do %>
+          <i class="bi bi-grid"></i> 全て
+        <% end %>
+        <% @categories.each do |category| %>
+          <%= link_to posts_path(category_params_for(category, @selected_category_ids)),
+                      class: category_button_class(category, @selected_category_ids) do %>
+            <i class="bi bi-tag"></i> <%= category.name %>
           <% end %>
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title"><%= post.title %></h5>
-            <% if post.categories.any? %>
-              <div class="mb-2">
-                <% post.categories.each do |category| %>
-                  <span class="badge bg-primary me-1 mb-1">
-                    <i class="bi bi-tag"></i> <%= category.name %>
-                  </span>
-                <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <%= search_form_for @q, url: posts_path, method: :get, html: { class: "row gy-3 gx-3 align-items-end" } do |f| %>
+        <div class="col-lg-10">
+          <%= f.label :title_or_description_cont, "キーワード", class: "form-label" %>
+          <%= f.search_field :title_or_description_cont, class: "form-control", placeholder: "タイトル・本文で検索" %>
+        </div>
+
+        <div class="col-lg-2 d-grid gap-2">
+          <%= f.submit "検索", class: "btn btn-primary" %>
+          <%= link_to "リセット", posts_path, class: "btn btn-outline-secondary" %>
+        </div>
+      
+        <%# カテゴリーナビゲーションで選択したカテゴリーを検索フォームに反映（hidden field） %>
+        <% Array(params[:category]).each do |category_id| %>
+          <% if category_id.present? %>
+            <%= hidden_field_tag "category[]", category_id %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <% if @posts.blank? %>
+    <div class="card shadow-sm">
+      <div class="card-body text-center py-5">
+        <i class="bi bi-inbox display-1 text-muted"></i>
+        <h3 class="h5 mt-3 text-muted">まだ投稿がありません</h3>
+        <p class="text-muted mb-4">最初の投稿を作成してみましょう！</p>
+        <% if logged_in? %>
+          <%= link_to new_post_path, class: "btn btn-primary" do %>
+            <i class="bi bi-plus-circle"></i> 新規投稿を作成
+          <% end %>
+        <% else %>
+          <%= link_to new_session_path, class: "btn btn-primary" do %>
+            ログインして投稿する
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="row g-4">
+      <% @posts.each do |post| %>
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm">
+            <% if (thumbnail_html = post_thumbnail_tag(post, placeholder_height: "200px")) %>
+              <%= thumbnail_html %>
+            <% end %>
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title"><%= post.title %></h5>
+              <% if post.categories.any? %>
+                <div class="mb-2">
+                  <% post.categories.each do |category| %>
+                    <span class="badge bg-primary me-1 mb-1">
+                      <i class="bi bi-tag"></i> <%= category.name %>
+                    </span>
+                  <% end %>
+                </div>
+              <% end %>
+              <p class="card-text text-muted<%= ' flex-grow-1' if post.image.present? %>">
+                <%= truncate(post.description, length: 100) %>
+              </p>
+              <% unless post.image.present? %>
+                <div style="flex-grow: 1; min-height: 200px;"></div>
+              <% end %>
+              <div class="d-flex justify-content-between align-items-center<%= ' mt-auto' if post.image.present? %>">
+                <small class="text-muted">
+                  <i class="bi bi-person"></i> <%= post.user.name %>
+                </small>
+                <%= link_to "詳細を見る", post_path(post), class: "btn btn-sm btn-outline-primary" %>
               </div>
-            <% end %>
-            <p class="card-text text-muted<%= ' flex-grow-1' if post.image.present? %>">
-              <%= truncate(post.description, length: 100) %>
-            </p>
-            <% unless post.image.present? %>
-              <div style="flex-grow: 1; min-height: 200px;"></div>
-            <% end %>
-            <div class="d-flex justify-content-between align-items-center<%= ' mt-auto' if post.image.present? %>">
-              <small class="text-muted">
-                <i class="bi bi-person"></i> <%= post.user.name %>
+            </div>
+            <div class="card-footer bg-white text-muted">
+              <small>
+                <i class="bi bi-clock"></i> <%= time_ago_in_words(post.created_at) %>前
               </small>
-              <%= link_to "詳細を見る", post_path(post), class: "btn btn-sm btn-outline-primary" %>
             </div>
           </div>
-          <div class="card-footer bg-white text-muted">
-            <small>
-              <i class="bi bi-clock"></i> <%= time_ago_in_words(post.created_at) %>前
-            </small>
-          </div>
         </div>
+      <% end %>
+    </div>
+    <% if @posts.total_pages > 1 %>
+      <div class="mt-4">
+        <%= paginate @posts %>
       </div>
     <% end %>
-  </div>
-  <% if @posts.total_pages > 1 %>
-    <div class="mt-4">
-      <%= paginate @posts %>
-    </div>
   <% end %>
 <% end %>
