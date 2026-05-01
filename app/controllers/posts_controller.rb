@@ -5,6 +5,8 @@ class PostsController < ApplicationController
   before_action :set_post, only: %i[show edit update destroy]
   before_action :check_owner, only: %i[edit update destroy]
 
+  before_action :validate_crawler_category_params, only: [:index]
+
   def index
     @categories = Category.ordered
 
@@ -72,6 +74,20 @@ class PostsController < ApplicationController
   end
 
   private
+
+  def validate_crawler_category_params
+    # クローラーでない場合は何もしない
+    return unless @is_crawler
+    
+    # カテゴリーパラメータが存在しない場合は何もしない
+    return unless params[:category].present?
+
+    # カテゴリーパラメータが5個を超える場合はエラー
+    if params[:category].size > 5
+      Rails.logger.warn "⚠️ CRAWLER: Too many category parameters: #{params[:category].size}"
+      head :bad_request
+    end
+  end
 
   def set_post
     # UUIDで検索（params[:id]がUUID形式の場合）
