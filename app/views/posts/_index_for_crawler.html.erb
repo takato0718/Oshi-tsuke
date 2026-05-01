@@ -1,0 +1,55 @@
+<div class="container">
+  <h1>投稿一覧</h1>
+  
+  <%# カテゴリー情報 %>
+  <% if @selected_category_ids.present? %>
+    <p>
+      カテゴリー: 
+      <% @categories.where(id: @selected_category_ids).each do |category| %>
+        <%= category.name %>
+      <% end %>
+    </p>
+  <% end %>
+  
+  <%# 投稿一覧 %>
+  <div class="posts">
+    <% @posts.each do |post| %>
+      <article class="post">
+        <h2><%= link_to post.title, post_path(post) %></h2>
+        
+        <%# サムネイル画像 %>
+        <% if post.image.attached? %>
+          <%= image_tag post.image, alt: post.title, style: "max-width: 300px;" %>
+        <% end %>
+        
+        <%# 本文 %>
+        <p><%= truncate(post.description, length: 200) %></p>
+        
+        <%# カテゴリー %>
+        <% if post.categories.any? %>
+          <p>
+            カテゴリー: 
+            <% post.categories.each do |category| %>
+              <%= category.name %>
+            <% end %>
+          </p>
+        <% end %>
+        
+        <%# 投稿者・投稿日時 %>
+        <p>
+          投稿者: <%= post.user.name %><br>
+          投稿日: <%= l post.created_at, format: :long %>
+        </p>
+        
+        <hr>
+      </article>
+    <% end %>
+  </div>
+  
+  <%# ページネーション %>
+  <% if @posts.total_pages > 1 %>
+    <div class="pagination">
+      <%= paginate @posts %>
+    </div>
+  <% end %>
+</div>

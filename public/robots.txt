@@ -1,1 +1,18 @@
 # See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+# すべてのクローラーに対して
+User-agent: *
+Disallow: /posts?category
+
+# 特定のクローラーを拒否
+User-agent: SERankingBacklinksBot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /posts
+
+# 一般的なクローラーは許可
+User-agent: Googlebot
+Allow: /
+
+User-agent: bingbot
+Allow: /
