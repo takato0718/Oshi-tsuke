@@ -17,26 +17,31 @@ document.addEventListener('turbo:load', () => {
     
       // Turboのナビゲーション開始時にローディング表示
     document.addEventListener('turbo:before-fetch-request', () => {
+      console.log('🔵 turbo:before-fetch-request', event.detail.url);
       showLoading();
     });
     
       // Turboのナビゲーション完了時にローディング非表示
     document.addEventListener('turbo:render', () => {
+      console.log('🟢 turbo:render');
       hideLoading();
     });
     
       // フォーム送信開始時にローディング表示
     document.addEventListener('turbo:submit-start', () => {
+      console.log('🟡 turbo:submit-start');
       showLoading();
     });
     
       // フォーム送信完了時にローディング非表示
     document.addEventListener('turbo:submit-end', () => {
+      console.log('🟠 turbo:submit-end');
       hideLoading();
     });
     
       // エラー発生時にもローディングを非表示
     document.addEventListener('turbo:fetch-request-error', () => {
+      console.log('🔴 turbo:fetch-request-error');
       hideLoading();
     });
   });

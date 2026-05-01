@@ -4,6 +4,14 @@ class PostsController < ApplicationController
   before_action :check_owner, only: %i[edit update destroy]
 
   def index
+    # User-Agent をログに出力
+    Rails.logger.info "========================================="
+    Rails.logger.info "User-Agent: #{request.user_agent}"
+    Rails.logger.info "IP Address: #{request.remote_ip}"
+    Rails.logger.info "Referer: #{request.referer}"
+    Rails.logger.info "Request Format: #{request.format}"
+    Rails.logger.info "========================================="
+
     @categories = Category.ordered
 
     # Ransack検索の初期化
