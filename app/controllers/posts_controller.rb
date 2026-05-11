@@ -78,15 +78,15 @@ class PostsController < ApplicationController
   def validate_crawler_category_params
     # クローラーでない場合は何もしない
     return unless @is_crawler
-    
+
     # カテゴリーパラメータが存在しない場合は何もしない
-    return unless params[:category].present?
+    return if params[:category].blank?
 
     # カテゴリーパラメータが5個を超える場合はエラー
-    if params[:category].size > 5
-      Rails.logger.warn "⚠️ CRAWLER: Too many category parameters: #{params[:category].size}"
-      head :bad_request
-    end
+    return unless params[:category].size > 5
+
+    Rails.logger.warn "⚠️ CRAWLER: Too many category parameters: #{params[:category].size}"
+    head :bad_request
   end
 
   def set_post
